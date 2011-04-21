@@ -392,15 +392,60 @@ class Vendor {
 
         if($this->aApplicationsIds)
         {
-            echo '<br>Applications by '.$this->sName.'<br><ol>',"\n";
+            echo '<br>Applications by '.$this->sName.'<br><br>',"\n";
+
+            $oTable = new Table();
+
+            $oRow = new TableRow();
+            $oRow->AddTextCell('Name');
+            $oRow->AddTextCell('Rating');
+            $oRow->AddTextCell('Tested Wine version');
+            $oRow->SetClass('color4');
+            $oRow->SetStyle('color: #ffffff;');
+            $oTable->AddRow($oRow);
+
+            $i = 0;
+
             foreach($this->aApplicationsIds as $iAppId)
             {
                 $oApp  = new Application($iAppId);
 
-                if($oApp->objectGetState() == 'accepted')
-                    echo '<li>'.$oApp->objectMakeLink().'</li>',"\n";
+                if($oApp->objectGetState() != 'accepted')
+                    continue;
+
+                $i++;
+                $oRow = new TableRow();
+                $oRow->SetClass(($i % 2) ? 'color0' : 'color1');
+                $oRow->AddTextCell($oApp->objectMakeLink());
+                $oRow->AddTextCell('');
+                $oRow->AddTextCell('');
+                $oTable->AddRow($oRow);
+
+                $aVersions = $oApp->objectGetChildrenClassSpecific('version');
+                
+                foreach($aVersions as $oVersion)
+                {
+                    if($oVersion->objectGetState() != 'accepted')
+                        continue;
+                        
+                    $i++;
+                    $oRow = new TableRow();
+                    $oRow->SetClass(($i % 2) ? 'color0' : 'color1');
+                    $oRow->AddTextCell(' &nbsp; '.$oVersion->objectMakeLink());
+                    
+                    $oCell = new TableCell($oVersion->sTestedRating);
+                    $oCell->setClass($oVersion->sTestedRating);
+                    $oRow->AddCell($oCell);
+
+                    $oCell = new TableCell($oVersion->sTestedRelease);
+                    $oCell->setClass($oVersion->sTestedRating);
+                    $oRow->AddCell($oCell);
+
+                    $oTable->AddRow($oRow);
+                }
+                
             }
-            echo '</ol>',"\n";
+            echo $oTable->GetString(),"\n";
         }
     }
 
