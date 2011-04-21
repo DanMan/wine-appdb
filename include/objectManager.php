@@ -1225,7 +1225,7 @@ class ObjectManager
 
     public function show_form_help_session_timeout()
     {
-        $this->error_exit("Your session has timed out. <a target=\"_blank\" href=\"".BASE."account.php?sCmd=login\">Log in</a> and then <a href=\"javascript:location.reload();\">refresh thise page</a>.");
+        $this->error_exit("Your session has timed out. <a target=\"_blank\" href=\"".BASE."account.php?sCmd=login\">Log in</a> and then <a href=\"javascript:location.reload();\">refresh this page</a>.");
     }
 
     public function handle_anonymous_submission($aClean)
