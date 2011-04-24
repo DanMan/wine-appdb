@@ -45,6 +45,8 @@ function fixNoteLinks()
     $hResult = query_parameters("SELECT * FROM appNotes WHERE versionId = '?'", APPNOTE_SHOW_FOR_ALL);
 
     echo 'The following notes are set to show for app and all versions:<br />';
+    $iCount = 0;
+    $iSkipped = 0;
     while(($oRow = mysql_fetch_object($hResult)))
     {
         $oNote = new note(null, $oRow);
@@ -57,18 +59,32 @@ function fixNoteLinks()
         foreach($aVersions as $oVersion)
         {
             $iVersionId = $oVersion->objectGetId();
-            $sFix = "INSERT INTO tags_NoteVersion_assignments (tagId,taggedId) VALUES('$iVersionId','$iNoteId')";
-            echo "$sFix<br />";
+
+            $hResultTag = query_parameters("SELECT COUNT(*) as count FROM tags_NoteVersion_assignments WHERE tagId = '?' AND taggedId = '?'", $iVersionId, $oRow->noteId);
+
+            $oRowTag = mysql_fetch_object($hResultTag);
+        
+            if(!$oRowTag->count)
+            {
+                query_parameters("INSERT INTO tags_NoteVersion_assignments (tagId,taggedId) VALUES('$iVersionId','$iNoteId')");
+                $iCount++;
+            } else
+            {
+                $iSkipped++;
+            }
         }
 
         echo '<br />';
     }
     
+    echo "<br /><br />Created $iCount tags ($iSkipped already existed)<br />";
 
     // Notes shown for all versions
     $hResult = query_parameters("SELECT * FROM appNotes WHERE versionId = '?'", APPNOTE_SHOW_FOR_VERSIONS);
 
     echo '<br /><br />The following notes are set to show for all versions:<br />';
+    $iCount = 0;
+    $iSkipped = 0;
     while(($oRow = mysql_fetch_object($hResult)))
     {
         $oNote = new note(null, $oRow);
@@ -81,17 +97,32 @@ function fixNoteLinks()
         foreach($aVersions as $oVersion)
         {
             $iVersionId = $oVersion->objectGetId();
-            $sFix = "INSERT INTO tags_NoteVersion_assignments (tagId,taggedId) VALUES('$iVersionId','$iNoteId')";
-            echo "$sFix<br />";
+
+            $hResultTag = query_parameters("SELECT COUNT(*) as count FROM tags_NoteVersion_assignments WHERE tagId = '?' AND taggedId = '?'", $iVersionId, $oRow->noteId);
+
+            $oRowTag = mysql_fetch_object($hResultTag);
+        
+            if(!$oRowTag->count)
+            {
+                query_parameters("INSERT INTO tags_NoteVersion_assignments (tagId,taggedId) VALUES('?','?')", $iVersionId, $iNoteId);
+                $iCount++;
+            } else
+            {
+                $iSkipped++;
+            }
         }
 
         echo '<br />';
     }
 
+    echo "<br /><br />Created $iCount tags ($iSkipped already existed)<br />";
+
     // Notes shown for specific versions
     $hResult = query_parameters("SELECT * FROM appNotes WHERE versionId = '?'", APPNOTE_SHOW_FOR_SPECIFIC_VERSIONS);
 
     echo '<br /><br />The following notes are set to show for specific versions:<br />';
+    $iCount = 0;
+    $iSkipped =0;
     while(($oRow = mysql_fetch_object($hResult)))
     {
         $oNote = new note(null, $oRow);
@@ -101,20 +132,34 @@ function fixNoteLinks()
         echo 'App: '.$oApp->objectMakeLink().'<br />';
         echo '<br />';
         
-        $hResult = query_parameters("SELECT DISTINCT(versionId) FROM appNotes WHERE linkedWith = '?'", $oNote->objectGetId());
+        $hResult2 = query_parameters("SELECT DISTINCT(versionId) FROM appNotes WHERE linkedWith = '?'", $oNote->objectGetId());
         
-        while(($oRow = mysql_fetch_object($hResult)))
+        while(($oRow2 = mysql_fetch_object($hResult2)))
         {
-            $iVersionId = $oRow->versionId;
-            $sFix = "INSERT INTO tags_NoteVersion_assignments (tagId,taggedId) VALUES('$iVersionId','$iNoteId')";
-            echo "$sFix<br />";
+            $iVersionId = $oRow2->versionId;
+            
+            $hResultTag = query_parameters("SELECT COUNT(*) as count FROM tags_NoteVersion_assignments WHERE tagId = '?' AND taggedId = '?'", $iVersionId, $oRow->noteId);
+
+            $oRowTag = mysql_fetch_object($hResultTag);
+        
+            if(!$oRowTag->count)
+            {
+                query_parameters("INSERT INTO tags_NoteVersion_assignments (tagId,taggedId) VALUES('?','?')", $iVersionId, $iNoteId);
+                $iCount++;
+            } else
+            {
+                $iSkipped++;
+            }
         }
     }
+    
+    echo "<br /><br />Created $iCount tags ($iSkipped already existed)<br />";
 
     // Notes shown for app
     $hResult = query_parameters("SELECT * FROM appNotes WHERE versionId = '?'", APPNOTE_SHOW_FOR_APP);
 
     echo '<br /><br />The following notes are set to show on app page:<br />';
+    $iCount = 0;
     while(($oRow = mysql_fetch_object($hResult)))
     {
         $oNote = new note(null, $oRow);
@@ -122,7 +167,40 @@ function fixNoteLinks()
         echo 'ID: '.$oNote->objectGetId().'<br />';
         echo 'App: '.$oApp->objectMakeLink().'<br />';
         echo '<br />';
+        $iCount++;
     }
+    
+    echo "<br />$iCount in total<br />";
+
+    // Create links for ordinary notes
+    echo "<br /><br />Creating tags for ordinar notes<br />";
+    $hResult = query_parameters("SELECT * FROM appNotes WHERE versionId > '0' AND linkedWith = '0'");
+    
+    $iTagsCreated = 0;
+    $iSkipped = 0;
+    while(($oRow = mysql_fetch_object($hResult)))
+    {
+        $hResultTag = query_parameters("SELECT COUNT(*) as count FROM tags_NoteVersion_assignments WHERE tagId = '?' AND taggedId = '?'", $oRow->versionId, $oRow->noteId);
+
+        $oRowTag = mysql_fetch_object($hResultTag);
+        
+        if(!$oRowTag->count)
+        {
+            query_parameters("INSERT INTO tags_NoteVersion_assignments (tagId,taggedId) VALUES('?','?')", $oRow->versionId, $oRow->noteId);
+            $iTagsCreated++;
+        } else
+        {
+            $iSkipped++;
+        }
+    }
+    
+    echo "Created $iTagsCreated note tags ($iSkipped already existed)<br />"; 
+    
+    
+    echo "<br />Deleting note links<br />";
+    $hResult = query_parameters("DELETE FROM appNotes WHERE linkedWith != '0'");
+    echo "Deleted ".mysql_affected_rows()." links<br />";
+    
 }
 
 function showChoices()
