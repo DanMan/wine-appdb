@@ -173,9 +173,21 @@ create table appNotes (
 	appId           int not null,
 	submitterId	int not null,
 	submitTime	datetime not null,
-	linkedWith      int not null,
 	key(noteId)
 );
+
+
+/**
+ * associations between appNotes and versions
+ */
+create table tags_NoteVersion_assignments (
+    id                  int not null auto_increment,
+    state               enum('accepted','queued','rejected','pending','deleted') NOT NULL default 'accepted',
+    tagId               int not null,
+    taggedId            int not null,
+    key(id)
+);
+
 
 
 /*
