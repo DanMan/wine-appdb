@@ -55,6 +55,16 @@ abstract class Tag extends ObjectManagerBase
         return $this->objectGetSQLTable().'_assignments';
     }
 
+    public function deleteAssignments($iId)
+    {
+        $hResult = query_parameters("UPDATE ? SET state = 'deleted' WHERE taggedId = '?'", $this->getSQLTableForAssignments(), $iId);
+        
+        if(!$hResult)
+            return false;
+        
+        return true;
+    }
+
     public function removeAssignment($iId)
     {
         $hResult = query_parameters("DELETE FROM ? WHERE tagId = '?' AND taggedId = '?'", $this->getSQLTableForAssignments(), $this->iId, $iId);
@@ -98,7 +108,7 @@ abstract class Tag extends ObjectManagerBase
 
     public function getTaggedEntries()
     {
-        $hResult = query_parameters("SELECT taggedId FROM ? WHERE tagId = '?'", $this->getSQLTableForAssignments(), $this->iId);
+        $hResult = query_parameters("SELECT taggedId FROM ? WHERE tagId = '?' AND state = 'accepted'", $this->getSQLTableForAssignments(), $this->iId);
 
         if(!$hResult)
             return array();

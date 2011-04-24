@@ -188,6 +188,9 @@ class Note {
         if(!$hResult)
             return FALSE;
 
+        $oTag = new TagNoteVersion($this->iVersionId);
+        $oTag->deleteAssignments($this->iNoteId);
+
         return TRUE;
     }
 
