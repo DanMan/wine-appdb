@@ -26,10 +26,6 @@ class ObjectManager
                          where we first run the object's getOutputEditorValues()
                          and then objectManager's delete_entry(). */
 
-    // an array of common responses used when replying to
-    // queued entries
-    private $aCommonResponses;
-
     /* Remove the cached object of the class we are working with, useful in cases where we
        modify the object in such a way that it needs to be reloaded */
     private function flushCachedObject()
@@ -140,27 +136,6 @@ class ObjectManager
         $this->oTableRow = new OMTableRow(null);
         $this->sState = 'accepted';
         $this->oFilters = null; // We only fill this when needed, as it can be quite slow
-
-        // initialize the common responses array
-        $this->aCommonResponses = array();
-        $this->aCommonResponses[] = "Thank you for your submission.";
-	$this->aCommonResponses[] = "Please consider filing a bug for the ".
-	"problem you have with this app, if there are not bugs filed already".
-	" at http://bugs.winehq.org.  If you want some advice or guidance on".
-	" this, please visit http://forum.winehq.org";
-        $this->aCommonResponses[] = "Please do not paste debug output in the AppDB,".
-	" it belongs only as an attachment on bugzilla.";
-        $this->aCommonResponses[] = "We appreciate your submission but it".
-          " needs to be more detailed before it will be most useful to other users of".
-          " the Application Database.".
-          " Please try to improve the entry and resubmit.";
-        $this->aCommonResponses[] = "We appreciate your submission but it".
-          " requires improvement to its grammar and/or spelling".
-          " before it will be most useful to other users of".
-          " the Application Database.".
-          " Please try to improve the entry and resubmit.";
-        $this->aCommonResponses[] = "Please do not copy large amount of text from".
-          " the program's website";
     }
 
     /* Check whether the associated class has the given method */
@@ -459,16 +434,26 @@ class ObjectManager
         {
             /////////////////////////////////////////////////
             // output radio buttons for some common responses
+
+            $oTag = new TagCommonReply(null, null, "_show_for_{$this->sClass}");
+            $aReplies = $oTag->getTaggedEntries();
+
+            if(!sizeof($aReplies))
+                $sHelp = 'There are no common replies for processing this type of entries';
+            else
+                $sHelp = 'Clicking on a reply will copy it to the E-mail text field';
+
             echo '<tr valign=top><td class="color0"></td><td class="color0">'.
-            '<b>Common replies</b><br> Clicking on a reply will copy it to the E-mail text field.<br> '.
+            '<b>Common replies</b><br> '.$sHelp.'.<br> '.
             'Email <a href="mailto:'.APPDB_OWNER_EMAIL.'">'.
             APPDB_OWNER_EMAIL.'</a> if you want to suggest a new common reply.</td></tr>',"\n";
 
-            foreach($this->aCommonResponses as $iIndex => $sReply)
+            foreach($aReplies as $oReply)
             {
-            echo '<tr valign=top><td class="color0"></td>',"\n";
-            echo '<td class="color0"><a onClick="document.forms[\'sQform\'][\'sReplyText\'].innerHTML += \''.$sReply.' \';">'.$sReply.'</a></td>',"\n";
-            echo '</tr>',"\n";
+                $sReply = $oReply->getReply();
+                echo '<tr valign=top><td class="color0"></td>',"\n";
+                echo '<td class="color0"><a onClick="document.forms[\'sQform\'][\'sReplyText\'].innerHTML += \''.$sReply.' \';">'.$sReply.'</a></td>',"\n";
+                echo '</tr>',"\n";
             }
             // end output radio buttons for common responses
             /////////////////////////////////////////////////
