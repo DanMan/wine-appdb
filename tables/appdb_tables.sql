@@ -121,7 +121,6 @@ create table appComments (
   parentId    int default 0,
   versionId   int not null,
   userId      int,
-  hostname    varchar(80),
   subject     varchar(128),
   body        text,
   key(commentId),

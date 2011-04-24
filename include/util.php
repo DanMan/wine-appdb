@@ -114,18 +114,6 @@ function mysqldatetime_to_unixtimestamp($sDatetime)
     return strtotime($sDatetime);
 }
 
-function get_remote()
-{
-    global $REMOTE_HOST, $REMOTE_ADDR;
-
-    if($REMOTE_HOST)
-        $ip = $REMOTE_HOST;
-    else
-        $ip = $REMOTE_ADDR;
-
-    return $ip;
-}
-
 function htmlify_urls($text)
 {
     //FIXME: wonder what the syntax is, this doesn't seem to work

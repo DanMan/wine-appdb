@@ -19,7 +19,6 @@ class Comment {
 
     var $iAppId;
     var $sDateCreated;
-    var $sHostname;
     var $oOwner;
 
 
@@ -54,7 +53,6 @@ class Comment {
             $this->sSubject = $oRow->subject;
             $this->sBody = $oRow->body;
             $this->sDateCreated = $oRow->time;
-            $this->sHostname = $oRow->hostname;
             $this->oOwner = new User($oRow->userId);
         }
     }
@@ -69,12 +67,12 @@ class Comment {
     {
         $hResult = query_parameters("INSERT INTO appComments
                 (parentId, versionId, subject, ".
-                                    "body, userId, time, hostname)
-                VALUES ('?', '?', '?', '?', '?', ?, '?')",
+                                    "body, userId, time)
+                VALUES ('?', '?', '?', '?', '?', ?)",
                                     $this->iParentId, $this->iVersionId,
                                     $this->sSubject, $this->sBody,
                                     $_SESSION['current']->iUserId,
-                                    "NOW()", get_remote());
+                                    "NOW()");
 
         if($hResult)
         {
