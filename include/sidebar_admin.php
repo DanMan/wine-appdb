@@ -56,6 +56,7 @@ function global_admin_menu() {
 
     $g->addmisc("&nbsp;");
 
+    $g->add('Manage Common Replies', BASE.'objectManager.php?sClass=CommonReply');
     $g->add("Add Category", BASE."objectManager.php?sClass=category&amp;sAction=add&amp;sTitle=Add+Category");
     $g->add("Add Vendor", BASE."objectManager.php?sClass=vendor&amp;bQueue=".
     "false&amp;sAction=add&amp;sTitle=Add%20Vendor");

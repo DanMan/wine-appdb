@@ -13,6 +13,7 @@ drop table if exists appData;
 drop table if exists appBundle;
 drop table if exists appVotes;
 drop table if exists appNotes;
+drop table if exists tags;
 
 
 /*
@@ -175,5 +176,42 @@ create table appNotes (
 	submitTime	datetime not null,
 	linkedWith      int not null,
 	key(noteId)
+);
+
+
+/*
+ * Common replies
+ */
+create table commonReplies (
+    id           int not null auto_increment,
+    state        enum('accepted','queued','rejected','pending','deleted') NOT NULL default 'accepted',
+    reply         text,
+    key(id)
+);
+
+
+/*
+ * Tags for CommonReply
+ */
+create table tags_CommonReply (
+    id                  int not null auto_increment,
+    state               enum('accepted','queued','rejected','pending','deleted') NOT NULL default 'accepted',
+    textId              varchar(255),
+    name                varchar(255),
+    description         text,
+    multipleAssignments tinyint not null,
+    key(id)
+);
+
+
+/*
+ * Tags for CommonReply - assignments
+ */
+create table tags_CommonReply_assignments (
+    id                  int not null auto_increment,
+    state               enum('accepted','queued','rejected','pending','deleted') NOT NULL default 'accepted',
+    tagId               int not null,
+    taggedId            int not null,
+    key(id)
 );
 

@@ -19,12 +19,16 @@
 require_once('path.php');
 require_once(BASE.'include/incl.php');
 require_once(BASE.'include/objectManager.php');
+require_once(BASE.'include/objectManagerBase.php');
 require_once(BASE.'include/application_queue.php');
 require_once(BASE.'include/version_queue.php');
 require_once(BASE.'include/testData_queue.php');
 require_once(BASE.'include/bugs.php');
 require_once(BASE.'include/db_filter_ui.php');
 require_once(BASE.'include/maintainerView.php');
+require_once(BASE.'include/tag.php');
+require_once(BASE.'include/tag_CommonReply.php');
+require_once(BASE.'include/commonReply.php');
 
 /* if we have no valid class name we should abort */
 if(!isset($aClean['sClass']))
