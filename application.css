@@ -66,6 +66,10 @@ div.info_contents { padding:10px; background-color: #eee; }
 div.title_class { font-weight: bold; border-bottom: 1px solid; padding: 4px;
                   font-size: 140%; background-color: #ddd; }
 
+div.warning          { display: inline; background-color: #ff3333; } /* novascotia salmon */
+div.howto            { display: inline; background-color: green;   }
+div.defaultnote      { display: inline; background-color: #0066CC; } /* mid-light blue */
+
 /* Classes for a note box */
 div.note_container { margin:6px; border: 1px solid; }
 div.note_body { padding: 10px; background-color: #ffe732; }

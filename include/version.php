@@ -1009,14 +1009,8 @@ class version {
             echo "\t".'<input type=submit value="Delete version" class="button">'."\n";
             echo '</form>'."\n";
             echo $shAdd.'" />';
-            echo "\t".'<input type="submit" value="Add note" class="button">'."\n";
+            echo "\t".'<input type="submit" value="Add note/how-to" class="button">'."\n";
             echo '</form>'."\n";
-            echo $shAdd.'&amp;sNoteTitle=HOWTO" />';
-            echo "\t".'<input type=submit value="Add how-to" class="button">'."\n";
-            echo '</form>'."\n";
-            echo $shAdd.'&amp;sNoteTitle=WARNING" />';
-            echo "\t".'<input type=submit value="Add warning" class="button">'."\n";
-            echo '</form>';
             echo "</td></tr>";
         }
         $oMonitor = new Monitor();

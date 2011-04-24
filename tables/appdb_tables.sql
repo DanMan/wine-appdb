@@ -173,6 +173,7 @@ create table appNotes (
 	appId           int not null,
 	submitterId	int not null,
 	submitTime	datetime not null,
+	type enum('note','howto','warning') not null default 'note',
 	key(noteId)
 );
 

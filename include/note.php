@@ -25,6 +25,7 @@ class Note {
     var $iSubmitterId;
     var $sSubmitTime;
     private $aVersions;
+    protected $sType;
 
     /**
      * Constructor.
@@ -53,6 +54,7 @@ class Note {
             $this->shDescription = $oRow->noteDesc;
             $this->sSubmitTime = $oRow->submitTime;
             $this->iSubmitterId = $oRow->submitterId;
+            $this->sType = $oRow->type;
         }
     }
 
@@ -66,12 +68,12 @@ class Note {
     {
         $hResult = query_parameters("INSERT INTO appNotes (versionId, ".
                                     "appId, noteTitle, noteDesc, submitterId, ".
-                                    "submitTime) ".
-                                    "VALUES('?', '?', '?', '?', '?', ?)",
+                                    "submitTime,type) ".
+                                    "VALUES('?', '?', '?', '?', '?', ?, '?')",
                                     $this->iVersionId, $this->iAppId,
                                     $this->sTitle, $this->shDescription,
                                     $_SESSION['current']->iUserId,
-                                    "NOW()");
+                                    "NOW()", $this->sType);
 
         if($hResult)
         {
@@ -145,6 +147,14 @@ class Note {
             if(!query_parameters("UPDATE appNotes SET appId = '?' WHERE noteId = '?'",
                                   $this->iAppId, $this->iNoteId))
                 return false;
+        }
+
+        if ($this->sType != $oNote->sType)
+        {
+            if(!query_parameters("UPDATE appNotes SET type = '?' WHERE noteId = '?'", $this->sType, $this->iNoteId))
+                return false;
+                
+            $sWhatChanged .= "Type was changed from {$oNote->sType} to {$this->sType}\n\n";
         }
 
         if($sWhatChanged)
@@ -243,14 +253,14 @@ class Note {
     /*   the user has the ability to edit this note */
     function display($aVars = null)
     {
-        switch($this->sTitle)
+        switch($this->sType)
         {
-        case 'WARNING':
+        case 'warning':
             $sClass = 'warning';
             $sTitle = 'Warning';
             break;
 
-        case 'HOWTO':
+        case 'howto':
             $sClass = 'howto';
             $sTitle = 'HOWTO';
             break;
@@ -263,6 +273,8 @@ class Note {
             
             $sClass = 'defaultnote';
         }
+
+        $sTitle = $this->sTitle ? $this->sTitle : $sTitle;
 
         if(!$aVars || !getInput('shReturnTo', $aVars))
         {
@@ -389,13 +401,18 @@ class Note {
 
         echo '<tr><td class=color1>Title</td>'."\n";
         echo '    <td class=color0><input size=80% type="text" name="sNoteTitle" type="text" value="'.$this->sTitle.'"></td></tr>',"\n";
-        echo '<tr><td class=color4>Description</td><td class=color0>', "\n";
+        echo '<tr><td class="color4">Show as</td><td>';
+        $aIds = array('howto','note','warning');
+        $aNames = array('<div class="howto">How-to</div>','<div class="defaultnote">Note</div>','<div class="warning">Warning</div>');
+        echo html_radiobuttons($aIds, $aNames, 'sType', $this->sType, false);
+        echo '</td></tr>';
+        echo '<tr><td class=color1>Description</td><td class=color0>', "\n";
         echo '<p style="width:700px">', "\n";
         echo '<textarea cols="80" rows="20" id="editor" name="shNoteDesc">'.$this->shDescription.'</textarea>',"\n";
         echo '</p>';
         echo '</td></tr>'."\n";
 
-        echo '<tr><td class="color1">Display options</td>'."\n";
+        echo '<tr><td class="color4">Display options</td>'."\n";
         echo '<td class="color0">';
 
         $oTag = new TagNoteVersion($this->iVersionId);
@@ -450,6 +467,7 @@ class Note {
 
         $this->sTitle = $aValues['sNoteTitle'];
         $this->shDescription = $aValues['shNoteDesc'];
+        $this->sType = in_array($aValues['sType'], array('howto','note','warning')) ? $aValues['sType'] : 'note';
     }
 
     function allowAnonymousSubmissions()

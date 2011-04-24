@@ -288,7 +288,7 @@ function html_note($shTitle, $shBody)
     return $shRet;
 }
 
-function html_radiobuttons($aIds, $aOptions, $sName, $sDefault = '')
+function html_radiobuttons($aIds, $aOptions, $sName, $sDefault = '', $bLineBreaks = true)
 {
     $shRet = '';
 
@@ -299,7 +299,10 @@ function html_radiobuttons($aIds, $aOptions, $sName, $sDefault = '')
         else
             $shChecked = '';
 
-        $shRet .= '<input type="radio" name="'.$sName.'" value="'.$aIds[$i]."\"$shChecked> " . $aOptions[$i].'<br />';
+        $shRet .= '<input type="radio" name="'.$sName.'" value="'.$aIds[$i]."\"$shChecked> " . $aOptions[$i];
+        
+        if($bLineBreaks)
+            $shRet .= '<br />';
     }
 
     return $shRet;
