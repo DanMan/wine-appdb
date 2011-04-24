@@ -1,11 +1,13 @@
 <?php
 
+require_once(BASE.'include/objectManagerBase.php');
+
 abstract class Tag extends ObjectManagerBase
 {
-    private $bMultipleAssignments;
-    private $sTextId;
-    private $sName;
-    private $sDescription;
+    protected $bMultipleAssignments;
+    protected $sTextId;
+    protected $sName;
+    protected $sDescription;
     
     function Constructor($iId = null, $oRow = null, $sTextId = '')
     {
@@ -158,7 +160,7 @@ abstract class Tag extends ObjectManagerBase
 
 public function objectGetEntriesCount()
     {
-        $hResult = query_parameters("SELECT COUNT(id) as count FROM ? WHERE state = 'accepted'", $this->objectGetSQLTable());
+        $hResult = query_parameters("SELECT COUNT(*) as count FROM ? WHERE state = 'accepted'", $this->objectGetSQLTable());
 
         if(!$hResult)
             return false;
@@ -230,12 +232,11 @@ public function objectGetEntriesCount()
         return $shRet;
     }
 
-    public function getAssignTagsEditor($iAssignedFor = null)
+    public function getAssignTagsEditor($iAssignedFor = null, $aSelected = array())
     {
         $shRet = '';
-        $aSelected = array();
 
-        if($iAssignedFor)
+        if(!sizeof($aSelected) && $iAssignedFor)
             $aSelected = $this->getAssignedTags($iAssignedFor);
 
         foreach($this->getTags() as $oTag)
