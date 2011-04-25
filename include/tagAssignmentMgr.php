@@ -137,7 +137,7 @@ abstract class TagAssignmentMgr extends ObjectManagerBase
         return $shErrors;
     }
     
-    protected abstract function getTagObject($iId, $oRow);
+    protected abstract function getTagObject($iId = null, $oRow = null);
 }
 
 ?>
