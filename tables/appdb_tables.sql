@@ -186,6 +186,7 @@ create table tags_NoteVersion_assignments (
     state               enum('accepted','queued','rejected','pending','deleted') NOT NULL default 'accepted',
     tagId               int not null,
     taggedId            int not null,
+    position            int not null,
     key(id)
 );
 

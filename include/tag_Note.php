@@ -1,6 +1,7 @@
 <?php
 
 require_once(BASE.'include/tag.php');
+require_once(BASE.'include/tagAssignmentMgr.php');
 
 class TagNoteVersion extends Tag
 {
@@ -42,7 +43,7 @@ class TagNoteVersion extends Tag
         return 'appVersion';
     }
 
-    protected function getSQLTableForAssignments()
+    public function getSQLTableForAssignments()
     {
         return 'tags_NoteVersion_assignments';
     }
@@ -72,6 +73,31 @@ class TagNoteVersion extends Tag
     protected function getTagClass()
     {
         return 'Note';
+    }
+    
+    protected function isOrdered()
+    {
+        return true;
+    }
+}
+
+class TagNoteVersionAssignMgr extends TagAssignmentMgr
+{
+    function TagNoteVersionAssignMgr($iId = null, $oRow = null)
+    {
+        $this->Constructor($iId, $oRow);
+    }
+
+    protected function getTagObject($iId = null, $oRow = null)
+    {
+        return new TagNoteVersion($iId, $oRow);
+    }
+    
+    public function canEdit()
+    {
+        $oVersion = new Version($this->iId);
+        
+        return $oVersion->canEdit();
     }
 }
 

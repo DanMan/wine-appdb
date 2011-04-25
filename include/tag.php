@@ -50,7 +50,7 @@ abstract class Tag extends ObjectManagerBase
         return 'tags_'.$this->getTagClass();
     }
 
-    protected function getSQLTableForAssignments()
+    public function getSQLTableForAssignments()
     {
         return $this->objectGetSQLTable().'_assignments';
     }
@@ -77,7 +77,21 @@ abstract class Tag extends ObjectManagerBase
 
     public function assign($iId)
     {
-        $hResult = query_parameters("INSERT INTO ? (tagId, taggedId) VALUES('?', '?')", $this->getSQLTableForAssignments(), $this->iId, $iId);
+        if($this->isOrdered())
+        {
+            $hResult = query_parameters("SELECT MAX(position) as maxPos FROM ? WHERE tagId = '?'", $this->getSQLTableForAssignments(), $this->iId);
+            
+            if(!$hResult)
+                return false;
+            
+            $oRow = mysql_fetch_object($hResult);
+            $iPos = $oRow->maxPos + 1;
+
+            $hResult = query_parameters("INSERT INTO ? (tagId, taggedId, position) VALUES('?', '?', '?')", $this->getSQLTableForAssignments(), $this->iId, $iId, $iPos);
+        } else
+        {
+            $hResult = query_parameters("INSERT INTO ? (tagId, taggedId) VALUES('?', '?')", $this->getSQLTableForAssignments(), $this->iId, $iId);
+        }
 
         if(!$hResult)
             return false;
@@ -108,7 +122,9 @@ abstract class Tag extends ObjectManagerBase
 
     public function getTaggedEntries()
     {
-        $hResult = query_parameters("SELECT taggedId FROM ? WHERE tagId = '?' AND state = 'accepted'", $this->getSQLTableForAssignments(), $this->iId);
+        $sOrderBy = $this->isOrdered() ? 'position ASC' : 'id ASC';
+
+        $hResult = query_parameters("SELECT taggedId FROM ? WHERE tagId = '?' AND state = 'accepted' ORDER BY $sOrderBy", $this->getSQLTableForAssignments(), $this->iId);
 
         if(!$hResult)
             return array();
@@ -313,6 +329,11 @@ public function objectGetEntriesCount()
     public function objectShowAddEntry()
     {
         return true;
+    }
+
+    protected function isOrdered()
+    {
+        return false;
     }
 }
 
