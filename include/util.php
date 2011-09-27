@@ -121,10 +121,10 @@ function htmlify_urls($text)
 
     // html-ify urls
     $urlreg = "([a-zA-Z]+://([^\t\r\n ]+))";
-    $text = ereg_replace($urlreg, "<a href=\"\\1\"> \\2 </a>", $text);
+    $text = preg_replace($urlreg, "<a href=\"$0\">$1</a>", $text);
 
     $emailreg = "([a-zA-Z0-9_%+.-]+@[^\t\r\n ]+)";
-    $text = ereg_replace($emailreg, " <a href='mailto:\\1'>\\1</a>", $text);
+    $text = preg_replace($emailreg, " <a href='mailto:$0'>$0</a>", $text);
 
     $text = str_replace("\n", "<br>", $text);
 
