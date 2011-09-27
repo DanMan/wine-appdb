@@ -131,24 +131,6 @@ function htmlify_urls($text)
     return $text;
 }
 
-// open file and display contents of selected tag
-function get_xml_tag ($file, $mode = null)
-{
-    if ($mode and file_exists($file))
-    {
-        $fp = @fopen($file, "r");
-        $data = fread($fp, filesize($file));
-        @fclose($fp);
-        if (eregi("<" . $mode . ">(.*)</" . $mode . ">", $data, $out))
-        {
-            return $out[1];
-        }
-    }
-    else
-    {
-        return null;
-    }
-}
 
 /* bugzilla functions */
 
