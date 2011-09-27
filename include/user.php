@@ -456,7 +456,7 @@ class User {
          while (strlen($nps)<$pass_len)
          {
              $c = chr(mt_rand (0,255));
-             if (eregi("^[a-z0-9]$", $c)) $nps = $nps.$c;
+             if (preg_match("/[a-zA-Z0-9]/", $c)) $nps = $nps.$c;
          }
          return ($nps);
      }
