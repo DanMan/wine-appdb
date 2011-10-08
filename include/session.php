@@ -153,7 +153,7 @@ class session
     // Delete the Session
     function _destroy ($id)
     {
-        return $this->_db->delete($id);
+        return $this->_db->delete($id, 0);
     }
 
     // Garbage Collector (Not Needed for MemCache)
