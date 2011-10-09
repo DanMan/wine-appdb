@@ -1011,7 +1011,7 @@ class version {
             echo $shAdd.'" />';
             echo "\t".'<input type="submit" value="Add note/how-to" class="button">'."\n";
             echo '</form>'."\n";
-            echo '<form method="post" action="'.BASE.'objectManager.php?sClass=tagNoteVersionAssignMgr&amp;sAction=edit&amp;iId='.$this->iVersionId.'">';
+            echo '<form method="post" action="'.BASE.'objectManager.php?sClass=tagNoteVersionAssignMgr&amp;sAction=edit&amp;iId='.$this->iVersionId.'&amp;sReturnTo='.urlencode($this->objectMakeUrl()).'">';
             echo '<input type="submit" value="Manage notes" />';
             echo '</form>';
             echo "</td></tr>";
