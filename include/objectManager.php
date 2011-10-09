@@ -452,7 +452,7 @@ class ObjectManager
             {
                 $sReply = $oReply->getReply();
                 echo '<tr valign=top><td class="color0"></td>',"\n";
-                echo '<td class="color0"><a onClick="document.forms[\'sQform\'][\'sReplyText\'].innerHTML += \''.$sReply.' \';">'.$sReply.'</a></td>',"\n";
+                echo '<td class="color0"><a onClick="document.forms[\'sQform\'][\'sReplyText\'].value += \''.$sReply.' \';">'.$sReply.'</a></td>',"\n";
                 echo '</tr>',"\n";
             }
             // end output radio buttons for common responses
