@@ -40,18 +40,18 @@ define("STABLE_BRANCHES", "1.0.,1.2.");
 /*
  * apps database info
  */
-define("APPS_DBUSER","wineowner");
-define("APPS_DBPASS","lemonade");
-define("APPS_DBHOST","localhost");
-define("APPS_DB","apidb");
+define("APPS_DBUSER","");
+define("APPS_DBPASS","");
+define("APPS_DBHOST","");
+define("APPS_DB","");
 
 
 /*
  * bugzilla database info
  */
-define("BUGZILLA_DBUSER","root");
+define("BUGZILLA_DBUSER","");
 define("BUGZILLA_DBPASS","");
-define("BUGZILLA_DBHOST","localhost");
-define("BUGZILLA_DB","bugs");
+define("BUGZILLA_DBHOST","");
+define("BUGZILLA_DB","");
 define("BUGZILLA_PRODUCT_ID","1");
 ?>
