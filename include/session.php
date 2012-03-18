@@ -16,7 +16,7 @@ class session
     var $msg;
     
     // create session object
-    function session ($name, $server = "127.0.0.1", $expire = 2)
+    function session ($name, $server = "127.0.0.1", $expire = 365)
     {
         // set the connection server
         $this->_server = $server;
