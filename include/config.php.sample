@@ -35,7 +35,7 @@ define("TESTDATA_AGED_THRESHOLD", 175);
 
 // Show versions from these branches even if they are not among the most recent ones
 // Separate by commas if there are more than one
-define("STABLE_BRANCHES", "1.0.,1.2.");
+define("STABLE_BRANCHES", "1.0.,1.2.,1.4.");
 
 /*
  * apps database info
