@@ -653,6 +653,7 @@ function SimplifyPath($path) {
    {
      array_splice($dirs,$i,1);
      $i--;
+     continue;
    }
 
    if($dirs[$i]=="..")
@@ -682,7 +683,7 @@ function Simplify($dirs, $idx)
 // won't work with relative paths like ../xinha
 function GetSimplifiedPath($relative)
 {
-    return "/".SimplifyPath(dirname($_SERVER[PHP_SELF])."/".BASE.$relative);
+    return "/".SimplifyPath(dirname($_SERVER['PHP_SELF'])."/".BASE.$relative);
 }
 
 function HtmlAreaLoaderScript($aTextareas)
