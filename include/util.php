@@ -696,11 +696,7 @@ function HtmlAreaLoaderScript($aTextareas)
         case 'never':
             return;
         case 'for supported browsers':
-            if(strstr($_SERVER['HTTP_USER_AGENT'], 'Opera') ||
-               strstr($_SERVER['HTTP_USER_AGENT'], 'Konqueror'))
-            {
-                return;
-            }
+            // Xinha 0.96.1 tested fine in Opera 11.6 & Konqueror 4.7.2
             break;
         case 'always':
             break;
