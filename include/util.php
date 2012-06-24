@@ -725,7 +725,7 @@ function HtmlAreaLoaderScript($aTextareas)
     echo '
   <!-- Load up the actual editor core -->
   <script type="text/javascript" src="'.BASE.'xinha/XinhaCore.js"></script>
-
+  
   <script type="text/javascript">
     xinha_editors_'.$outputIndex.' = null;
     xinha_init_'.$outputIndex.'    = null;';
@@ -757,7 +757,7 @@ function HtmlAreaLoaderScript($aTextareas)
        \'CharacterMap\',
        \'CharCounter\',
        \'ContextMenu\',
-       \'FullScreen\',
+       \'FullPage\',
        \'ListType\',
        \'SpellChecker\',
        \'Stylist\',

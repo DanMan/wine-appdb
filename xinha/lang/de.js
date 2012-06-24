@@ -45,7 +45,7 @@
   "Toggle Borders": "Tabellenränder ein/ausblenden",
   "Save as": "speichern unter",
   "Insert/Overwrite": "Einfügen/Überschreiben",
-  "&mdash; format &mdash;": "&mdash; Format &mdash;",
+  "&#8212; format &#8212;": "&#8212; Format &#8212;",
   "Heading 1": "Überschrift 1",
   "Heading 2": "Überschrift 2",
   "Heading 3": "Überschrift 3",
@@ -132,9 +132,11 @@
   "Image Preview:": "Bild Voransicht:",
   "You must enter the URL": "Bitte geben Sie die URL ein",
 
+/*
   "button_bold": "de/bold.gif",
   "button_italic": "de/italic.gif",
   "button_underline": "de/underline.gif",
+*/
 
   // Editor Help
   "Keyboard shortcuts": "Tastaturkürzel",

@@ -1,6 +1,7 @@
 // I18N constants
 // LANG: "da", ENCODING: UTF-8
 // Author: Steen Sønderup, <steen@soenderup.com>
+//         Niels Baggesen, <nba@users.sourceforge.net>, 0.95, 2009-08-15
 {
   "Align": "Placer",
   "All four sides": "Alle fire sider",
@@ -71,9 +72,11 @@
   "Unset color": "Farve ikke valgt",
   "Vertical align": "Vertikal placering",
   "Width": "Bredde",
-  "HTMLArea cowardly refuses to delete the last cell in row.": "Du kan ikke slette den sidste celle i en række.",
-  "HTMLArea cowardly refuses to delete the last column in table.": "Du kan ikke slette den sidste kolonne i en tabel.",
-  "HTMLArea cowardly refuses to delete the last row in table.": "Du kan ikke slette den sidste række i en tabel.",
+  "Xinha cowardly refuses to delete the last cell in row.": "Du kan ikke slette den sidste celle i en række.",
+  "Xinha cowardly refuses to delete the last column in table.": "Du kan ikke slette den sidste kolonne i en tabel.",
+  "Xinha cowardly refuses to delete the last row in table.": "Du kan ikke slette den sidste række i en tabel.",
   "percent": "procent",
-  "pixels": "pixel"
+  "pixels": "pixel",
+  "OK": "OK",
+  "Cancel": "Fortryd"
 };

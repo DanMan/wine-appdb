@@ -23,7 +23,7 @@
    * 
    */
       
-  function xinha_pass_to_php_backend($Data, $KeyLocation = 'Xinha:BackendKey')
+  function xinha_pass_to_php_backend($Data, $KeyLocation = 'Xinha:BackendKey', $ReturnPHP = FALSE)
   {
    
     $bk = array();
@@ -57,8 +57,14 @@
     // wouldn't have worked.
     $backend_data[session_name()] = session_id();
     
-    echo 'backend_data = ' . xinha_to_js($backend_data) . "; \n";
-    
+    if($ReturnPHP)
+    {      
+      return array('backend_data' => $backend_data);      
+    }
+    else
+    {      
+      echo 'backend_data = ' . xinha_to_js($backend_data) . "; \n";  
+    }                
   }  
    
   /** Convert PHP data structure to Javascript */
@@ -73,6 +79,11 @@
     if(is_string($var))
     {
       return "'" . xinha_js_encode($var) . "'";
+    }
+  
+    if(is_bool($var))
+    {
+      return $var ? 'true': 'false';
     }
   
     if(is_array($var))
@@ -132,7 +143,7 @@
   *  if none was passed or a security error was encountered.
   */
   
-  function xinha_read_passed_data()
+  function xinha_read_passed_data($KeyLocation = 'Xinha:BackendKey')
   {
    if(isset($_REQUEST['backend_data']) && is_array($_REQUEST['backend_data']))
    {
@@ -141,6 +152,12 @@
      @session_start();
      if(!isset($_SESSION[$bk['key_location']])) return NULL;
      
+     if($KeyLocation !== $bk['key_location'])
+     {
+      trigger_error('Programming Error - please contact the website administrator/programmer to alert them to this problem. A non-default backend key location is being used to pass backend data to Xinha, but the same key location is not being used to receive data.  The special backend configuration has been ignored.  To resolve this, find where you are using xinha_pass_to_php_backend and remove the non default key, or find the locations where xinha_read_passed_data is used (in Xinha) and add a parameter with the non default key location, or edit contrib/php-xinha.php and change the default key location in both these functions.  See: http://trac.xinha.org/ticket/1518', E_USER_ERROR);     
+      return NULL;
+     }
+          
      if($bk['hash']         === 
         function_exists('sha1') ? 
           sha1($_SESSION[$bk['key_location']] . $bk['data']) 
