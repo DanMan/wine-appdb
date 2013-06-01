@@ -163,7 +163,7 @@ echo "<tr>\n";
 echo "<td style='padding:10px;'>\n";
 echo '<a href="http://getfirefox.com/"
 	title="Get Firefox - Web browsing redefined."><img
-	src="http://www.mozilla.org/products/firefox/buttons/getfirefox_large2.png"
+	src="//www.mozilla.org/products/firefox/buttons/getfirefox_large2.png"
 	width="178" height="60" border="0" alt="Get Firefox"></a>'."\n";
 echo "</td>\n";
 echo "<td style='padding:10px;'>\n";

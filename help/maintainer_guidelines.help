@@ -16,7 +16,7 @@ You are expected to:
 <ul>
 <li>Keep the application comments clean, all stale data should be removed</li>
 <li>Be an active user of that application and version</li>
-<li>Keep up-to-date with all Wine releases, if there are regressions they should filed as bugs in <a href="http://bugs.winehq.org">Bugzilla</a> if there are not bugs already filed.</li>
+<li>Keep up-to-date with all Wine releases, if there are regressions they should filed as bugs in <a href="//bugs.winehq.org">Bugzilla</a> if there are not bugs already filed.</li>
 </ul>
 
 You will:

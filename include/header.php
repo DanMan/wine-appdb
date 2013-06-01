@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="<?php echo BASE; ?>apidb.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE; ?>application.css" type="text/css">
     <script type="text/javascript" 
-    src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.2/prototype.js"></script>
+    src="//ajax.googleapis.com/ajax/libs/prototype/1.6.0.2/prototype.js"></script>
     <script src="<?php echo BASE; ?>scripts.js" type="text/javascript"></script>
     <link rel="icon" type="image/png" href="<?php echo BASE; ?>images/winehq_logo_16.png">
     <link rel="shortcut icon" type="image/png" href="<?php echo BASE; ?>images/winehq_logo_16.png">
@@ -35,22 +35,22 @@
 <div id="logo_blurb"><?php echo preg_replace("/^ - /", "", $title); ?></div>
 
 <div id="search_box">
-  <form action="http://www.winehq.org/search" id="cse-search-box" style="margin: 0; padding: 0;">
+  <form action="//www.winehq.org/search" id="cse-search-box" style="margin: 0; padding: 0;">
     <input type="hidden" name="cx" value="partner-pub-0971840239976722:w9sqbcsxtyf">
     <input type="hidden" name="cof" value="FORID:10">
     <input type="hidden" name="ie" value="UTF-8">
     <span style="color: #ffffff;">Search:</span> <input type="text" name="q" size="20">
   </form>
-  <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
+  <script type="text/javascript" src="//www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
 </div>
 
 <div id="tabs">
     <ul>
-        <li><a href="http://www.winehq.org/">WineHQ</a></li>
+        <li><a href="//www.winehq.org/">WineHQ</a></li>
         <li><a href="http://wiki.winehq.org/">Wiki</a></li>
-        <li class="s"><a href="http://appdb.winehq.org/">AppDB</a></li>
-        <li><a href="http://bugs.winehq.org/">Bugzilla</a></li>
-        <li><a href="http://forums.winehq.org/">Forums</a></li>
+        <li class="s"><a href="//appdb.winehq.org/">AppDB</a></li>
+        <li><a href="//bugs.winehq.org/">Bugzilla</a></li>
+        <li><a href="//forum.winehq.org/">Forums</a></li>
     </ul>
 </div>
 

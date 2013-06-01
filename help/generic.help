@@ -8,10 +8,10 @@ for a certain program hasn't been created.</center>
 <li> Make sure your Wine release is recent.<p>
 
   <ul>
-    <li><a href="http://www.winehq.org/site/download"> Official WineHQ builds</a>
+    <li><a href="//www.winehq.org/site/download"> Official WineHQ builds</a>
           for all the popular platforms and distributions, hosted by 
        <a href="http://sourceforge.net/project/showfiles.php?group_id=6241">SourceForge.net</a>.</li>
-    <li>Consult <a href="http://www.winehq.org/site/git">the git instructions</a> for information on obtaining the latest source.  
+    <li>Consult <a href="//www.winehq.org/site/git">the git instructions</a> for information on obtaining the latest source.  
      <p>For how to build and install Wine via source consult the README or for building Wine on a 64bit GNU/Linux read over the 
        <a href="http://wiki.winehq.org/WineOn64bit">WineOn64bit wiki entry</a>.</li>
   </ul>
@@ -42,11 +42,11 @@ dll overrides.<p>
 <li><p> For sound problems, run &#8216;winecfg&#8217; and look at the audio tab.</li>
 
 <li><p> In case of persisting failure, you may want to read over the
-<a href="http://www.winehq.org/site/documentation">Wine Documentation</a>
+<a href="//www.winehq.org/site/documentation">Wine Documentation</a>
 and you may also want to read the
-<a href="http://www.winehq.org/site/docs/wine-faq/index">Wine FAQ</a>.</li>
+<a href="//www.winehq.org/site/docs/wine-faq/index">Wine FAQ</a>.</li>
 
-<li><p> The Wine <a href="http://www.winehq.org/site/getting_help">'Getting Help'</a> page shows the current methods of getting help with Wine.</li>
+<li><p> The Wine <a href="//www.winehq.org/site/getting_help">'Getting Help'</a> page shows the current methods of getting help with Wine.</li>
 
 <li><p> If you have more questions, please contact us
 at <a href="mailto:appdb@winehq.org">appdb@winehq.org</a>.</li>

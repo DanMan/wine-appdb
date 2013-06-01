@@ -915,7 +915,7 @@ class testData{
         echo '<tr><td class=color1><b>Tested release</b></td><td class=color0>',"\n";
         echo make_bugzilla_version_list("sTestedRelease", $this->sTestedRelease);
         // Give the user some information about our available versions
-        echo "<span>Version not listed?  Your Wine is too old, <a href=\"http://winehq.org/download\">upgrade!</a></span>";
+        echo "<span>Version not listed?  Your Wine is too old, <a href=\"//winehq.org/download\">upgrade!</a></span>";
         echo '</td></tr>',"\n";
 
         // Installs
@@ -1516,7 +1516,7 @@ class testData{
         echo "what was working on a particular release of Wine.</p>\n";
         echo "<p><b>Please DO NOT include crash or Wine debug output.\n";
         echo " Instead report the crash as a bug in the Wine bugzilla at \n";
-        echo "<a href=\"http://bugs.winehq.org\">http://bugs.winehq.org</a>.\n";
+        echo "<a href=\"//bugs.winehq.org\">bugs.winehq.org</a>.\n";
         echo "We ask that you use bugzilla because developers do not monitor the AppDB \n";
         echo "for bugs.</b></p>\n"; 
         echo "<p>Please be as detailed as you can but do not paste large \n";

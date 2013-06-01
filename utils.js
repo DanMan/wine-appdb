@@ -14,7 +14,7 @@ function include_dom (script_filename) {
 }
 
 // load and execute jquery IE6 PNG fix
-include_dom("jquery.pngfix.js");
+include_dom("/jquery.pngfix.js");
 jQuery(function($) {
     $("img[@src$=png]").pngfix(); /* all img tags with .png extension */
     $("#tabs li").pngfix(); /* top tabs li backgrounds */
