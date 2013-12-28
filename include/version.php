@@ -1703,7 +1703,7 @@ class version {
             }
         } else
         {
-            $sQuery = "SELECT * FROM appVersion$sExtraTables WHERE
+            $sQuery = "SELECT appVersion.* FROM appVersion$sExtraTables WHERE
                     appVersion.state = '?'$sWhereFilter ORDER BY ?$sLimit";
 
             if($sLimit)
