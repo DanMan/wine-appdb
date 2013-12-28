@@ -973,13 +973,13 @@ class Application {
 
     public function objectMakeUrl()
     {
-        $sUrl = APPDB_ROOT."objectManager.php?sClass=application&amp;iId=$this->iAppId";
+        $sUrl = APPDB_ROOT."objectManager.php?sClass=application&iId=$this->iAppId";
         return $sUrl;
     }
 
     public function objectMakeLink()
     {
-        $sLink = "<a href=\"".$this->objectMakeUrl()."\">".
+        $sLink = "<a href=\"".htmlentities($this->objectMakeUrl())."\">".
                  $this->sName."</a>";
         return $sLink;
     }
