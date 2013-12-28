@@ -1456,12 +1456,12 @@ class version {
 
     public function objectMakeUrl()
     {
-      return APPDB_ROOT."objectManager.php?sClass=version&amp;iId=$this->iVersionId";
+      return APPDB_ROOT."objectManager.php?sClass=version&iId=$this->iVersionId";
     }
 
     public function objectMakeLink()
     {
-        $sLink = "<a href=\"".$this->objectMakeUrl()."\">".
+        $sLink = "<a href=\"".htmlentities($this->objectMakeUrl())."\">".
                  $this->sName."</a>";
         return $sLink;
     }
