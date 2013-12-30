@@ -94,9 +94,9 @@ if(!$_SESSION['current']->isLoggedIn())
     Applications which install and run flawlessly on an out-of-the-box Wine installation
   </div>
   <div>
-    <table class="platinum">
+    <table class="platinum" width="100%">
       <tr class="rowtitle">
-        <th>Application</th><th>Description</th><th>Screenshot</th>
+        <th width="10%">Application</th><th width="80%">Description</th><th width="10%">Screenshot</th>
       </tr>
       <?php
       outputTopXRowAppsFromRating('Platinum', 10);
@@ -114,9 +114,9 @@ if(!$_SESSION['current']->isLoggedIn())
     Applications that work flawlessly with some special configuration
   </div>
   <div>
-    <table class="gold">
+    <table class="gold" width="100%">
       <tr class="rowtitle">
-        <th>Application</th><th>Description</th><th>Screenshot</th>
+        <th width="10%">Application</th><th width="80%">Description</th><th width="10%">Screenshot</th>
       </tr>
       <?php
       outputTopXRowAppsFromRating('Gold', 10);
@@ -134,9 +134,9 @@ if(!$_SESSION['current']->isLoggedIn())
     Applications with minor issues that do not affect typical usage
   </div>
   <div>
-    <table class="silver">
+    <table class="silver" width="100%">
       <tr class="rowtitle">
-        <th>Application</th><th>Description</th><th>Screenshot</th>
+        <th width="10%">Application</th><th width="80%">Description</th><th width="10%">Screenshot</th>
       </tr>
       <?php
       outputTopXRowAppsFromRating('Silver', 10);
