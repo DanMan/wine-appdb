@@ -197,7 +197,7 @@ class Comment {
         return false;
     }
 
-    function get_comment_count_for_versionid($iVersionId)
+    public static function get_comment_count_for_versionid($iVersionId)
     {
         $sQuery = "SELECT count(*) as cnt from appComments where versionId = '?'";
         $hResult = query_parameters($sQuery, $iVersionId);
@@ -226,7 +226,7 @@ class Comment {
     /**
      * Displays the body of one comment.
      */
-    function view_comment_body($iCommentId)
+    public static function view_comment_body($iCommentId)
     {
         $hResult = Comment::grab_comment($iCommentId);
 
@@ -240,7 +240,7 @@ class Comment {
     /**
      * display a single comment (in $oRow)
      */
-    function view_app_comment($oRow, $bShowAppName = false)
+    public static function view_app_comment($oRow, $bShowAppName = false)
     {
         $oComment = new comment(null, $oRow);
         $oComment->output_comment($bShowAppName);
@@ -411,7 +411,7 @@ class Comment {
     /**
      * grab single comment for commentId
      */
-    function grab_comment($iCommentId)
+    public static function grab_comment($iCommentId)
     {
         $iCommentId = query_escape_string($iCommentId);
 
@@ -433,7 +433,7 @@ class Comment {
      * grab comments for appId / versionId
      * if parentId is not -1 only comments for that thread are returned
      */
-    function grab_comments($iVersionId, $iParentId = null)
+    public static function grab_comments($iVersionId, $iParentId = null)
     {
         /* TODO: remove the logging when we figure out where the */
         /* invalid $iVersionId is coming */
@@ -475,7 +475,7 @@ class Comment {
      * display nested comments
      * handle is a db result set
      */
-    function do_display_comments_nested($hResult)
+    public static function do_display_comments_nested($hResult)
     {
         while($oRow = query_fetch_object($hResult))
         {
@@ -490,7 +490,7 @@ class Comment {
         }
     }
 
-    function display_comments_nested($versionId, $threadId)
+    public static function display_comments_nested($versionId, $threadId)
     {
         $hResult = Comment::grab_comments($versionId, $threadId);
         Comment::do_display_comments_nested($hResult);
@@ -499,7 +499,7 @@ class Comment {
     /**
      * Generates the link to show the comment.
      */
-    function comment_link($oRow)
+    public static function comment_link($oRow)
     {
         $sLink = "commentview.php?iAppId={$oRow->appId}&iVersionId=".
             "{$oRow->versionId}&iThreadId={$oRow->parentId}";
@@ -519,7 +519,7 @@ class Comment {
      * display threaded comments
      * handle is a db result set
      */
-    function do_display_comments_threaded($hResult, $is_main)
+    public static function do_display_comments_threaded($hResult, $is_main)
     {
         if (!$is_main)
             echo "<ul>\n";
@@ -676,7 +676,7 @@ class Comment {
         return $aObjects;
     }
 
-    function display_comments_threaded($versionId, $threadId = 0)
+    public static function display_comments_threaded($versionId, $threadId = 0)
     {
         $hResult = Comment::grab_comments($versionId, $threadId);
 
@@ -686,7 +686,7 @@ class Comment {
     /**
      * display flat comments
      */
-    function display_comments_flat($versionId)
+    public static function display_comments_flat($versionId)
     {
         $hResult = Comment::grab_comments($versionId);
         if ($hResult)
@@ -698,7 +698,7 @@ class Comment {
         }
     }
 
-    function view_app_comments($versionId, $threadId = 0)
+    public static function view_app_comments($versionId, $threadId = 0)
     {
         global $aClean;
 
