@@ -68,6 +68,8 @@ if($hResult && query_num_rows($hResult))
 
     // display thumbnails
     $c = 1;
+    
+    $iCurrentVersionId = 0;
 
     // optimization so we don't have to perform as many database queries
     // only update this variable when $iCurrentVersionId changes
