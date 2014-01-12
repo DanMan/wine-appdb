@@ -1766,7 +1766,7 @@ class ObjectManager
         return $sQueueString;
     }
 
-    public function getSqlLimitClause($iRows, $iStart, $sClass)
+    public static function getSqlLimitClause($iRows, $iStart, $sClass)
     {
         $sLimit = '';
 
@@ -1792,7 +1792,7 @@ class ObjectManager
         return $sLimit;
     }
 
-    public function getStateString($bQueued, $bRejected)
+    public static function getStateString($bQueued, $bRejected)
     {
         if($bQueued)
         {
