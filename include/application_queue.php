@@ -442,7 +442,7 @@ class application_queue
 
     function objectDisplayQueueProcessingHelp()
     {
-        return application::objectDisplayQueueProcessingHelp();
+        return $this->oApp->objectDisplayQueueProcessingHelp();
     }
 
     function objectDisplayAddItemHelp()
