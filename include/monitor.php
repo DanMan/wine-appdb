@@ -369,7 +369,7 @@ class Monitor {
     }
 
     /* Retrieve the user's monitored versions */
-    function getVersionsMonitored($oUser)
+    public static function getVersionsMonitored($oUser)
     {
          $hResult = query_parameters("SELECT appId, versionId FROM appMonitors WHERE userId = '?'", $oUser->iUserId);
 
