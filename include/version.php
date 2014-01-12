@@ -1196,7 +1196,7 @@ class version {
         return $ob->versionName;
     }
 
-    function fullName($iVersionId)
+    public static function fullName($iVersionId)
     {
         if(!$iVersionId)
             return FALSE;
@@ -1401,14 +1401,14 @@ class version {
     }
 
     /* Returns an array containg the different software licences */
-    public function getLicenses()
+    public static function getLicenses()
     {
         return array(LICENSE_RETAIL, LICENSE_OPENSOURCE, LICENSE_FREETOUSE,
                      LICENSE_FREETOSHARE, LICENSE_DEMO, LICENSE_SHAREWARE);
     }
 
     // returns a string containing the html for a selection list
-    public function makeLicenseList($sLicense = NULL)
+    public static function makeLicenseList($sLicense = NULL)
     {
         if(!$sLicense)
             $sLicense = $this->sLicense;
