@@ -353,7 +353,7 @@ class version_queue
 
     function objectDisplayQueueProcessingHelp()
     {
-        version::objectDisplayQueueProcessingHelp();
+        $this->oVersion->objectDisplayQueueProcessingHelp();
     }
 
     function objectMoveChildren($iNewId)
