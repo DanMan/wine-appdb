@@ -754,7 +754,7 @@ class testData{
        0 - Rating
        1 - Wine version
        The $sDate parameter can be used to calculate the rating at a given point in time */
-    public function getRatingInfoForVersionId($iVersionId, $sDate = 'NOW()')
+    public static function getRatingInfoForVersionId($iVersionId, $sDate = 'NOW()')
     {
         $sQuery = "SELECT testedRating,testedDate,testedRelease,versions.id as versionId
                 FROM testResults, ?.versions WHERE
@@ -828,7 +828,7 @@ class testData{
     }
 
     /* retrieve the latest test result for a given version id */
-    function getNewestTestIdFromVersionId($iVersionId, $sState = 'accepted')
+    public static function getNewestTestIdFromVersionId($iVersionId, $sState = 'accepted')
     {
         $sQuery = "SELECT testingId FROM testResults, ?.versions WHERE
                 versions.value = testResults.testedRelease
@@ -1083,7 +1083,7 @@ class testData{
         echo "</select>\n";
     }
 
-    function getTestResultsForUser($iUserId, $iVersionId)
+    public static function getTestResultsForUser($iUserId, $iVersionId)
     {
         $oVersion = new version($iVersionId);
         $hResult = query_parameters("SELECT * FROM testResults WHERE
@@ -1107,7 +1107,7 @@ class testData{
     }
 
     /* List test data submitted by a given user.  Ignore test results for queued applications/versions */
-    function listSubmittedBy($iUserId, $bQueued = true)
+    public static function listSubmittedBy($iUserId, $bQueued = true)
     {
         $hResult = query_parameters("SELECT testResults.versionId, testResults.testedDate, testResults.testedRelease, testResults.testedRating, testResults.submitTime, testResults.testingId, appFamily.appName, appVersion.versionName from testResults, appFamily, appVersion WHERE testResults.versionId = appVersion.versionId AND appVersion.appId = appFamily.appId  AND testResults.submitterId = '?' AND testResults.state = '?' ORDER BY testResults.testingId", $iUserId, $bQueued ? 'queued' : 'accepted');
 
@@ -1157,7 +1157,7 @@ class testData{
     }
 
     // return the number of test data entries for a particular version id
-    function get_testdata_count_for_versionid($iVersionId)
+    public static function get_testdata_count_for_versionid($iVersionId)
     {
         $sQuery = "SELECT count(*) as cnt
                    FROM testResults
@@ -1186,7 +1186,7 @@ class testData{
         return $oFilter;
     }
 
-    function objectGetEntriesCount($sState, $oFilters = null)
+    public static function objectGetEntriesCount($sState, $oFilters = null)
     {
         $sExtraTables = '';
         $aOptions = $oFilters ? $oFilters->getOptions() : array('onlyWithoutMaintainers' => 'false', 'onlyMyMaintainedEntries' => 'false');
@@ -1274,7 +1274,7 @@ class testData{
         return 'testingId';
     }
 
-    function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = "testingId", $bAscending = true, $oFilters = null)
+    public static function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = "testingId", $bAscending = true, $oFilters = null)
     {
         $sExtraTables = '';
         $aOptions = $oFilters ? $oFilters->getOptions() : array('onlyWithoutMaintainers' => 'false', 'onlyMyMaintainedEntries' => 'false');
@@ -1560,7 +1560,7 @@ class testData{
         return mysqltimestamp_to_unixtimestamp($this->sSubmitTime);
     }
 
-    function objectGetItemsPerPage($sState = 'accepted')
+    public static function objectGetItemsPerPage($sState = 'accepted')
     {
         $aItemsPerPage = array(25, 50, 100, 200);
         $iDefaultPerPage = 25;
