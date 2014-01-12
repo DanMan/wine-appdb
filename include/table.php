@@ -313,7 +313,7 @@ class TableRowSortable extends TableRow
     }
 
     /* Adds a table cell without sorting */
-    function AddTableCell(TableCell $oCell)
+    function AddCell(TableCell $oCell)
     {
         $this->aTableCells[] = $oCell;
         $this->aSortVars[] = '';
@@ -322,7 +322,7 @@ class TableRowSortable extends TableRow
     /* Adds a text cell without sorting */
     function AddTextCell($shText)
     {
-        $this->AddTableCell(new TableCell($shText));
+        $this->AddCell(new TableCell($shText));
     }
 
     /* Adds a text cell with a sorting var */
