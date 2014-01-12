@@ -42,10 +42,10 @@ function display_index ()
     // display dir
     while (list($key,$file) = each($files))
     {
-        if(!ereg("(.+)\\.help$", $file, $arr))
+        if(!preg_match("(([^.]+).help)", $file, $aMatches))
             continue;
 
-        $id    = $arr[1];
+        $id    = $aMatches[1];
         $title = get_help_title("$help_path/$file");
 
         echo "  <li> <a href=\"".BASE."help?sTopic=$id\"  style=\"cursor: help\"> $title </a><p /></li>\n";
@@ -95,9 +95,9 @@ function get_help_title ($file)
 
     $line = trim($line);
 
-    if(eregi("^<!--TITLE: (.+)-->$", $line, $arr))
+    if(preg_match("/^<!--TITLE: (.+)-->$/i", $line, $aMatches))
     {
-        return $arr[1];
+        return $aMatches[1];
     }
     return "Internal Error: missing title";
 }
