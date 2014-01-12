@@ -474,7 +474,7 @@ class Url {
     }
 
     /* Display links for a given version/application */
-    function display($iVersionId, $iAppId = NULL)
+    public static function display($iVersionId, $iAppId = NULL)
     {
         if($iVersionId)
         {
@@ -543,7 +543,7 @@ class Url {
 
     // if a url lacks "://" assume the url is an http one
     // and prepend "http://"
-    function normalize($sTheUrl)
+    public static function normalize($sTheUrl)
     {
         // return if we have an empty string
         if($sTheUrl == "")
