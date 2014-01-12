@@ -449,7 +449,7 @@ class User {
      /**
       * Creates a new random password.
       */
-     function generate_passwd($pass_len = 10)
+     public static function generate_passwd($pass_len = 10)
      {
          $nps = "";
          mt_srand ((double) microtime() * 1000000);
@@ -465,7 +465,7 @@ class User {
       * Check if a user exists.
       * returns the userid if the user exists
       */
-     function exists($sEmail)
+     public static function exists($sEmail)
      {
          $hResult = query_parameters("SELECT userid FROM user_list WHERE email = '?'",
                                      $sEmail);
@@ -483,7 +483,7 @@ class User {
       * Get the number of users in the database
       * The parameters are only included for compatibility; we don't queue users 
       */
-     function objectGetEntriesCount($bQueued = null, $bRejected = null)
+     public static function objectGetEntriesCount($bQueued = null, $bRejected = null)
      {
          $hResult = query_parameters("SELECT count(*) as num_users FROM user_list;");
          $oRow = query_fetch_object($hResult);
@@ -493,7 +493,7 @@ class User {
      /**
       * Get the number of active users within $days of the current day
       */
-     function active_users_within_days($days)
+     public static function active_users_within_days($days)
      {
          $hResult = query_parameters("SELECT count(*) as num_users FROM user_list WHERE stamp >= DATE_SUB(CURDATE(), interval '?' day);",
                                      $days);
@@ -505,7 +505,7 @@ class User {
       * Get the count of users who have been warned for inactivity and are
       * pending deletion after the X month grace period
       */
-     function get_inactive_users_pending_deletion()
+     public static function get_inactive_users_pending_deletion()
      {
          /* retrieve the number of users that have been warned and are pending deletion */
          $hResult = query_parameters("select count(*) as count from user_list where inactivity_warned = 'true'");
@@ -516,7 +516,7 @@ class User {
      /**
       * Get the email address of people to notify for this appId and versionId.
       */
-     function get_notify_email_address_list($iAppId = null, $iVersionId = null)
+     public static function get_notify_email_address_list($iAppId = null, $iVersionId = null)
      {
          $aUserId = array();
          $sRetval = "";
