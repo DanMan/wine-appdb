@@ -26,7 +26,7 @@ require_once(BASE."include/application.php");
 require_once(BASE."include/version.php");
 
 // we issued a command
-if($aClean['sCmd'])
+if(array_key_exists('sCmd', $aClean) && $aClean['sCmd'])
 {
     // process screenshot upload
     if($aClean['sCmd'] == "screenshot_upload")
