@@ -281,7 +281,7 @@ class Url {
         else
             $hResult = appData::getData($oApp->iAppId, "url", FALSE);
 
-        $sReturn .= html_frame_start("URLs", "90%", "", 0);
+        $sReturn = html_frame_start("URLs", "90%", "", 0);
         $sReturn .= "<form method=\"post\" action=\"$sFormAction\">\n";
         $sReturn .= html_table_begin("border=0 cellpadding=5 cellspacing=0 width=100%");
         $sReturn .= html_tr(array(
