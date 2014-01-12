@@ -504,7 +504,7 @@ class distribution {
     }
 
     /* Get the total number of Distributions in the database */
-    function objectGetEntriesCount($sState, $oFilter = null)
+    public static function objectGetEntriesCount($sState, $oFilter = null)
     {
         /* Not implemented */
         if($sState == 'rejected')
@@ -528,7 +528,7 @@ class distribution {
     }
 
     /* Make a dropdown list of distributions */
-    function make_distribution_list($varname, $cvalue)
+    public static function make_distribution_list($varname, $cvalue)
     {
         $sQuery = "SELECT name, distributionId FROM distributions
                 WHERE state = 'accepted'
@@ -572,7 +572,7 @@ class distribution {
         return 'name';
     }
 
-    function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = "name", $bAscending = TRUE, $oFilter = null)
+    public static function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = "name", $bAscending = TRUE, $oFilter = null)
     {
         /* Not implemented */
         if($sState == 'rejected')
