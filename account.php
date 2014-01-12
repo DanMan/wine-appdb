@@ -90,7 +90,7 @@ function cmd_do_new()
 {
     global $aClean;
 
-    if(!ereg("^.+@.+\\..+$", $aClean['sUserEmail']))
+    if(!filter_var($aClean['sUserEmail'], FILTER_VALIDATE_EMAIL))
     {
         $aClean['sUserEmail'] = "";
         retry("new", "Invalid email address");
