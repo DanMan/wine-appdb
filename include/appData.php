@@ -204,7 +204,7 @@ class appData
     }
 
     /* Get appData for a given version/application, optionally filter by type */
-    function getData($iId, $sType, $bIsVersion = TRUE, $bQueued = FALSE, $bRejected = FALSE)
+    public static function getData($iId, $sType, $bIsVersion = TRUE, $bQueued = FALSE, $bRejected = FALSE)
     {
         $iAppId = 0;
         $iVersionId = 0;
@@ -226,7 +226,7 @@ class appData
         return $hResult;
     }
 
-    function objectGetEntriesCount($sState, $sType = null, $oFilters = null)
+    public static function objectGetEntriesCount($sState, $sType = null, $oFilters = null)
     {
         /* Not implemented for appData */
         if($sState == 'rejected')
@@ -366,7 +366,7 @@ class appData
         return $iCount;
     }
 
-    function objectGetHeader($sType)
+    public static function objectGetHeader($sType)
     {
         $oTableRow = new TableRow();
         $oTableRow->AddTextCell("Submission date");
@@ -377,7 +377,7 @@ class appData
         return $oTableRow;
     }
 
-    function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = '', $bAscending = true, $sType = null, $oFilters = null)
+    public static function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = '', $bAscending = true, $sType = null, $oFilters = null)
     {
         /* Not implemented for appData */
         if($sState == 'rejected')
