@@ -1054,7 +1054,8 @@ class Application {
                      AND
                      appFamily.state = '?'$sWhereFilter";
 
-        if($sState != 'accepted' && !application::canEdit())
+        $oApp = new Application();
+        if($sState != 'accepted' && !$oApp->canEdit())
         {
             /* Without global edit rights a user can only view his rejected apps */
             if($sState != 'rejected')
@@ -1288,7 +1289,8 @@ class Application {
             $sWhereFilter .= ' AND ' . $oCategory->getSqlQueryPart();
         }
 
-        if($sState != 'accepted' && !application::canEdit())
+        $oApp = new Application();
+        if($sState != 'accepted' && !$oApp->canEdit())
         {
             /* Without edit rights users can only resubmit their rejected entries */
             if($sState != 'rejected')
