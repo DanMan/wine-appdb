@@ -835,7 +835,7 @@ class Comment {
                 if(!$this->sSubject)
                 {
                     // Only add RE: once
-                    if(eregi("RE:", $oRow->subject))
+                    if(stripos($oRow->subject, "RE:") !== false)
                         $this->sSubject = $oRow->subject;
                     else
                         $this->sSubject = "RE: ".$oRow->subject;
