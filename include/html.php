@@ -237,7 +237,7 @@ function p()
 
 function add_br($text = "")
 {
-    $text = ereg_replace("\n","<br>\n",$text);
+    $text = str_replace("\n","<br>\n",$text);
     return $text;
 }
 
