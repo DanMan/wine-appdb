@@ -411,7 +411,7 @@ class Bug
         return $oFilter;
     }
 
-    function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = '', $bAscending = true, $oFilters = null)
+    public static function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = '', $bAscending = true, $oFilters = null)
     {
         $sExtraTables = '';
         $aOptions = $oFilters ? $oFilters->getOptions() : array('onlyWithoutMaintainers' => 'false', 'onlyMyMaintainedEntries' => 'false');
@@ -483,7 +483,7 @@ class Bug
         return $hResult;
     }
 
-    function objectGetEntriesCount($sState, $oFilters = null)
+    public static function objectGetEntriesCount($sState, $oFilters = null)
     {
         $sExtraTables = '';
         $aOptions = $oFilters ? $oFilters->getOptions() : array('onlyWithoutMaintainers' => 'false', 'onlyMyMaintainedEntries' => 'false');
