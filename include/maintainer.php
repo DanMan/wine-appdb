@@ -470,7 +470,7 @@ class maintainer
         return $sRecipients;
     }
 
-    function ObjectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = '', $bAscending = true)
+    public static function ObjectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = '', $bAscending = true)
     {
         /* Not implemented */
         if($sState == 'rejected')
@@ -529,7 +529,7 @@ class maintainer
     }
 
     // returns the number of applications/versions a particular user maintains
-    function getMaintainerCountForUserId($iUserId, $bSuperMaintainer)
+    public static function getMaintainerCountForUserId($iUserId, $bSuperMaintainer)
     {
         $sQuery = "SELECT count(*) as cnt from appMaintainers WHERE userid = '?' AND superMaintainer = '?'".
                   " AND state ='?'";
@@ -541,7 +541,7 @@ class maintainer
     }
 
     // returns the number of applications/versions a particular user maintains
-    function getMaintainerCountForUser($oUser, $bSuperMaintainer)
+    public static function getMaintainerCountForUser($oUser, $bSuperMaintainer)
     {
         return self::getMaintainerCountForUserId($oUser->iUserId, $bSuperMaintainer);
     }
@@ -549,7 +549,7 @@ class maintainer
     /**
      * get the applications and versions that this user maintains 
      */
-    function getAppsMaintained($oUser)
+    public static function getAppsMaintained($oUser)
     {
         /* retrieve the list of application and order them by application name */
         $hResult = query_parameters("SELECT appMaintainers.appId, versionId, superMaintainer, appName FROM ".
@@ -570,7 +570,7 @@ class maintainer
         return $aAppsMaintained;
     }
 
-    function objectGetEntriesCount($sState)
+    public static function objectGetEntriesCount($sState)
     {
         /* Not implemented */
         if($sState == 'rejected')
@@ -593,13 +593,13 @@ class maintainer
     }
 
     /* see how many unique maintainers we actually have */
-    function getNumberOfMaintainers()
+    public static function getNumberOfMaintainers()
     {
         $hResult = query_parameters("SELECT DISTINCT userId FROM appMaintainers WHERE state='accepted';");
         return query_num_rows($hResult);
     }
 
-    function isUserMaintainer($oUser, $iVersionId = null)
+    public static function isUserMaintainer($oUser, $iVersionId = null)
     {
         /* if we are a super maintainer, we are a maintainer of this version as well */
         $oVersion = new Version($iVersionId);
@@ -622,7 +622,7 @@ class maintainer
         return query_num_rows($hResult);
     }
 
-    function isUserSuperMaintainer($oUser, $iAppId = null)
+    public static function isUserSuperMaintainer($oUser, $iAppId = null)
     {
         if($iAppId)
         {
@@ -665,7 +665,7 @@ class maintainer
 
     /* if given an appid or a version id return a handle for a query that has */
     /* the user ids that are maintainers for this particular appid or version id */
-    function getMaintainersForAppIdVersionId($iAppId = null, $iVersionId = null)
+    public static function getMaintainersForAppIdVersionId($iAppId = null, $iVersionId = null)
     {
         $hResult = null;
 
@@ -703,7 +703,7 @@ class maintainer
     /*
      * get the userIds of super maintainers for this appId
      */
-    function getSuperMaintainersUserIdsFromAppId($iAppId)
+    public static function getSuperMaintainersUserIdsFromAppId($iAppId)
     {
         $sQuery = "SELECT userId FROM ".
             "appMaintainers WHERE appId = '?' " .
