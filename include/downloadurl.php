@@ -45,7 +45,7 @@ class downloadurl
     }
 
     /* Display download links for a given version */
-    function display($iVersionId)
+    public static function display($iVersionId)
     {
         if(!($hResult = appData::getData($iVersionId, "downloadurl")))
             return FALSE;
