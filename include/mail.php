@@ -16,7 +16,7 @@ function mail_appdb($sEmailList,$sSubject,$sMsg)
     $sHeaders .= "Bcc: $sEmailListComma\r\n";
     $sHeaders .= "X-Priority: 3\r\n";
     $sHeaders .= "X-Mailer: ".APPDB_OWNER." mailer\r\n";
-    $sMsg  = trim(ereg_replace("\r\n","\n",$sMsg));
+    $sMsg  = trim(str_replace("\r\n","\n",$sMsg));
     $sMsg  = $sSubject."\n-------------------------------------------------------\n".$sMsg."\n\n";
     $sMsg .= "Best regards.\n";
     $sMsg .= "The AppDB team\n";
