@@ -451,7 +451,7 @@ class FilterInterface
         {
             $sColumn = $this->escapeChars($oOption->getColumn());
             $i = sizeof($aReturn);
-            $sData = query_escape_string($aClean["s{$sColumn}Data"]);
+            $sData = query_escape_string(getInput("s{$sColumn}Data", $aClean));
             $iOp = $aClean["i{$sColumn}Op"];
 
 
