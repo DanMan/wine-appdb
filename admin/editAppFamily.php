@@ -15,10 +15,12 @@ if(!is_numeric($aClean['iAppId']))
 if(!($_SESSION['current']->hasPriv("admin") || $_SESSION['current']->isSuperMaintainer($aClean['iAppId'])))
     util_show_error_page_and_exit("Insufficient Privileges!");
 
+$oUrl = new Url();
+
 if(!empty($aClean['sSubmit']))
 {
     process_app_version_changes(false);
-    url::processForm($aClean);
+    $oUrl->ProcessForm($aClean);
     $oApp = new application($aClean['iAppId']);
     util_redirect_and_exit($oApp->objectMakeUrl());
 }
@@ -51,7 +53,7 @@ else
     echo "<p>";
 
     // URL editor
-    echo url::outputEditor("editAppFamily.php", NULL, $oApp);
+    echo $oUrl->outputEditor("editAppFamily.php", NULL, $oApp);
 
     echo html_back_link(1,$oApp->objectMakeUrl());
 }
