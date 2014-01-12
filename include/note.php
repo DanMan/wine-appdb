@@ -310,7 +310,7 @@ class Note {
         echo $shOutput;
     }
 
-    function displayNotesForEntry($iVersionId, $iAppId = null)
+    public static function displayNotesForEntry($iVersionId, $iAppId = null)
     {
         $aNotes = array();
 
