@@ -464,7 +464,7 @@ class screenshot
             mail_appdb($sEmail, $sSubject ,$sMsg);
     } 
 
-    function get_zoomicon_overlay()
+    public static function get_zoomicon_overlay()
     {
         /* if the user is using mozilla or firefox show the zoom icon over images */
         /* otherwise because IE doesn't support transparent PNGs or proper css we have to */
@@ -485,7 +485,7 @@ class screenshot
      *
      * $bFormatting == false turns off all extranious formatting applied to the returned image html
      */
-    function get_random_screenshot_img($iAppId = null, $iVersionId = null,
+    public static function get_random_screenshot_img($iAppId = null, $iVersionId = null,
                                        $bFormatting = true) 
     {
         // initialize variables to avoid notices when appending to them
@@ -554,7 +554,14 @@ class screenshot
         return $sImg;
     }
 
-    function get_screenshots($iAppId = null, $iVersionId = null, $bQueued = "false")
+    /**
+     * Get all screenshots for an application or a specific version
+     * @param type $iAppId
+     * @param type $iVersionId
+     * @param type $bQueued
+     * @return boolean
+     */
+    public static function get_screenshots($iAppId = null, $iVersionId = null, $bQueued = "false")
     {
         /*
          * We want all screenshots for this app.
@@ -703,13 +710,13 @@ class screenshot
         return $oFilter;
     }
 
-    function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = '', $bAscending = true, $oFilters = null)
+    public static function objectGetEntries($sState, $iRows = 0, $iStart = 0, $sOrderBy = '', $bAscending = true, $oFilters = null)
     {
         return appData::objectGetEntries($sState, $iRows, $iStart, $sOrderBy, $bAscending,
                                          'screenshot', $oFilters);
     }
 
-    function objectGetEntriesCount($sState, $oFilters = null)
+    public static function objectGetEntriesCount($sState, $oFilters = null)
     {
         return appData::objectGetEntriesCount($sState, 'screenshot', $oFilters);
     }
