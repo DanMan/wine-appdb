@@ -36,12 +36,8 @@
 
 <div id="search_box">
   <form action="//www.winehq.org/search" id="cse-search-box" style="margin: 0; padding: 0;">
-    <input type="hidden" name="cx" value="partner-pub-0971840239976722:w9sqbcsxtyf">
-    <input type="hidden" name="cof" value="FORID:10">
-    <input type="hidden" name="ie" value="UTF-8">
     <span style="color: #ffffff;">Search:</span> <input type="text" name="q" size="20">
   </form>
-  <script type="text/javascript" src="//www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
 </div>
 
 <div id="tabs">
