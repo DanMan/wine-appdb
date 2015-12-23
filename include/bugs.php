@@ -370,7 +370,7 @@ class Bug
 
     function isOpen()
     {
-        return ($this->sBug_status != 'RESOLVED' && $this->sBug_status != 'CLOSED');
+        return ($this->sBug_status != 'CLOSED');
     }
 
     function allowAnonymousSubmissions()
