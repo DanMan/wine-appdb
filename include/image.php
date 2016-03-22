@@ -360,7 +360,7 @@ class Image {
             case 2:
             if($bHeader)
                 header('Content-type: image/jpeg');
-            imagejpeg($this->oImage,'',$iQuality);
+            imagejpeg($this->oImage,null,$iQuality);
             $this->set_debuglog("Outputed file as jpeg to browser");
             break;
             
