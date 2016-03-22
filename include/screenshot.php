@@ -534,12 +534,12 @@ class screenshot
         $sZoomIcon = Screenshot::get_zoomicon_overlay();
 
         /* we have screenshots */
-        if($hResult && query_num_rows($hResult))
+        if($hResult && $numShots = query_num_rows($hResult))
         {
             if($iVersionId)
                 $sImg .= "<div class=\"imgarea\"><a href='screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId'>".$sImgFile.$sZoomIcon."<br>View/Submit&nbsp;Screenshot</a></div>";
             else
-                $sImg .= "<div class=\"imgarea\"><a href='screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId'>".$sImgFile.$sZoomIcon."<br>View&nbsp;Screenshot</a></div>";
+                $sImg .= "<div class=\"imgarea\"><a href='screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId'>".$sImgFile.$sZoomIcon."<br>View&nbsp;Screenshot".($numShots > 1 ? "s" : "")."</a></div>";
         } else if($iVersionId) /* we are asking for a specific app version but it has no screenshots */
         {
             $sImg .= "<div class=\"imgarea\"><a href='screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId'>".$sImgFile.$sZoomIcon."<br>Submit&nbsp;Screenshot</a></div>";
