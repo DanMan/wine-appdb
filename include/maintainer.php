@@ -1471,7 +1471,6 @@ class maintainer
       // common end of our message
       $oNotificationUpdate->sMsg.= "\n\nThanks,\n";
       $oNotificationUpdate->sMsg.= "Appdb Admins\n";
-      $oNotificationUpdate->sMsg.= "<appdb@winehq.org>";
 
       // save the notification level and notification time back into the database
       $sQuery = "update appMaintainers set notificationLevel = '?', notificationTime = ?".
