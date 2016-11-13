@@ -22,7 +22,7 @@ function global_sidebar_menu()
     $g->add("Help", "https://wiki.winehq.org/Category:AppDB");
     $g->add("Statistics", BASE."appdbStats.php");
     $g->add('Distributions ('.distribution::objectGetEntriesCount('accepted').')', BASE.'objectManager.php?sClass=distribution&amp;sTitle=View%20Distributions');
-    $g->add("Email Us", "mailto:appdb@winehq.org");
+    $g->add("Contact Us", "https://forum.winehq.org/viewforum.php?f=11");
     $g->done();
 
 }
