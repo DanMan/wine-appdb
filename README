@@ -1,93 +1,39 @@
-WineHQ Application Database
-#------------------------------------------------------------------------#
-Authors:
+# WineHQ Application Database
+
+Maintainer:
     Jeremy Newman <jnewman@codeweavers.com>
-    Charles Leop <charles@codeweavers.com>
-    
-Contributors:
-    Paul van Schayck <polleke@gmail.com>
-    Chris Morgan <cmorgan@alum.wpi.edu>
-    Tony Lambregts <tony_lambregts@telusplanet.net>
-    Jonathan Ernst <Jonathan@ErnstFamily.ch>
 
-To install locally for testing/hacking:
-#------------------------------------------------------------------------#
+## To install locally for testing/hacking:
 
-# Symlink from /var/www to the appdb directory
+1. Copy AppDB files to somewhere where your web server can access them.
 
-# Copy include/config.php.sample to include/config.php
+2. Copy include/config.php.sample to include/config.php
 
-# Edit include/config.php as you see fit, the default name of the database 
-  used in the table creation step below is "apidb", you'll have to modify 
-  these files if you change this in config.php
-  
-  # NOTE: You must update the APPDB_ROOT entry to be YOUR url to the application database
-          If this the APPDB_ROOT isn't correct your urls will point to the wrong pages.
+3. Edit include/config.php as you see fit, the default name of the database 
+    used in the table creation step below is "apidb", you'll have to modify 
+    these files if you change this in config.php
 
-  # NOTE: if you've changed the name of the database by changing the define of
-    'APPS_DB' in include/config.php you'll have to modify the 'create database' and 'use'
+    **NOTE:** You must update the APPDB_ROOT entry to be YOUR url to the application database
+    If this the APPDB_ROOT isn't correct your urls will point to the wrong pages.
+
+    **NOTE:** if you've changed the name of the database by changing the define of
+    *APPS_DB* in include/config.php you'll have to modify the *create database* and *use*
     entries in pretty much every file in the /tables/ directory. The recommendation is to
     leave the default value of APPS_DB to keep things simple
 
-# 'cd tables', run './create_tables' to create the database tables
+4. to create the database tables: `cd tables; ./create_tables`
 
-# Look in include/config.php at the 'APPS_DBUSER' and 'APPS_DBPASS' defines. 
-  Ensure that this user and password exist in your mysql users list and that this user
-  has been granted 'SELECT', 'INSERT', 'UPDATE' and 'DELETE' privileges on the database
-  defined by the value of 'APPS_DB' in include/config.php
+5. Look in include/config.php at the 'APPS_DBUSER' and 'APPS_DBPASS' defines. 
+    Ensure that this user and password exist in your mysql users list and that this user
+    has been granted 'SELECT', 'INSERT', 'UPDATE' and 'DELETE' privileges on the database
+    defined by the value of 'APPS_DB' in include/config.php
 
-# Try to open up localhost/appdb, if you get a directory listing
-  Edit your /etc/apache/httpd.conf "DirectoryIndex" to include index.php 
-  so apache will open index.php after not finding index.html/index.htm etc
+6. Ensure your appdb directory has *AllowOverride* set to *All* in Apache config to let
+    .htaccess use required PHP settings. Or duplicate the .htaccess/PHP settings in your Apache config.
 
-# Also ensure these options in /etc/apache/php.ini:
-   register_globals 0
-   short_open_tag 0
-   register_long_arrays 0
-   magic_quotes_gpc 0
- Or ensure your appdb directory has AllowOverride' set to 'All' inside 
- httpd.conf to let .htaccess set these settings.
- 
-# An AppDB admin user has been automatically created while running 
-  the create_tables script
-  email: admin@localhost
-  password: testing
-  You should change the password as soon as possible!
+7. An AppDB admin user has been automatically created while running the create_tables script
 
-#------------------------------------------------------------------------#
-You can either set up a real bugzilla database or a fake one 
-#
-# cd tables, run ./create_bugzilla_tables to create the fake bugzilla tables
-#------------------------------------------------------------------------#
-# or installing a real bugzilla database (hope this helps)
-#
-# download buzilla  (password for cvs is cvs)
+    **email:** admin@localhost **password:** testing
 
-cd /var/www/html
-export CVSROOT=:pserver:cvs@cvs.winehq.org:/home/wine
-cvs login
-cvs -z 0 checkout bugzilla
-
-# change directory to bugzilla and change the group ownership to apache.
-
-cd bugzilla
-chgrp -R apache .
-chmod -R g+rX .
-
-
-# change to su and run ./checksetup.pl and fix up what it finds wrong.
-# this may take several runs 
-
-su
-./checksetup.pl
-
-# in the /etc/httpd/conf/hppt.conf file find "AddHandler cgi-script .cgi" and add the following.
-
-<Directory "/var/www/html/bugzilla">
-Options ExecCGI
-AllowOverride Limit
-Order allow,deny
-Allow from all
-</Directory>
-
-# edit local config as necessary to allow access.
+8. You can either set up a real bugzilla database or a fake one.
+to create the fake bugzilla tables: `cd tables; ./create_bugzilla_tables`
