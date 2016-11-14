@@ -14,6 +14,18 @@
  *  - replace iId with iScreenshotId
  */
 
+/**
+ *  parse all the date formats required by HTTP 1.1 into PHP time values
+ */
+function pHttpDate($sDate) {
+   $iDate = strtotime($sDate);
+   if ($iDate != -1) return $iDate;
+        /* the RFC also requires asctime() format... */
+   $aTs = strptime($sDate,"%a %b  %e %H:%M:%S %Y");
+   $iDate = gmmktime($aTs[2],$aTs[1],$aTs[0],$aTs[4],$aTs[3],$aTs[5],0);
+   return $iDate;
+}
+
 // application environment
 require("path.php");
 require(BASE."include/incl.php");
@@ -66,10 +78,11 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) &&
    exit;
 }
 
-header("Last-Modified: ".fHttpDate($iModTime));
+header("Last-Modified: ".gmdate("D, d M Y H:i:s",$iModTime)." GMT");
 
 if(!$aClean['bThumbnail'])
     $oScreenshot->output_screenshot(false);
 else
     $oScreenshot->output_screenshot(true);
+
 ?>
