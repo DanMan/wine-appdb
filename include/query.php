@@ -1,19 +1,31 @@
 <?php
+/*************************************************/
+/* Application Database DB Query Functions       */
+/*************************************************/
+
+// AppDB connection link
 $hAppdbLink = null;
+
+// bugs connection link
 $hBugzillaLink = null;
 
+// set DEADLOCK
 define("MYSQL_DEADLOCK_ERRNO", 1213);
 
 function query_appdb($sQuery, $sComment="")
 {
     global $hAppdbLink;
 
+    // log query
+    appdb_debug("query_appdb -> {$sQuery}");
+
+    // if not connected, connect
     if(!is_resource($hAppdbLink))
     {
         // The last argument makes sure we are really opening a new connection
         $hAppdbLink = mysql_connect(APPS_DBHOST, APPS_DBUSER, APPS_DBPASS, true);
         if(!$hAppdbLink)
-          die("Database error, please try again soon.");          
+          query_error($sQuery, $sComment, $hAppdbLink);
         mysql_select_db(APPS_DB, $hAppdbLink);
     }
 
@@ -43,6 +55,35 @@ function query_appdb($sQuery, $sComment="")
     }
 
     return NULL;
+}
+
+function query_bugzilladb($sQuery, $sComment="")
+{
+    global $hBugzillaLink;
+
+    // log query
+    appdb_debug("query_bugzilladb -> {$sQuery}");
+
+    // if not connected, connect
+    if(!is_resource($hBugzillaLink))
+    {
+        // The last argument makes sure we are really opening a new connection
+        $hBugzillaLink = mysql_connect(BUGZILLA_DBHOST, BUGZILLA_DBUSER, BUGZILLA_DBPASS, true);
+        if(!$hBugzillaLink)
+            return;
+        mysql_select_db(BUGZILLA_DB, $hBugzillaLink);
+        // Tell MySQL to return UTF8-encoded results
+        $sQueryAskingForUtf8Results = "SET SESSION CHARACTER_SET_RESULTS = 'utf8'";
+        if (!mysql_query($sQueryAskingForUtf8Results, $hBugzillaLink))
+        {
+            query_error($sQueryAskingForUtf8Results, "", $hBugzillaLink);
+        }
+    }
+
+    $hResult = mysql_query($sQuery, $hBugzillaLink);
+    if(!$hResult)
+        query_error($sQuery, $sComment, $hBugzillaLink);
+    return $hResult;
 }
 
 /*
@@ -120,51 +161,13 @@ function query_parameters()
     return query_appdb($sPreparedquery);
 }
 
-function query_bugzilladb($sQuery,$sComment="")
-{
-    global $hBugzillaLink;
-
-    if(!is_resource($hBugzillaLink))
-    {
-        // The last argument makes sure we are really opening a new connection
-        $hBugzillaLink = mysql_connect(BUGZILLA_DBHOST, BUGZILLA_DBUSER, BUGZILLA_DBPASS, true);
-        if(!$hBugzillaLink) return;
-        mysql_select_db(BUGZILLA_DB, $hBugzillaLink);
-        // Tell MySQL to return UTF8-encoded results
-        $sQueryAskingForUtf8Results = "SET SESSION CHARACTER_SET_RESULTS = 'utf8'";
-        if (!mysql_query($sQueryAskingForUtf8Results, $hBugzillaLink))
-        {
-            query_error($sQueryAskingForUtf8Results, "", $hBugzillaLink);
-        }
-    }
-    
-    $hResult = mysql_query($sQuery, $hBugzillaLink);
-    if(!$hResult) query_error($sQuery, $sComment, $hBugzillaLink);
-    return $hResult;
-}
-
-
 function query_error($sQuery, $sComment, $hLink)
 {
-    static $bInQueryError = false;
-
-    // if we are already reporting an error we can't report it again
-    // as that indicates that error reporting itself produced an error
-    if($bInQueryError)
-        return;
-
-    // record that we are inside of this function, we don't want to recurse
-    $bInQueryError = true;
-
-    error_log::log_error(ERROR_SQL, "Query: '".$sQuery."' ".
-                         "mysql_errno(): '".mysql_errno($hLink)."' ".
-                         "mysql_error(): '".mysql_error($hLink)."' ".
-                         "comment: '".$sComment."'");
-
-    $sStatusMessage = "<p><b>An internal error has occurred and has been logged and reported to appdb admins</b></p>";
-    addmsg($sStatusMessage);
-
-    $bInQueryError = false; // clear variable upon exit
+    error_log("Query: '".$sQuery."' ".
+              "mysql_errno(): '".mysql_errno($hLink)."' ".
+              "mysql_error(): '".mysql_error($hLink)."' ".
+              "comment: '".$sComment."'");
+    trigger_error("Database Error: '".mysql_error($hLink)."' ", E_USER_ERROR);
 }
 
 function query_fetch_row($hResult)
