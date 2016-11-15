@@ -2,28 +2,31 @@
 /*********************************/
 /* Application Database - Header */
 /*********************************/
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+?><!doctype html>
+<html lang="en">
 <head>
     <title>WineHQ <?php echo $title; ?></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta HTTP-EQUIV="Expires" CONTENT="Mon, 06 Jan 1990 00:00:01 GMT">
-    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+
+    <meta charset="utf-8">
     <meta name="description" content="Open Source Software for running Windows applications on other operating systems.">
     <meta name="keywords" content="windows, linux, macintosh, solaris, freebsd">
     <meta name="robots" content="index, follow">
     <meta name="copyright" content="Copyright WineHQ.org All Rights Reserved.">
     <meta name="language" content="English">
     <meta name="revisit-after" content="1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" type="text/css" media="all">
     <link rel="stylesheet" href="<?php echo BASE; ?>styles.css" type="text/css" media="screen">
-    <script language="JavaScript" src="<?php echo BASE; ?>jquery.js" type="text/javascript"></script>
-    <script language="JavaScript" src="<?php echo BASE; ?>utils.js" type="text/javascript"></script>
     <link rel="stylesheet" href="<?php echo BASE; ?>apidb.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE; ?>application.css" type="text/css">
-    <script type="text/javascript" 
-    src="//ajax.googleapis.com/ajax/libs/prototype/1.6.0.2/prototype.js"></script>
-    <script src="<?php echo BASE; ?>scripts.js" type="text/javascript"></script>
-    <link rel="icon" type="image/png" href="<?php echo BASE; ?>images/winehq_logo_16.png">
+
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="<?php echo BASE; ?>utils.js"></script>
+
     <link rel="shortcut icon" type="image/png" href="<?php echo BASE; ?>images/winehq_logo_16.png">
     <link title="AppDB" type="application/opensearchdescription+xml" rel="search" href="<?php echo BASE; ?>opensearch.xml">
 </head>
