@@ -23,10 +23,9 @@ function query_appdb($sQuery, $sComment="")
     if(!is_resource($hAppdbLink))
     {
         // The last argument makes sure we are really opening a new connection
-        $hAppdbLink = mysql_connect(APPS_DBHOST, APPS_DBUSER, APPS_DBPASS, true);
+        $hAppdbLink = new mysqli(APPS_DBHOST, APPS_DBUSER, APPS_DBPASS, APPS_DB);
         if(!$hAppdbLink)
           query_error($sQuery, $sComment, $hAppdbLink);
-        mysql_select_db(APPS_DB, $hAppdbLink);
     }
 
     $iRetries = 2;
@@ -35,13 +34,12 @@ function query_appdb($sQuery, $sComment="")
     /* as a deadlock isn't really a failure */
     while($iRetries)
     {
-        $hResult = mysql_query($sQuery, $hAppdbLink);
+        $hResult = $hAppdbLink->query($sQuery);
         if(!$hResult)
         {
             /* if this error isn't a deadlock OR if it is a deadlock and we've */
             /* run out of retries, report the error */
-            $iErrno = mysql_errno($hAppdbLink);
-            if(($iErrno != MYSQL_DEADLOCK_ERRNO) || (($iErrno == MYSQL_DEADLOCK_ERRNO) && ($iRetries <= 0)))
+            if(($hAppdbLink->errno != MYSQL_DEADLOCK_ERRNO) || (($hAppdbLink->errno == MYSQL_DEADLOCK_ERRNO) && ($iRetries <= 0)))
             {
                 query_error($sQuery, $sComment, $hAppdbLink);
                 return $hResult;
@@ -68,19 +66,18 @@ function query_bugzilladb($sQuery, $sComment="")
     if(!is_resource($hBugzillaLink))
     {
         // The last argument makes sure we are really opening a new connection
-        $hBugzillaLink = mysql_connect(BUGZILLA_DBHOST, BUGZILLA_DBUSER, BUGZILLA_DBPASS, true);
+        $hBugzillaLink = new mysqli(BUGZILLA_DBHOST, BUGZILLA_DBUSER, BUGZILLA_DBPASS, BUGZILLA_DB);
         if(!$hBugzillaLink)
             return;
-        mysql_select_db(BUGZILLA_DB, $hBugzillaLink);
         // Tell MySQL to return UTF8-encoded results
         $sQueryAskingForUtf8Results = "SET SESSION CHARACTER_SET_RESULTS = 'utf8'";
-        if (!mysql_query($sQueryAskingForUtf8Results, $hBugzillaLink))
+        if (!$hBugzillaLink->query($sQueryAskingForUtf8Results))
         {
             query_error($sQueryAskingForUtf8Results, "", $hBugzillaLink);
         }
     }
 
-    $hResult = mysql_query($sQuery, $hBugzillaLink);
+    $hResult = $hBugzillaLink->query($sQuery);
     if(!$hResult)
         query_error($sQuery, $sComment, $hBugzillaLink);
     return $hResult;
@@ -89,7 +86,6 @@ function query_bugzilladb($sQuery, $sComment="")
 /*
  * Wildcard Rules
  * SCALAR  (?) => 'original string quoted'
- * OPAQUE  (&) => 'string from file quoted'
  * MISC    (~) => original string (left 'as-is')
  *
  * NOTE: These rules convienently match those for Pear DB
@@ -100,9 +96,10 @@ function query_bugzilladb($sQuery, $sComment="")
  * http://us3.php.net/manual/en/function.mysql-query.php#53400
  *
  * Modified by CMM 20060622
+ * Modified by JWN 20161115
  *
- * Values are mysql_real_escape_string()'d to prevent against injection attacks
- * See http://php.net/mysql_real_escape_string for more information about why this is the case
+ * Values are $hAppdbLink->real_escape_string()'d to prevent against injection attacks
+ * See http://php.net/$hAppdbLink->real_escape_string for more information about why this is the case
  *
  * Usage:
  *  $hResult = query_parameters("Select * from mytable where userid = '?'",
@@ -117,16 +114,16 @@ function query_parameters()
 {
     global $hAppdbLink;
 
-    if(!is_resource($hAppdbLink))
+    if(empty($hAppdbLink) or !is_resource($hAppdbLink))
     {
-        // The last argument makes sure we are really opening a new connection
-        $hAppdbLink = mysql_connect(APPS_DBHOST, APPS_DBUSER, APPS_DBPASS, true) or die('Database error, please try again soon: '.mysql_error());
-        mysql_select_db(APPS_DB, $hAppdbLink);
+        $hAppdbLink = new mysqli(APPS_DBHOST, APPS_DBUSER, APPS_DBPASS, APPS_DB);
+        if (!$hAppdbLink)
+            query_error('', 'Database connection failed!', $hAppdbLink);
     }
 
     $aData = func_get_args();
     $sQuery = $aData[0];
-    $aTokens = preg_split("/[&?~]/", $sQuery); /* NOTE: no need to escape characters inside of [] in regex */
+    $aTokens = preg_split("/[?~]/", $sQuery); /* NOTE: no need to escape characters inside of [] in regex */
     $sPreparedquery = $aTokens[0];
     $iCount = strlen($aTokens[0]);
 
@@ -138,23 +135,8 @@ function query_parameters()
     {
         $char = substr($sQuery, $iCount, 1);
         $iCount += (strlen($aTokens[$i])+1);
-        if ($char == "&")
-        {
-            $fp = @fopen($aData[$i], 'r');
-            $pdata = "";
-            if ($fp)
-            {
-                while (($sBuf = fread($fp, 4096)) != false)
-                {
-                    $pdata .= $sBuf;
-                }
-                fclose($fp);
-            }
-        } else
-        {
-            $pdata = &$aData[$i];
-        }
-        $sPreparedquery .= ($char != "~" ? mysql_real_escape_string($pdata) : $pdata);
+        $pdata = &$aData[$i];
+        $sPreparedquery .= ($char != "~" ? $hAppdbLink->real_escape_string($pdata) : $pdata);
         $sPreparedquery .= $aTokens[$i];
     }
 
@@ -163,38 +145,35 @@ function query_parameters()
 
 function query_error($sQuery, $sComment, $hLink)
 {
-    error_log("Query: '".$sQuery."' ".
-              "mysql_errno(): '".mysql_errno($hLink)."' ".
-              "mysql_error(): '".mysql_error($hLink)."' ".
-              "comment: '".$sComment."'");
-    trigger_error("Database Error: '".mysql_error($hLink)."' ", E_USER_ERROR);
+    error_log("Query: '".$sQuery."' $hLink->errno: '".$hLink->errno."' comment: '".$sComment."'");
+    trigger_error("Database Error: {$hLink->error} Comment: {$sComment}", E_USER_ERROR);
 }
 
 function query_fetch_row($hResult)
 {
-  return mysql_fetch_row($hResult);
+    return $hResult->fetch_row();
 }
 
 function query_fetch_object($hResult)
 {
-  return mysql_fetch_object($hResult);
+    return $hResult->fetch_object();
 }
 
 function query_appdb_insert_id()
 {
     global $hAppdbLink;
-    return mysql_insert_id($hAppdbLink);
+    return $hAppdbLink->insert_id;
 }
 
 function query_bugzilla_insert_id()
 {
     global $hBugzillaLink;
-    return mysql_insert_id($hBugzillaLink);
+    return $hAppdbLink->insert_id;
 }
 
 function query_num_rows($hResult)
 {
-    return mysql_num_rows($hResult);
+    return $hResult->num_rows;
 }
 
 function query_escape_string($sString)
@@ -204,38 +183,47 @@ function query_escape_string($sString)
     if(!is_resource($hAppdbLink))
     {
         // The last argument makes sure we are really opening a new connection
-        $hAppdbLink = mysql_connect(APPS_DBHOST, APPS_DBUSER, APPS_DBPASS, true);
+        $hAppdbLink = new mysqli(APPS_DBHOST, APPS_DBUSER, APPS_DBPASS, APPS_DB);
         if(!$hAppdbLink)
-          die("Database error, please try again soon.");
-        mysql_select_db(APPS_DB, $hAppdbLink);
+          query_error('', 'Database connection failed!', $hAppdbLink);
     }
 
-    return mysql_real_escape_string($sString, $hAppdbLink);
+    return $hAppdbLink->real_escape_string($sString);
 }
 
 function query_field_type($hResult, $iFieldOffset)
 {
-    return mysql_field_type($hResult, $iFieldOffset);
+    $finfo = $hResult->fetch_field_direct($iFieldOffset);
+    return $finfo->type;
 }
 
 function query_field_name($hResult, $iFieldOffset)
 {
-    return mysql_field_name($hResult, $iFieldOffset);
+    $finfo = $hResult->fetch_field_direct($iFieldOffset);
+    return $finfo->name;
 }
 
 function query_field_len($hResult, $ifieldOffset)
 {
-    return mysql_field_len($hResult, $iFieldOffset);
+    $finfo = $hResult->fetch_field_direct($iFieldOffset);
+    return $finfo->max_length;
 }
 
 function query_field_flags($hResult, $iFieldOffset)
 {
-    return mysql_field_flags($hResult, $iFieldOffset);
+    $finfo = $hResult->fetch_field_direct($iFieldOffset);
+    return $finfo->flags;
 }
 
 function query_fetch_field($hResult, $iFieldOffset)
 {
-    return mysql_fetch_field($hResult, $iFieldOffset);
+    return $hResult->fetch_field_direct($iFieldOffset);
+}
+
+function query_get_server_info()
+{
+    global $hAppdbLink;
+    return $hAppdbLink->server_info;
 }
 
 ?>
