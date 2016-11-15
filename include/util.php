@@ -216,7 +216,7 @@ function make_bugzilla_version_list($sVarname, $sSelectedValue = '')
 // returns a string containing the html for the maintainer rating list
 function make_maintainer_rating_list($varname, $cvalue)
 {
-    $sTxt = "<select id='ratingSelect' onchange='showHint(this)' name='$varname'>\n";
+    $sTxt = "<select id='ratingSelect' name='$varname'>\n";
     $sTxt .= "<option value=\"\">Choose ...</option>\n";
     $aRating = array("Platinum", "Gold", "Silver", "Bronze", "Garbage");
     $iMax = count($aRating);
@@ -231,6 +231,14 @@ function make_maintainer_rating_list($varname, $cvalue)
     $sTxt .= "</select>&nbsp;<span id='hint'></span>&nbsp;\n";
 
     return $sTxt;
+}
+
+// Function to calculate script execution time.
+function microtime_float ()
+{
+    list ($msec, $sec) = explode(' ', microtime());
+    $microtime = (float)$msec + (float)$sec;
+    return $microtime;
 }
 
 /* Get the element with specified key from an array if it is defined */
