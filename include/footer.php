@@ -11,5 +11,16 @@
     title="CodeWeavers - Run Windows applications and games on Mac and Linux"></a>
 </div>
 
+<?php
+if($GLOBALS['_APPDB_debug'] and !empty($GLOBALS['_APPDB_debugLog'])) {
+?>
+<div id="dlog">
+    <div id="dlogp"><pre><?php echo htmlspecialchars($GLOBALS['_APPDB_debugLog']); ?></pre></div>
+    <div id="dlogt"><i class="fa fa-bug"></i> Toggle Debug Console</div>
+</div>
+<?php
+}
+?>
+
 </body>
 </html>
