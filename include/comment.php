@@ -503,16 +503,10 @@ class Comment {
     {
         $sLink = "commentview.php?iAppId={$oRow->appId}&iVersionId=".
             "{$oRow->versionId}&iThreadId={$oRow->parentId}";
-
-        $sOnClick = "showComment('{$oRow->commentId}');";
-
-        /**
-         * The return false line in the onClick is used to handle javascript 
-         * being disabled so we can fail gracefully to the old style.
-         */
-        return "<li><a href=\"$sLink\" onclick=\"$sOnClick return false;\">$oRow->subject</a>". 
-            ' by '.forum_lookup_user($oRow->userId)." on 
-             {$oRow->time}<div id=\"{$oRow->commentId}\"></div></li>\n";
+        return "<li><a href=\"$sLink\" class=\"showComment\" ".
+               "data-id=\"{$oRow->commentId}\">$oRow->subject</a>". 
+               ' by '.forum_lookup_user($oRow->userId)." on {$oRow->time}".
+               "<div id=\"comment-{$oRow->commentId}\"></div></li>\n";
     }
 
     /**
