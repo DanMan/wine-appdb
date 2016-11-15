@@ -365,7 +365,7 @@ class maintainer
         if(!$hResult)
             return null;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
         return new maintainer(null, $oRow);
     }
 
@@ -376,7 +376,7 @@ class maintainer
         if(!$hResult)
             return null;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
         return new maintainer(null, $oRow);
     }
 
@@ -646,7 +646,7 @@ class maintainer
         if(!$hResult)
             return false;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
         return $oRow->count > 0;
     }
 
@@ -659,7 +659,7 @@ class maintainer
         if(!$hResult)
             return false;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
         return $oRow->count > 0;
     }
 
@@ -1030,7 +1030,7 @@ class maintainer
         if(!$hResult)
             return false;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
 
         return $oRow->count > 0;
     }

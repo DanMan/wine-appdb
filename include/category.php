@@ -149,7 +149,7 @@ class Category {
         $hResult = query_parameters("SELECT * FROM appCategory WHERE catParent = '?'
                                      ORDER BY catName", $iId);
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oCat = new category($oRow->catId);
             $oCat->sName = $sIndent.$oCat->sName;

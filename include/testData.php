@@ -776,7 +776,7 @@ class testData{
         {
             $iPrevRelease = 0;
             $iIndex = -1;
-            for($i = 0; $oRow = mysql_fetch_object($hResult); $i++)
+            for($i = 0; $oRow = query_fetch_object($hResult); $i++)
             {
                 if($iPrevRelease != $oRow->versionId)
                 {
@@ -1097,10 +1097,10 @@ class testData{
 
         $aRet = array();
 
-        if(!mysql_num_rows($hResult))
+        if(!query_num_rows($hResult))
             return $aRet;
 
-        while(($oRow = mysql_fetch_object($hResult)))
+        while(($oRow = query_fetch_object($hResult)))
             $aRet[] = new testData(0, $oRow);
 
         return $aRet;

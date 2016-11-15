@@ -94,7 +94,7 @@ class maintainerView
         $shReturnTo = BASE.'objectManager.php?sClass=maintainerView&sTitle=View+Maintainers'.$oM->makeUrlPart();
         $oNewOM->setReturnTo($shReturnTo);
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oTableRow = new TableRow();
             $oMaintainerView = new maintainerView(null, $oRow);
@@ -131,7 +131,7 @@ class maintainerView
 
             /* Show all apps/versions that the user maintainers */
             $hAppResult = query_parameters("SELECT * FROM appMaintainers WHERE userId = '?'", $oMaintainerView->iUserId);
-            for($i = 0; $oAppRow = mysql_fetch_object($hAppResult); $i++)
+            for($i = 0; $oAppRow = query_fetch_object($hAppResult); $i++)
             {
                 $oMaintainer = new maintainer(null, $oAppRow);
                 $oTableRow = new TableRow();
@@ -194,7 +194,7 @@ class maintainerView
         if(!$hResult)
             return $hResult;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
 
         return $oRow->count;
     }

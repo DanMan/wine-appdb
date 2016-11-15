@@ -1,9 +1,9 @@
 #!/usr/bin/php
 <?php
-##################################################
-# this script has to be run once a month by cron #
-# it's purpose is to clean the user's table.     #
-##################################################
+/**************************************************/
+/* this script has to be run once a month by cron */
+/* it's purpose is to clean the user's table.     */
+/**************************************************/
 
 require("path.php");
 require(BASE."include/incl.php");
@@ -300,7 +300,7 @@ function maintainerCheck()
 /* remove votes for versions that have been deleted */
 function cleanupVotes()
 {
-    $hResult = mysql_query("SELECT appVotes.* FROM appVotes,appVersion WHERE
+    $hResult = query_appdb("SELECT appVotes.* FROM appVotes,appVersion WHERE
                             appVotes.versionId = appVersion.versionId
                             AND appVersion.state = 'deleted'");
 
@@ -310,7 +310,7 @@ function cleanupVotes()
     $iDeleted = 0;
     $iFailed = 0;
 
-    while($oRow = mysql_fetch_object($hResult))
+    while($oRow = query_fetch_object($hResult))
     {
         $oVote = new vote(null, $oRow);
         if($oVote->delete())
@@ -343,7 +343,7 @@ function updateRatings()
     if(!$hResult)
         return;
 
-    while($oRow = mysql_fetch_object($hResult))
+    while($oRow = query_fetch_object($hResult))
     {
         $oVersion = new version(0, $oRow);
         $oVersion->updateRatingInfo();

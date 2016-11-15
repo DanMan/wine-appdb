@@ -16,7 +16,7 @@ abstract class Tag extends ObjectManagerBase
             $hResult = query_parameters("SELECT * FROM ? WHERE textId = '?'", $this->objectGetSQLTable(), $sTextId);
 
             if($hResult)
-                $oRow = mysql_fetch_object($hResult);
+                $oRow = query_fetch_object($hResult);
         }
 
         if(!is_numeric($iId) && !$oRow)
@@ -27,7 +27,7 @@ abstract class Tag extends ObjectManagerBase
             $hResult = query_parameters("SELECT * FROM ? WHERE id = '?'", $this->objectGetSQLTable(), $iId);
 
             if($hResult)
-                $oRow = mysql_fetch_object($hResult);
+                $oRow = query_fetch_object($hResult);
         }
 
         if($oRow)
@@ -84,7 +84,7 @@ abstract class Tag extends ObjectManagerBase
             if(!$hResult)
                 return false;
             
-            $oRow = mysql_fetch_object($hResult);
+            $oRow = query_fetch_object($hResult);
             $iPos = $oRow->maxPos + 1;
 
             $hResult = query_parameters("INSERT INTO ? (tagId, taggedId, position) VALUES('?', '?', '?')", $this->getSQLTableForAssignments(), $this->iId, $iId, $iPos);
@@ -131,7 +131,7 @@ abstract class Tag extends ObjectManagerBase
 
         $aRet = array();
         $sClass = $this->getTagClass();
-        while(($oRow = mysql_fetch_object($hResult)))
+        while(($oRow = query_fetch_object($hResult)))
             $aRet[] = new $sClass($oRow->taggedId);
 
         return $aRet;
@@ -144,7 +144,7 @@ abstract class Tag extends ObjectManagerBase
         if(!$hResult)
             return false;
 
-        $this->iId = mysql_insert_id();
+        $this->iId = query_insert_id();
         
         return true;
     }
@@ -168,7 +168,7 @@ abstract class Tag extends ObjectManagerBase
         if(!$hTags)
             return $aRet;
         
-        while(($oRow = mysql_fetch_object($hTags)))
+        while(($oRow = query_fetch_object($hTags)))
             $aRet[] = new $sClass(null, $oRow);
 
         return $aRet;
@@ -191,7 +191,7 @@ public function objectGetEntriesCount()
         if(!$hResult)
             return false;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
 
         return $oRow->count;
     }
@@ -227,7 +227,7 @@ public function objectGetEntriesCount()
         if(!$hResult)
             return $aRet;
 
-        while(($oRow = mysql_fetch_object($hResult)))
+        while(($oRow = query_fetch_object($hResult)))
         {
             $aRet[] = $oRow->tagId;
         }

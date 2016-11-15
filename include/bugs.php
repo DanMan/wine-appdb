@@ -100,11 +100,13 @@ class Bug
         $sQuery = "SELECT *
                    FROM bugs 
                    WHERE bug_id = ".$this->iBug_id;
-        if(query_num_rows(query_bugzilladb($sQuery, "checking bugzilla")) == 0)
+        $sResult = query_bugzilladb($sQuery, "checking bugzilla");
+        if(query_num_rows($sResult) == 0)
         {
             addmsg("There is no bug in Bugzilla with that bug number.", "red");
             return false;
         }
+        unset($sResult);
 
         /* Check for duplicates */
         if($this->isDuplicate())
@@ -546,7 +548,7 @@ class Bug
             $hResult = query_parameters($sQuery, $sState);
         }
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
 
         return $oRow->cnt;
     }

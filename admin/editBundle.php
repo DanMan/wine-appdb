@@ -34,7 +34,7 @@ if($aClean['sCmd'])
         $oApp = new application($aClean['iAppId']);
         /* Check that the app hasn't already been added */
         $hResult = query_parameters("SELECT * FROM appBundle WHERE bundleId = '?' AND appId = '?'", $aClean['iBundleId'], $aClean['iAppId']);
-        if($hResult && mysql_num_rows($hResult) == 0)
+        if($hResult && query_num_rows($hResult) == 0)
         {
             $hResult = query_parameters("INSERT INTO appBundle (bundleId, appId) VALUES".
                                         "('?', '?')",

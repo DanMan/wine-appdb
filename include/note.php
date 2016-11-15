@@ -325,7 +325,7 @@ class Note {
         {
             $hResult = query_parameters("SELECT noteId FROM appNotes WHERE appId = '?' AND (versionId = '?' OR versionId = '?')", $iAppId, APPNOTE_SHOW_FOR_ALL, APPNOTE_SHOW_FOR_APP);
 
-            while(($oRow = mysql_fetch_object($hResult)))
+            while(($oRow = query_fetch_object($hResult)))
                 $aNotes[] = new note($oRow->noteId);
         }
 
@@ -508,7 +508,7 @@ class Note {
         if(!$hResult)
             return false;
 
-        if(($oRow = mysql_fetch_object($hResult)))
+        if(($oRow = query_fetch_object($hResult)))
             return $oRow->count;
 
         return false;

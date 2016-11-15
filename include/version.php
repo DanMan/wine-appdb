@@ -1767,7 +1767,7 @@ class version {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
             $aTests[] = new testData(0, $oRow);
 
         return $aTests;
@@ -1796,7 +1796,7 @@ class version {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oMaintainer = new maintainer(0, $oRow);
 
@@ -1812,7 +1812,7 @@ class version {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oMonitor = new monitor(0, $oRow);
 
@@ -1828,7 +1828,7 @@ class version {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oNote = new note(0, $oRow);
 
@@ -1844,7 +1844,7 @@ class version {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oScreenshot = new screenshot(0, $oRow);
 
@@ -1870,7 +1870,7 @@ class version {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oComment = new comment(0, $oRow);
 
@@ -1885,7 +1885,7 @@ class version {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oUrl = new url(0, $oRow);
 
@@ -1901,7 +1901,7 @@ class version {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oDownload = new downloadurl(0, $oRow);
 

@@ -139,7 +139,7 @@ class FilterSet
         $sQuery = "SELECT * FROM $sTableName";
         $hResult = query_appdb($sQuery);
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $this->addFilterObject(new Filter($oRow->sColumn, $oRow->iType, $oRow->sData));
         }
@@ -210,7 +210,7 @@ class FilterSet
         $sWhere = $this->getFilterCount() ? 'WHERE '.$this->getWhereClause() : '';
         $sQuery = "SELECT * FROM $sTable $sWhere";
 
-        $iLimit = mysql_real_escape_string($iLimit);
+        $iLimit = query_real_escape_string($iLimit);
 
         if($iLimit)
             $sQuery .= " LIMIT 0,$iLimit";
@@ -225,7 +225,7 @@ class FilterSet
 
     function getMatchedItemsCount($sTable)
     {
-        return mysql_num_rows($this->getMatchedItems($sTable));
+        return query_num_rows($this->getMatchedItems($sTable));
     }
 
 }

@@ -99,7 +99,7 @@ class User {
         if(!$oRow)
         {
             // make sure we have a newer version, older versions may not
-            $sResult = mysql_get_server_info();
+            $sResult = query_get_server_info();
             $fVersion = substr($sResult, 0, 3);
 
             // if we have a newer version of mysql, try with the 'old_password()' function

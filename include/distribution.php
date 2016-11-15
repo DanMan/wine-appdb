@@ -268,7 +268,7 @@ class distribution {
         $sQuery = "SELECT * FROM testResults WHERE distributionId = '?'$sExcludeDeleted";
         $hResult = query_parameters($sQuery, $this->iDistributionId);
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
             $aTests[] = new testData(null, $oRow);
 
         return $aTests;

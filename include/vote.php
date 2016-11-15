@@ -19,7 +19,7 @@ class vote
         {
             $hResult = query_parameters("SELECT * FROM appVotes WHERE id = '?'", $iVoteId);
 
-            $oRow = mysql_fetch_object($hResult);
+            $oRow = query_fetch_object($hResult);
         }
 
         if($oRow)
@@ -80,7 +80,7 @@ class vote
         if(!$hResult)
             return $aRet;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
             $aRet[] = new vote(null, $oRow);
 
         return $aRet;
@@ -245,7 +245,7 @@ class voteManager
         if(!$hResult)
             return FALSE;
 
-        if(!($oRow = mysql_fetch_object($hResult)))
+        if(!($oRow = query_fetch_object($hResult)))
             return FALSE;
 
         return $oRow->count;
@@ -267,7 +267,7 @@ class voteManager
         for($i = 0; $i < MAX_VOTES; $i++)
             $aVotes[$i] = null;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
             $aVotes[$oRow->slot-1] = new vote(null, $oRow);
 
         for($i = 0; $i < MAX_VOTES; $i++)
@@ -333,7 +333,7 @@ class voteInspector
 
     public function getVoterCount()
     {
-        return mysql_num_rows($this->getVotes());
+        return query_num_rows($this->getVotes());
     }
 
     public function outputEditor()
@@ -352,7 +352,7 @@ class voteInspector
             return;
         }
 
-        if(mysql_num_rows($hResult) == 0)
+        if(query_num_rows($hResult) == 0)
         {
             echo 'There are no votes for this version';
             return;
@@ -374,7 +374,7 @@ class voteInspector
         $oTableRow->AddTextcell('Comments');
         $oTable->AddRow($oTableRow);
 
-        for($i = 0; $oRow = mysql_fetch_object($hResult); $i++)
+        for($i = 0; $oRow = query_fetch_object($hResult); $i++)
         {
             $oVoter = new user($oRow->userId);
             $oTableRow = new TableRow();
@@ -409,7 +409,7 @@ class voteInspector
 
             $hSubResult = query_parameters("SELECT COUNT(testingId) AS count FROM testResults WHERE submitterId = '?' AND state != 'deleted'", $oVoter->iUserId);
 
-            if($hSubResult && ($oSubRow = mysql_fetch_object($hSubResult)))
+            if($hSubResult && ($oSubRow = query_fetch_object($hSubResult)))
                 $sSubmitted = $oSubRow->count;
             else
                 $sSubmitted = 'DB failure';
@@ -418,7 +418,7 @@ class voteInspector
 
             $hSubResult = query_parameters("SELECT COUNT(commentId) as count FROM appComments WHERE userId = '?'", $oVoter->iUserId);
 
-            if($hSubResult && ($oSubRow = mysql_fetch_object($hSubResult)))
+            if($hSubResult && ($oSubRow = query_fetch_object($hSubResult)))
                 $sSubmitted = $oSubRow->count;
             else
                 $sSubmitted = 'DB failure';

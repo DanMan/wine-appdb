@@ -17,7 +17,7 @@ class TagNoteVersion extends Tag
             $hResult = query_parameters("SELECT * FROM appVersion WHERE versionId = '?'", $iVersionId);
 
             if($hResult)
-                $oRow = mysql_fetch_object($hResult);
+                $oRow = query_fetch_object($hResult);
         }
         
         if($oRow)
@@ -55,7 +55,7 @@ class TagNoteVersion extends Tag
         if(!$hResult)
             return false;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
 
         return $oRow->count;
     }

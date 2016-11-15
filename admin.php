@@ -14,7 +14,7 @@ function updateAppMaintainerStates()
     $hResult = application::objectGetEntries('accepted');
 
     $i = 0;
-    while($oRow = mysql_fetch_object($hResult))
+    while($oRow = query_fetch_object($hResult))
     {
         $oApp = new application(null, $oRow);
         $oApp->updateMaintainerState();
@@ -29,7 +29,7 @@ function updateVersionMaintainerStates()
     $hResult = version::objectGetEntries('accepted');
 
     $i = 0;
-    while($oRow = mysql_fetch_object($hResult))
+    while($oRow = query_fetch_object($hResult))
     {
         $oVersion = new version(null, $oRow);
         $oVersion->updateMaintainerState();
@@ -47,7 +47,7 @@ function fixNoteLinks()
     echo 'The following notes are set to show for app and all versions:<br />';
     $iCount = 0;
     $iSkipped = 0;
-    while(($oRow = mysql_fetch_object($hResult)))
+    while(($oRow = query_fetch_object($hResult)))
     {
         $oNote = new note(null, $oRow);
         $iNoteId = $oNote->objectGetId();
@@ -62,7 +62,7 @@ function fixNoteLinks()
 
             $hResultTag = query_parameters("SELECT COUNT(*) as count FROM tags_NoteVersion_assignments WHERE tagId = '?' AND taggedId = '?'", $iVersionId, $oRow->noteId);
 
-            $oRowTag = mysql_fetch_object($hResultTag);
+            $oRowTag = query_fetch_object($hResultTag);
         
             if(!$oRowTag->count)
             {
@@ -85,7 +85,7 @@ function fixNoteLinks()
     echo '<br /><br />The following notes are set to show for all versions:<br />';
     $iCount = 0;
     $iSkipped = 0;
-    while(($oRow = mysql_fetch_object($hResult)))
+    while(($oRow = query_fetch_object($hResult)))
     {
         $oNote = new note(null, $oRow);
         $iNoteId = $oNote->objectGetId();
@@ -100,7 +100,7 @@ function fixNoteLinks()
 
             $hResultTag = query_parameters("SELECT COUNT(*) as count FROM tags_NoteVersion_assignments WHERE tagId = '?' AND taggedId = '?'", $iVersionId, $oRow->noteId);
 
-            $oRowTag = mysql_fetch_object($hResultTag);
+            $oRowTag = query_fetch_object($hResultTag);
         
             if(!$oRowTag->count)
             {
@@ -123,7 +123,7 @@ function fixNoteLinks()
     echo '<br /><br />The following notes are set to show for specific versions:<br />';
     $iCount = 0;
     $iSkipped =0;
-    while(($oRow = mysql_fetch_object($hResult)))
+    while(($oRow = query_fetch_object($hResult)))
     {
         $oNote = new note(null, $oRow);
         $iNoteId = $oNote->objectGetId();
@@ -134,13 +134,13 @@ function fixNoteLinks()
         
         $hResult2 = query_parameters("SELECT DISTINCT(versionId) FROM appNotes WHERE linkedWith = '?'", $oNote->objectGetId());
         
-        while(($oRow2 = mysql_fetch_object($hResult2)))
+        while(($oRow2 = query_fetch_object($hResult2)))
         {
             $iVersionId = $oRow2->versionId;
             
             $hResultTag = query_parameters("SELECT COUNT(*) as count FROM tags_NoteVersion_assignments WHERE tagId = '?' AND taggedId = '?'", $iVersionId, $oRow->noteId);
 
-            $oRowTag = mysql_fetch_object($hResultTag);
+            $oRowTag = query_fetch_object($hResultTag);
         
             if(!$oRowTag->count)
             {
@@ -160,7 +160,7 @@ function fixNoteLinks()
 
     echo '<br /><br />The following notes are set to show on app page:<br />';
     $iCount = 0;
-    while(($oRow = mysql_fetch_object($hResult)))
+    while(($oRow = query_fetch_object($hResult)))
     {
         $oNote = new note(null, $oRow);
         $oApp = new Application($oNote->iAppId);
@@ -178,11 +178,11 @@ function fixNoteLinks()
     
     $iTagsCreated = 0;
     $iSkipped = 0;
-    while(($oRow = mysql_fetch_object($hResult)))
+    while(($oRow = query_fetch_object($hResult)))
     {
         $hResultTag = query_parameters("SELECT COUNT(*) as count FROM tags_NoteVersion_assignments WHERE tagId = '?' AND taggedId = '?'", $oRow->versionId, $oRow->noteId);
 
-        $oRowTag = mysql_fetch_object($hResultTag);
+        $oRowTag = query_fetch_object($hResultTag);
         
         if(!$oRowTag->count)
         {
@@ -199,7 +199,7 @@ function fixNoteLinks()
     
     echo "<br />Deleting note links<br />";
     $hResult = query_parameters("DELETE FROM appNotes WHERE linkedWith != '0'");
-    echo "Deleted ".mysql_affected_rows()." links<br />";
+    echo "Deleted ".query_affected_rows()." links<br />";
     
 }
 

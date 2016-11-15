@@ -797,7 +797,7 @@ class ObjectManager
         else
             $sMailWord = "all";
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oObject = new $this->sClass(null, $oRow);
 
@@ -1781,10 +1781,10 @@ class ObjectManager
                 $iRows = $oObject->objectGetEntriesCount($sState);
             } else
             {
-                $iRows = mysql_real_escape_string($iRows);
+                $iRows = query_real_escape_string($iRows);
             }
 
-            $iStart = mysql_real_escape_string($iStart);
+            $iStart = query_real_escape_string($iStart);
 
             $sLimit = " LIMIT $iStart,$iRows";
         }

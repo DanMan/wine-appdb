@@ -117,7 +117,7 @@ function test_class($sClassName, $aTestMethods)
                 $oTestObject2 = create_object($sClassName, $oUser, false);
 
                 /* objectGetEntries() and objectGetEntriesCount() should return matching results */
-                $iExpected = mysql_num_rows($oTestObject2->objectGetEntries('accepted'));
+                $iExpected = query_num_rows($oTestObject2->objectGetEntries('accepted'));
                 $iReceived = $oTestObject2->objectGetEntriesCount('accepted');
                 if($iExpected != $iReceived)
                 {
@@ -130,7 +130,7 @@ function test_class($sClassName, $aTestMethods)
 
                 /* Now test for queued objects, as admin */
                 $oUser->addPriv('admin');
-                $iExpected = mysql_num_rows($oTestObject2->objectGetEntries('queued'));
+                $iExpected = query_num_rows($oTestObject2->objectGetEntries('queued'));
                 $iReceived = $oTestObject2->objectGetEntriesCount('queued');
                 $oUser->delPriv('admin');
                 if($iExpected != $iReceived)

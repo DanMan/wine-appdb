@@ -548,7 +548,7 @@ class FilterInterface
 
         $oTable = new Table();
 
-        while($aRow = mysql_fetch_row($hResult))
+        while($aRow = query_fetch_row($hResult))
         {
             $oRow = new TableRow();
 

@@ -1327,7 +1327,7 @@ class Application {
 
         $hResult = $this->_internal_retrieve_all_versions($bOnlyAccepted, $bIncludeObsolete, $bIncludeDeleted);
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
             $aVersions[] = new version($oRow->versionId);
 
         return $aVersions;
@@ -1398,7 +1398,7 @@ class Application {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oUrl = new url(0, $oRow);
             $aChildren += $oUrl->objectGetChildren($bIncludeDeleted);
@@ -1412,7 +1412,7 @@ class Application {
         if(!$hResult)
             return FALSE;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oMaintainer = new maintainer(0, $oRow);
             $aChildren += $oMaintainer->objectGetChildren($bIncludeDeleted);

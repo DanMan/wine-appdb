@@ -335,13 +335,13 @@ class Comment {
 
         if($iNumRows)
         {
-            $iStart = mysql_real_escape_string($iStart);
-            $iNumRows = mysql_real_escape_string($iNumRows);
+            $iStart = query_real_escape_string($iStart);
+            $iNumRows = query_real_escape_string($iNumRows);
             $sLimit = " LIMIT $iStart,$iNumRows";
         }
 
         if($sOrderBy)
-            $sOrderBy = " ORDER BY ".mysql_real_escape_string($sOrderBy);
+            $sOrderBy = " ORDER BY ".query_real_escape_string($sOrderBy);
 
         $hResult = query_parameters("SELECT * FROM appComments$sExtraTables$sWhereFilter$sOrderBy$sLimit");
 
@@ -371,7 +371,7 @@ class Comment {
         if(!$hResult)
             return null;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
 
         return $oRow->count;
     }
@@ -386,7 +386,7 @@ class Comment {
 
     public function objectDrawCustomTable($hResult, $sQueued)
     {
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
             comment::view_app_comment($oRow, true);
     }
 
@@ -660,7 +660,7 @@ class Comment {
         if(!$hResult)
             return $aObjects;
 
-        while($oRow = mysql_fetch_object($hResult))
+        while($oRow = query_fetch_object($hResult))
         {
             $oComment = new comment(null, $oRow);
             $aObjects += $oComment->objectGetChildren();

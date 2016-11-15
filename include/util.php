@@ -83,7 +83,7 @@ function print_short_date($sTimestamp)
 
 function mysqltimestamp_to_unixtimestamp($sTimestamp)
 {
-    $sResult = mysql_get_server_info();
+    $sResult = query_get_server_info();
     $fVersion = substr($sResult, 0, 3);
 
     /* This differs between MySQL versions, newer ones are in the form

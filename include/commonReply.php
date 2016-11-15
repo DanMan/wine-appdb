@@ -15,7 +15,7 @@ class CommonReply extends ObjectManagerBase
             $hResult = query_parameters("SELECT * FROM ? WHERE id  = '?'", $this->objectGetSQLTable(), $iId);
             
             if($hResult)
-                $oRow = mysql_fetch_object($hResult);
+                $oRow = query_fetch_object($hResult);
         }
         
         if($oRow)
@@ -42,7 +42,7 @@ class CommonReply extends ObjectManagerBase
         if(!$hResult)
             return false;
 
-        $this->iId = mysql_insert_id();
+        $this->iId = query_insert_id();
         
         foreach($this->aTags as $iTag)
         {
@@ -73,7 +73,7 @@ class CommonReply extends ObjectManagerBase
         if(!$hResult)
             return false;
 
-        $oRow = mysql_fetch_object($hResult);
+        $oRow = query_fetch_object($hResult);
         return $oRow->count;
     }
 
