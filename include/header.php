@@ -32,30 +32,84 @@
 </head>
 <body>
 
-<div id="logo_glass"><a href="<?php echo BASE; ?>"><img src="<?php echo BASE; ?>images/winehq_logo_glass_sm.png" alt=""></a></div>
-<div id="logo_text"><a href="<?php echo BASE; ?>"><img src="<?php echo BASE; ?>images/winehq_logo_text.png" alt="WineHQ" title="WineHQ"></a></div>
+<nav>
+    <div id="whq-tabs">
+        <div class="whq-tabs-menu">&#9776;</div>
+        <ul>
+            <li><a href="https://www.winehq.org/">WineHQ</a></li>
+            <li><a href="https://wiki.winehq.org/">Wiki</a></li>
+            <li class="s"><a href="https://appdb.winehq.org/">AppDB</a></li>
+            <li><a href="https://bugs.winehq.org/">Bugzilla</a></li>
+            <li><a href="https://forums.winehq.org/">Forums</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</nav>
 
-<div id="logo_blurb"><?php echo preg_replace("/^ - /", "", $title); ?></div>
+<div id="whq-logo-glass"><a href="https://www.winehq.org/"><img src="https://www.winehq.org/images/winehq_logo_glass.png" alt=""></a></div>
+<div id="whq-logo-text"><a href="https://www.winehq.org/"><img src="https://www.winehq.org/images/winehq_logo_text.png" alt="WineHQ" title="WineHQ"></a></div>
 
-<div id="search_box">
-  <form action="//www.winehq.org/search" id="cse-search-box" style="margin: 0; padding: 0;">
-    <span style="color: #ffffff;">Search:</span> <input type="text" name="q" size="20">
-  </form>
+<div id="whq-search_box">
+    <form action="https://www.winehq.org/search" id="cse-search-box">
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="text" name="q" size="20" id="searchInput" class="form-control">
+        </div>
+    </form>
 </div>
 
-<div id="tabs">
-    <ul>
-        <li><a href="//www.winehq.org/">WineHQ</a></li>
-        <li><a href="http://wiki.winehq.org/">Wiki</a></li>
-        <li class="s"><a href="//appdb.winehq.org/">AppDB</a></li>
-        <li><a href="//bugs.winehq.org/">Bugzilla</a></li>
-        <li><a href="//forum.winehq.org/">Forums</a></li>
-    </ul>
-</div>
+<?php
 
-<div id="main_content">
+// Display Status Messages
+$GLOBALS['session']->dumpmsgbuffer();
+if (is_array($GLOBALS['session']->msg) and count($GLOBALS['session']->msg) > 0)
+{
+    echo "<div id=\"whq-alert\">\n";
+    foreach ($GLOBALS['session']->msg as $msg)
+    {
+        if (empty($msg))
+            continue;
+        $msg_color = (!empty($msg['color']) ? " style=\"color: {$msg['color']};\"" : '');
+        echo "<p{$msg_color}><i class=\"fa fa-exclamation-circle\"></i> {$msg['msg']}</p>\n";
+        unset($msg_color);
+    }
+    echo "</div>\n";
+}
 
-  <div class="rbox">
-  <b class="rtop"><b class="r1"></b><b class="r2"></b><b class="r3"></b><b class="r4"></b></b>
-    <div class="content" style="padding: 20px 20px 10px 80px">
-    <!-- Start Content -->
+// Display Sidebar
+global $_APPDB_sidebar_func_list;
+echo "<div id=\"sidebar\">\n";
+
+// TURN on GLOBAL ADMIN MENU
+if ($_SESSION['current']->hasPriv("admin"))
+{
+    include(BASE."include/sidebar_admin.php");
+    apidb_sidebar_add("global_admin_menu");
+}
+else if ($_SESSION['current']->isMaintainer())
+{
+    /* if the user maintains anything, add their menus */
+    include(BASE."include/sidebar_maintainer_admin.php");
+    apidb_sidebar_add("global_maintainer_admin_menu");
+}
+
+// Login Menu
+include(BASE."include/sidebar_login.php");
+apidb_sidebar_add("global_sidebar_login");
+
+// Main Menu
+include(BASE."include/sidebar.php");
+apidb_sidebar_add("global_sidebar_menu");
+
+// LOOP and display menus
+for($i = 0; $i < sizeof($_APPDB_sidebar_func_list); $i++)
+{
+    $func = $_APPDB_sidebar_func_list[$i];
+    $func();
+}
+echo "</div>\n";
+
+?>
+
+<div id="whq-page-body">
+<!-- Start Content -->

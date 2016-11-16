@@ -55,6 +55,9 @@ $(document).ready(function()
         });
     });
 
+    // remove alert messages by clicking
+    $("#whq-alert").click(function(){ $(this).fadeOut("slow"); });
+
     // debug log clicker
     $("div#dlogt").toggleClick(
     function()

@@ -254,52 +254,6 @@ function apidb_header($title = 0)
 
     // Display Header
     include(BASE."include/header.php");
-
-    // Display Sidebar
-    global $_APPDB_sidebar_func_list;
-    echo "<div id=\"sidebar\">\n<ul>\n";
-
-    // TURN on GLOBAL ADMIN MENU
-    if ($_SESSION['current']->hasPriv("admin"))
-    {
-        include(BASE."include/sidebar_admin.php");
-        apidb_sidebar_add("global_admin_menu");
-    } else if($_SESSION['current']->isMaintainer()) /* if the user maintains anything, add their menus */
-    {
-        include(BASE."include/sidebar_maintainer_admin.php");
-        apidb_sidebar_add("global_maintainer_admin_menu");
-    }
-
-    // Login Menu
-    include(BASE."include/sidebar_login.php");
-    apidb_sidebar_add("global_sidebar_login");
-
-    // Main Menu
-    include(BASE."include/sidebar.php");
-    apidb_sidebar_add("global_sidebar_menu");
-
-    //LOOP and display menus
-    for($i = 0; $i < sizeof($_APPDB_sidebar_func_list); $i++)
-    {
-        $func = $_APPDB_sidebar_func_list[$i];
-        $func();
-    }
-    echo "</ul>\n</div>\n";
-
-    // Display Status Messages
-    $GLOBALS['session']->dumpmsgbuffer();
-    if (is_array($GLOBALS['session']->msg) and count($GLOBALS['session']->msg) > 0)
-    {
-        echo html_frame_start("","300","",5);
-        foreach ($GLOBALS['session']->msg as $msg)
-        {
-            if ($msg['color'] == "red")
-               $msg['color'] = "{$msg['color']}; text-decoration: blink;";
-            echo "<div align=\"center\" class=\"session_note\" style=\"color: {$msg['color']};\"> {$msg['msg']} </div>";
-        }
-        echo html_frame_end("&nbsp;");
-        echo "<br>\n";
-    }
 }
 
 /**

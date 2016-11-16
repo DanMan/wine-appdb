@@ -1,13 +1,11 @@
-    <!-- End Content -->
-    </div>
-  <b class="rbottom"><b class="r4"></b><b class="r3"></b><b class="r2"></b><b class="r1"></b></b>
-  </div>
 
+<!-- End Content -->
 </div>
 
 <div id="footer">
+    <a href="https://wiki.winehq.org/WineHQ_Wiki:Privacy_policy">Privacy Policy</a><br><br>
     Hosted By
-    <a href="http://www.codeweavers.com/"><img src="<?php echo BASE; ?>images/cw_logo_sm.png" alt="CodeWeavers"
+    <a href="http://www.codeweavers.com/"><img src="https://www.winehq.org/images/cw_logo_sm.png" alt="CodeWeavers"
     title="CodeWeavers - Run Windows applications and games on Mac and Linux"></a>
 </div>
 
