@@ -10,14 +10,13 @@ class htmlmenu
     {
         if (!empty($form))
             echo "<form action=\"$form\" method=\"post\">\n";
+        echo '<ul>';
         echo '<li class="top"><p>'.$name.'</p></li>';
     }
 
     // add a table row
     public function add($sName, $shUrl = null, $sAlign = "left")
     {
-        $oTableRow = new TableRow();
-
         if($shUrl)
         {
             echo "<li><p><a href=\"{$shUrl}\">{$sName}</a></p></li>\n";
@@ -37,8 +36,7 @@ class htmlmenu
     // menu complete
     public function done($form = null)
     {
-        echo '<li class="bot"></li>';
-
+        echo '</ul>';
         if (!empty($form))
             echo "</form>\n";
     }
