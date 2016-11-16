@@ -12,10 +12,10 @@ require("path.php");
 require(BASE."include/incl.php");
 
 apidb_header("Wine Application Database");
+
 ?>
     <img style="float:right;" src="images/appdb_montage.jpg" width=391 height=266 alt="Wine AppDB">
 
-<div class='default_container'>    
 <h1>Welcome</h1>
 
 <p>This is the Wine Application Database (AppDB). Here you can get information on application
