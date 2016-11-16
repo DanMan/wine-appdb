@@ -180,9 +180,7 @@ if(isset($aClean['sSubmit']) && $aClean['sSubmit'] == "Update")
     }
 }
 
-apidb_header("User Preferences");
-
-echo "<div class='default_container'>\n";
+apidb_header();
 
 echo "<form method=\"post\" action=\"preferences.php\">\n";
 
@@ -195,7 +193,7 @@ if( isset($aClean['iUserId']) && $oUser->iUserId == $aClean['iUserId'])
     echo "<input type=\"hidden\" name=\"iUserId\" value=\"".$aClean['iUserId']."\">\n";
 }
 
-echo html_frame_start("Preferences for ".$oUser->sRealname, "80%");
+echo html_frame_start("Preferences for ".$oUser->sRealname);
 
 // build a table
 $oTable = new Table();
@@ -226,10 +224,9 @@ if( !isset($aClean['iUserId']) || $oUser->iUserId != $aClean['iUserId'])
 echo $oTable->GetString();
 
 echo html_frame_end();
-echo "<br> <div align=center> <input type=\"submit\" name='sSubmit' value=\"Update\"> </div> <br>\n";
+echo "<div><input type=\"submit\" name='sSubmit' value=\"Update\" class=\"btn btn-primary\"></div>\n";
 echo "</form>\n";
 
-echo "</div>\n";
 
 apidb_footer();
 ?>
