@@ -1,22 +1,8 @@
 <?php
-
-$_indent_level = 0;
-
-function do_indent($str, $v = 0)
-{
-    global $_indent_level;
-
-    if($v < 0)
-        $_indent_level += $v;
-
-    if($_indent_level > 0)
-        $str =  str_repeat("  ", $_indent_level) . $str;
-
-    if($v > 0)
-        $_indent_level += $v;
-
-    return $str . "\n";
-}
+/**
+ * Basic HTML functions
+ *  FIXME -- get rid of the frame and table functions
+ */
 
 function do_html_tr($t, $arr, $class, $extra)
 {
@@ -27,7 +13,7 @@ function do_html_tr($t, $arr, $class, $extra)
     if(strlen($extra))
         $extra = " $extra";
 
-    $str = do_indent("<tr$class$extra>", 1);
+    $str = "<tr$class$extra>";
     for($i = 0; $i < sizeof($arr); $i++)
     {
         /* If it is not an array, it contains the entire table cell.  If it
@@ -51,14 +37,14 @@ function do_html_tr($t, $arr, $class, $extra)
 
         if(stristr($val, "<$t"))
         {
-            $str .= do_indent($val);
+            $str .= $val;
         }
         else
         {
-            $str .= do_indent("<$t$class$extra> ".trim($val)." </$t>", 0);
+            $str .= "<$t$class$extra> ".trim($val)." </$t>";
         }
     }
-    $str .= do_indent("</tr>", -1);
+    $str .= "</tr>";
 
     return $str;
 }
@@ -72,50 +58,12 @@ function html_tr($arr, $class = "", $extra = "")
 // HTML TABLE
 function html_table_begin($extra = "")
 {
-    return do_indent("<table $extra>", 1);
+    return "<table $extra>";
 }
 
 function html_table_end()
 {
-    return do_indent("</table>", -1);
-}
-
-
-// HTML HTML
-function html_begin()
-{
-    return do_indent("<html>", 1);
-}
-
-function html_end()
-{
-    return do_indent("</html>", -1);
-}
-
-
-// HTML HEAD
-function html_head($title, $stylesheet = 0)
-{
-    $str  = do_indent("<head>", 1);
-    $str .= do_indent("<title> $title </title>", 0);
-    if($stylesheet)
-        $str .= do_indent("<link rel=\"stylesheet\" ".
-                  "href=\"$stylesheet\" type=\"text/css\">", 0);
-    $str .= do_indent("</head>", -1);
-
-    return $str;
-}
-
-
-// HTML BODY
-function html_body_begin()
-{
-    return do_indent("<body>", 1);
-}
-
-function html_body_end()
-{
-    return do_indent("</body>", -1);
+    return "</table>";
 }
 
 // HTML A HREF
@@ -124,15 +72,15 @@ function html_ahref($label, $url, $extra = "")
     $label = stripslashes($label);
     if (!$label and $url)
     {
-        return do_indent(" <a href=\"$url\" $extra>$url</a> ");
+        return " <a href=\"$url\" $extra>$url</a> ";
     }
     else if (!$label)
     {
-        return do_indent(" &nbsp; ");
+        return " &nbsp; ";
     }
     else
     {
-        return do_indent(" <a href=\"$url\" $extra>$label</a> ");
+        return " <a href=\"$url\" $extra>$label</a> ";
     }
 }
 
@@ -153,51 +101,27 @@ function html_imagebutton($text, $url, $extra = "")
 
 function html_frame_start($title = "", $width = "", $extra = "", $innerPad = 0)
 {
-
-    if ($width) { $width = 'width="'.$width.'"'; }
-
-$str = '<table '.$width.' border="0" class="mainTable" cellpadding="0" cellspacing="0" align="center">'."\n";
-
-if ($title)
-{
-$str .= '
-<tr><td colspan=3><table width="100%" border=0 cellpadding=0 cellspacing=0>
-<tr><td>
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="topMenu">
-      <tr>
-        <td width="100%" rowspan="3" align="center"><span class="menuTitle">'.$title.'</span></td>
-      </tr>
-    </table>
-</td></tr>
-</table></td></tr>
-';
-}
-
-$str .= '
-<tr>
-<td><img src="'.BASE.'images/blank.gif" width="5" height="1" alt=""></td>
-<td width="100%"><table width="100%" border=0 cellpadding=0 cellspacing=0>
-    <tr><td class=topMenu>
-        <table width="100%" border=0 cellpadding="'.$innerPad.'" cellspacing="1" '.$extra.'><tr><td class=white>
-';
-
+    $style = "";
+    if ($width or $innerPad)
+    {
+        $style .= 'style="';
+        if ($width)
+            $style .= "width:{$width};";
+        if ($innerPad)
+            $style .= "padding:{$innerPad}px;";
+        $style .= '"';
+    }
+    $str = "<div class=\"html_frame\" {$style} {$extra}>\n";
+    if ($title)
+    {
+        $str .= "<div class=\"html_frame_title\">{$title}</div>\n";
+    }
     return $str;
 }
 
 function html_frame_end($text = "")
 {
-    
-$str = '
-        </td></tr></table></td></tr>
-    </table>
-</td>
-<td><img src="'.BASE.'images/blank.gif" width="5" height="1" alt=""></td>
-</tr>
-</table>
-<br>
-';
-    
-    return $str;
+    return "</div>\n";
 }
 
 
@@ -226,7 +150,7 @@ function html_back_link($howmany = 1, $url = "")
     {
         $url = 'javascript:history.back('.$howmany.');';
     }
-    return '<p>&nbsp;&nbsp; <a href="'.htmlentities($url).'">&lt;&lt; Back</a></p>'."\n";
+    return '<p><a href="'.htmlentities($url).'" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back</a></p>'."\n";
 }
 
 
