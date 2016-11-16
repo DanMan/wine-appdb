@@ -225,128 +225,6 @@ PRE {
     border-top-right-radius: 5px;
 }
 
-
-
-/*
-  =====================================================================================================================
-   All Other Classes
-  =====================================================================================================================
-*/
-
-/* header text */
-H1.title            { color: #A50D0D; border-bottom: 1px solid #A50D0D; margin: 0px; }
-H3.title            { color: #A50D0D; border-bottom: 1px solid #A50D0D; margin: 0px; }
-P.newsdate          { color: #4e4e4e; font-size: 10pt; text-align: right; margin: 0 5px 10px 0;}
-P.newstitle         { color: #4e4e4e; font-size: 12pt; font-weight: bold; border-bottom: 1px solid #C0C0C0; margin-bottom: 5px; }
-P.newstitle A       { color: #4e4e4e; text-decoration: none; }
-P.newstitle A:hover { color: #FF6666; text-decoration: none; }
-DIV.newsblock       { margin: 0 5px 25px 10px; padding: 0; }
-
-/* stuff */
-img                 { border: 0; }
-.clear              { clear: both; }
-
-/* Link Colors */
-A                   { color: #A50D0D; }
-A:visited           { color: #FF0000; }
-A:hover             { color: #FF6666; text-decoration: underline; }
-A:active            { color: #FF0000; }
-A.hidden            { text-decoration: none; color: #000000; }
-
-/* General fonts and sizes */
-OL,UL,P             { font-size: 10pt; }
-TD,TR,TH            { font-size: 10pt; }
-INPUT               { font-size: 10pt; }
-PRE                 {
-                     font-family: monospace; font-size: 10pt;
-                     white-space: pre-wrap;
-                     white-space: -moz-pre-wrap !important;
-                    }
-.small              { font-size: 8pt; }
-
-/* Hn Sizes */
-H1                  { font-size: 20pt; }
-H2                  { font-size: 18pt; }
-H3                  { font-size: 14pt; }
-H4                  { font-size: 12pt; }
-H5                  { font-size: 10pt; }
-
-/* HR */
-hr
-{
-    border: 0;
-    color: #A50D0D;
-    background-color: #A50D0D;
-    height: 1px;
-    width: 100%;
-    text-align: left;
-}
-
-/* Rounded Corner Box */
-div.rbox                              { display:block; margin: 0px; }
-div.rbox b.rtop, b.rbottom            { display:block; margin: 0px;  }
-div.rbox b.rtop b, b.rbottom b        { display:block; height: 1px; overflow: hidden; background: #FFFFFF; }
-div.rbox b.r1                         { margin: 0 5px; }
-div.rbox b.r2                         { margin: 0 3px; }
-div.rbox b.r3                         { margin: 0 2px; }
-div.rbox b.rtop b.r4, b.rbottom b.r4  { margin: 0 1px; height: 2px}
-div.rbox div.content                  { margin: 0; background-color: #FFFFFF; }
-
-/* template navigation links */
-.link-container     { position: relative; height: 1.2em; }
-.link-container p   { position: absolute; width: 50%; margin: 0; }
-.left-link          { left: 0; }
-.right-link         { right: 0; text-align: right; }
-
-/* Status colors */
-.hdr                { background-color: #000000; color: #ffffff; }
-.pct0               { background-color: #ff5050; }
-.pct5               { background-color: #ff5d4f; }
-.pct10              { background-color: #ff694e; }
-.pct15              { background-color: #ff764d; }
-.pct20              { background-color: #ff824b; }
-.pct25              { background-color: #ff8f4a; }
-.pct30              { background-color: #ff9b49; }
-.pct35              { background-color: #ffa848; }
-.pct40              { background-color: #ffb447; }
-.pct45              { background-color: #ffc146; }
-.pct50              { background-color: #ffcd45; }
-.pct55              { background-color: #ffda43; }
-.pct60              { background-color: #ffe642; }
-.pct65              { background-color: #fff341; }
-.pct70              { background-color: #ffff40; }
-.pct75              { background-color: #dcff48; }
-.pct80              { background-color: #c8ff50; }
-.pct85              { background-color: #b4ff58; }
-.pct90              { background-color: #a0ff60; }
-.pct95              { background-color: #8cff60; }
-.pct100             { background-color: #60ff60; }
-.nonexistent        { background-color: #ff5050; }
-.poor               { background-color: #ff8f4a; }
-.outdated           { background-color: #ffcd45; }
-.outdadeq           { background-color: #ffff40; }
-.adequate           { background-color: #dcff48; }
-.adeqgood           { background-color: #c0ff54; }
-.good               { background-color: #60ff60; }
-
-/* ToDo colors */
-.todo               { background-color: red; }
-.inprogress         { background-color: yellow; }
-.done               { background-color: limegreen; }
-.invalid            { color: gray; text-decoration: line-through; }
-
-/* Fun Projects */
-.works              { background-color: lightblue; }
-.abandoned          { background-color: gray; }
-.modified           { font-weight: bold; }
-.submitted          { font-style: italic; }
-.committed          { font-style: italic; color: gray; }
-
-/* App Support status */
-.gold               { background-color: wheat; }
-.silver             { background-color: silver; }
-
-
 /*
     ====================================================================================================================
     debug log
@@ -405,3 +283,347 @@ div.appdb_dump {
     overflow: auto;
 }
 div.appdb_dump xmp { margin: 0; }
+
+/*
+  =====================================================================================================================
+   All Other Classes
+  =====================================================================================================================
+*/
+
+/* header text */
+H1.title            { color: #A50D0D; border-bottom: 1px solid #A50D0D; margin: 0px; }
+H3.title            { color: #A50D0D; border-bottom: 1px solid #A50D0D; margin: 0px; }
+P.newsdate          { color: #4e4e4e; font-size: 10pt; text-align: right; margin: 0 5px 10px 0;}
+P.newstitle         { color: #4e4e4e; font-size: 12pt; font-weight: bold; border-bottom: 1px solid #C0C0C0; margin-bottom: 5px; }
+P.newstitle A       { color: #4e4e4e; text-decoration: none; }
+P.newstitle A:hover { color: #FF6666; text-decoration: none; }
+DIV.newsblock       { margin: 0 5px 25px 10px; padding: 0; }
+
+/* stuff */
+img                 { border: 0; }
+.clear              { clear: both; }
+
+/* Link Colors */
+A                   { color: #A50D0D; }
+A:visited           { color: #FF0000; }
+A:hover             { color: #FF6666; text-decoration: underline; }
+A:active            { color: #FF0000; }
+A.hidden            { text-decoration: none; color: #000000; }
+
+/* General fonts and sizes */
+OL,UL,P             { font-size: 10pt; }
+TD,TR,TH            { font-size: 10pt; }
+INPUT               { font-size: 10pt; }
+PRE                 {
+                     font-family: monospace; font-size: 10pt;
+                     white-space: pre-wrap;
+                     white-space: -moz-pre-wrap !important;
+                    }
+.small              { font-size: 8pt; }
+
+/* Hn Sizes */
+H1                  { font-size: 20pt; }
+H2                  { font-size: 18pt; }
+H3                  { font-size: 14pt; }
+H4                  { font-size: 12pt; }
+H5                  { font-size: 10pt; }
+
+/* HR */
+hr
+{
+    border: 0;
+    color: #A50D0D;
+    background-color: #A50D0D;
+    height: 1px;
+    width: 100%;
+    text-align: left;
+}
+
+/* template navigation links */
+.link-container     { position: relative; height: 1.2em; }
+.link-container p   { position: absolute; width: 50%; margin: 0; }
+.left-link          { left: 0; }
+.right-link         { right: 0; text-align: right; }
+
+/* Status colors */
+.hdr                { background-color: #000000; color: #ffffff; }
+.pct0               { background-color: #ff5050; }
+.pct5               { background-color: #ff5d4f; }
+.pct10              { background-color: #ff694e; }
+.pct15              { background-color: #ff764d; }
+.pct20              { background-color: #ff824b; }
+.pct25              { background-color: #ff8f4a; }
+.pct30              { background-color: #ff9b49; }
+.pct35              { background-color: #ffa848; }
+.pct40              { background-color: #ffb447; }
+.pct45              { background-color: #ffc146; }
+.pct50              { background-color: #ffcd45; }
+.pct55              { background-color: #ffda43; }
+.pct60              { background-color: #ffe642; }
+.pct65              { background-color: #fff341; }
+.pct70              { background-color: #ffff40; }
+.pct75              { background-color: #dcff48; }
+.pct80              { background-color: #c8ff50; }
+.pct85              { background-color: #b4ff58; }
+.pct90              { background-color: #a0ff60; }
+.pct95              { background-color: #8cff60; }
+.pct100             { background-color: #60ff60; }
+.nonexistent        { background-color: #ff5050; }
+.poor               { background-color: #ff8f4a; }
+.outdated           { background-color: #ffcd45; }
+.outdadeq           { background-color: #ffff40; }
+.adequate           { background-color: #dcff48; }
+.adeqgood           { background-color: #c0ff54; }
+.good               { background-color: #60ff60; }
+
+/* ToDo colors */
+.todo               { background-color: red; }
+.inprogress         { background-color: yellow; }
+.done               { background-color: limegreen; }
+.invalid            { color: gray; text-decoration: line-through; }
+
+/* Fun Projects */
+.works              { background-color: lightblue; }
+.abandoned          { background-color: gray; }
+.modified           { font-weight: bold; }
+.submitted          { font-style: italic; }
+.committed          { font-style: italic; color: gray; }
+
+/* App Support status */
+.gold               { background-color: wheat; }
+.silver             { background-color: silver; }
+
+/* Rating Number */
+.rating { font-family: Helvetica, Arial; font-size: 6pt; color: #333333; }
+
+/* Vote Button */
+.votebutton { background-color: #666666; color: #ffffff; }
+
+/* Rate Button */
+.ratebutton { background-color: #666666; color: #ffffff; }
+
+/* Search Button */
+.searchbutton   { background-color: #666666; color: #ffffff; }
+
+/* Search Field */
+.searchfield    { background-color: #E0E0E0; color: #666666; }
+
+/* Note box */
+.note { padding: 7px; }
+
+/* Main table */
+.mainTable { padding-left: 7px; }
+
+/* Banner div */
+#banner { border: 1px solid black; }
+
+/* Editor textarea */
+#editor { height: 25em; width:700px; }
+
+/* zoom image overlay style */
+.zoom_overlay { position:relative; top:10px; left:10px; margin-left:-32px; padding:0px; }
+
+/*
+  =====================================================================================================================
+   Boxes
+  =====================================================================================================================
+*/
+
+.html_frame {
+    margin: 1em 0 1em 0;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+.html_frame_title {
+    font-size: 120%;
+    font-weight: bold;
+    border-top: 3px solid #732010;
+    border-left: 3px solid #732010;
+    border-right: 3px solid #732010;
+    background-color: #95493A;
+    padding: 5px;
+    color: #ffffff;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+/*
+  =====================================================================================================================
+   Tables
+  =====================================================================================================================
+*/
+
+/* default table styles for appdb (overrides bootstrap defaults) */
+table {
+    border-spacing: 0.25em;
+    border-collapse: separate;
+}
+table td { padding: 0.25em; }
+
+/* box */
+.box-title {
+    background-color: #AAAAAA; color: #FFFFFF; font-weight: bold;
+}
+.box-label {
+    background-color: #C0C0C0;
+}
+.box-body {
+    background-color: #E0E0E0;
+}
+
+TD.cline {
+    background-color: #EEEEEE; color: #000000; 
+    text-align: center; font-weight: bold; font-size: 10pt;
+}
+
+TH.qheader { background-color: #C3C8E5; color: #555555; font-size: 10pt; }
+TR.qheader { background-color: #C3C8E5; color: #555555; font-size: 10pt; }
+
+TABLE.bg { background-color: #FF6666; color: #FFFFFF }
+TABLE.bg2 { background-color: #E0E0E0; }
+TD.bg2 { background-color: #E0E0E0; }
+
+TD.line1 { background-color: #E7E7E7; }
+TD.line2 { background-color: #C0C0C0; color: #505050; font-size: 8pt; }
+TD.line3 { background-color: #6F6F6F; }
+TR.line1 { background-color: #E7E7E7; }
+TR.line2 { background-color: #C0C0C0; color: #505050 }
+TR.line3 { background-color: #6F6F6F; }
+
+
+TH.titlex { background-color: #BBC2E5 }
+TH.title { background-color: #C0C0C0; font-weight: bold }
+TD.title { background-color: #C0C0C0; font-weight: bold }
+TD.btitle { background-color: #FFFFFF }
+
+TH.sqtitle { background-color: #C3C8E5; color: #555555 }
+
+TR.buttons { background-color: #BDDAE5 }
+TD.button { background-color: #BDDAE5 }
+TD.button2 { background-color: #ABB2D5; }
+
+/* misc table styles */
+.rowtitle { background-color: black; color: white; font-weight: bold; }
+
+/* misc backgrounds from color name */
+.white { background-color: #FFFFFF; }
+
+/* query row colors */
+.color0 { background-color: #E0E0E0 }
+.color1 { background-color: #C0C0C0 }
+.color2 { background-color: #FFFFFF }
+.color3 { background-color: #666666 }
+.color4 { background-color: #999999 }
+
+/* Colors for supported apps table */
+.platinum {background-color: #ECECEC; }
+.gold { background-color: #FFF600 }
+.silver { background-color: silver; }
+.bronze { background-color: #FCBA0A; }
+.garbage { background-color: #999966; }
+
+/* labels */
+TD.label { font-weight: bold }
+
+/* for inwine/intwine */
+TD.yes { color: #00B100; font-style: italic; text-align: center }
+TD.no  { color: #B10000; font-style: italic; text-align: center }
+TD.stub { color: #0000B1; font-style: italic; text-align: center }
+
+/* width of the application column in the top 'X' lists on the main page */
+TD.app_name { padding:10px; width: 150px }
+
+/*
+  =====================================================================================================================
+   Application description and notes
+  =====================================================================================================================
+*/
+
+.title { font-weight: bold; }
+
+.subtitle { text-decoration: underline; font-style: italic; }
+
+/* Define <code> to behave like "generic" quoted software input and output. */
+.code { background-color: #efefef; padding: 0.5em; border-width: 1pt;
+        border-style: solid; border-color: #c0c0c0; white-space: -moz-pre-wrap;
+        font-family: monospace; }
+
+/* bash shell command prompt input and output */
+.quote_terminal { background-color: #f0ece6; padding: 0.5em; border-width: 1pt;
+                  border-style: solid; border-color: #c0c0c0; white-space: -moz-pre-wrap;
+                  font-family: monospace; }
+
+/* graphical user interface input and output */
+.quote_window { background-color: #c0e0f0; padding: 0.5em; border-width: 1pt;
+                border-style: solid; border-color: #c0c0c0; white-space: -moz-pre-wrap;
+                font-family: monospace; }
+
+/*
+  Wine registry modification.
+  Modifying the registry is a somewhat common wine task,  and other How To's already
+  uniquely quote registry modifications, so here is a CSS to formalize this behavior.
+  In practice this tag is not necessary, since, like almost everything else, registry
+  edits are done either via a command prompt (regedit /C foo.reg (once implemented))
+  or via the regedit graphical user interface.
+*/
+.quote_registry { background-color: #c6ffc6; padding: 0.5em; border-width: 1pt;
+                  border-style: solid; border-color: #c0c0c0; white-space: -moz-pre-wrap;
+                  font-family: monospace; }
+
+p {
+      font-family: "bitstream vera sans", "verdana", "arial", "helvetica", sans-serif;
+      font-size: 12px;
+  }
+thead.historyHeader { font-weight: bold }
+
+table.historyTable { border: 1px;
+                     font-family: "bitstream vera sans", "verdana", "arial", "helvetica", sans-serif;
+                     font-size: 12px; }
+
+td.platinum         { background-color: #ECECEC; }
+td.gold             { background-color: #fff600; }
+td.silver           { background-color: silver;  }
+td.bronze           { background-color: #fcba0a; }
+td.garbage          { background-color: #999966; }
+
+td.platinum         { background-color: #ECECEC; }
+tr.gold             { background-color: #fff600; }
+tr.silver           { background-color: silver;  }
+tr.bronze           { background-color: #fcba0a; }
+tr.garbage          { background-color: #999966; }
+tr.warning          { background-color: #ff3333; } /* novascotia salmon */
+tr.howto            { background-color: green;   }
+tr.defaultnote      { background-color: #0066CC; } /* mid-light blue */
+tr.notetitle        { background-color: #cccccc; font-weight: bold; }
+
+/* classes for the version info pane */
+/* version info pane is the right hand pane at the top of the version page */
+div.version_info_pane p { margin:0px; }
+div.info_container { margin:6px; border: 1px solid; }
+div.info_contents { padding:10px; background-color: #eee; }
+div.title_class { font-weight: bold; border-bottom: 1px solid; padding: 4px;
+                  font-size: 140%; background-color: #ddd; }
+
+div.warning          { display: inline; background-color: #ff3333; } /* novascotia salmon */
+div.howto            { display: inline; background-color: green;   }
+div.defaultnote      { display: inline; background-color: #0066CC; } /* mid-light blue */
+
+/* Classes for a note box */
+div.note_container { margin:6px; border: 1px solid; }
+div.note_body { padding: 10px; background-color: #ffe732; }
+div.note_title { font-weight: bold; border-bottom: 1px solid; padding: 4px;
+                 font-size: 140%; background-color: #ffc004; }
+
+/* Boxes for session notes, as used by addmsg() */
+div.session_note { border: 1px solid; margin-bottom: 5px;}
+
+/* classes for the main page */
+div.rating_header { padding: 8px; }
+div.rating_title { padding-bottom: 4px; font-weight: bold; font-size: 160%; }
+div.topx_style { padding:7px; margin:6px; border:2px solid; }
+div.imgarea { text-align:center;    text-align:center;
+    margin-top:0px;
+    margin-bottom:0px;
+    padding:0px;}
+
+/* done */
