@@ -521,28 +521,17 @@ class testData{
  
     function ShowTestResult()
     {
-        echo '<p><b>What works</b><br>',"\n";
-        echo $this->shWhatWorks,"\n";
-        echo '<p><br><b>What does not</b><br>',"\n";
-        echo $this->shWhatDoesnt,"\n";
-        echo '<p><br><b>What was not tested</b><br>',"\n";
-        echo $this->shWhatNotTested,"\n";
-        echo '<p><br><b>Additional Comments</b><br><pre>',"\n";
-        echo $this->sComments,"\n";
-        echo '</pre>',"\n";
+        return "<p><b>What works</b></p>\n<p>{$this->shWhatWorks}</p>\n".
+               "<p><b>What does not</b></p>\n<p>{$this->shWhatDoesnt}</p>\n".
+               "<p><b>What was not tested</b></p>\n<p>{$this->shWhatNotTested}</p>\n".
+               "<p><b>Additional Comments</b></p>\n<pre>{$this->sComments}</pre>\n";
     }
 
     function CreateTestTable()
     {
-        echo '<div class="info_container">',"\n";
-        echo '<div class="title_class">Test Results</div>',"\n";
-        echo '<div class="info_contents">',"\n";
-
         // create the table
         $oTable = new Table();
-        $oTable->SetClass("historyTable");
-        $oTable->SetBorder(1);
-        $oTable->SetWidth("100%");
+        $oTable->SetClass("whq-table whq-table-full");
 
         // setup the table header
         $oTableRowHeader = new TableRow();
@@ -556,7 +545,6 @@ class testData{
         $oTableRowHeader->AddTextCell("Rating");
         $oTableRowHeader->AddTextCell("Submitter");
         $oTable->SetHeader($oTableRowHeader);
-
         return $oTable;
     }
 
@@ -679,31 +667,25 @@ class testData{
             $iIndex++;
         }
 
-        echo $oTable->GetString();
-
-        echo '<br>',"\n"; // put a space after the test results table and the button
-
-        echo '<form method=get action="objectManager.php">'."\n";
+        $output = "";
+        $output .= $oTable->GetString();
+        $output .= '<form method="get" action="objectManager.php">'."\n";
 
         if($rowsUsed >= $iDisplayLimit && $bShowAll)
         {
-            $sShowButtonText = "Limit to $iDisplayLimit tests";
-        } else
+            $sShowButtonText = "Limit to <b>$iDisplayLimit</b> tests";
+        }
+        else
         {
             $sShowButtonText = "Show all tests";
-            echo '<input type="hidden" name="bShowAll" value="true">';
+            $output .= '<input type="hidden" name="bShowAll" value="true">';
         }
 
         $oManager = new objectManager("version", null, $this->iVersionId);
-
-        echo $oManager->makeUrlFormData();
-
-        echo "\t".'<input class="button" type=submit value="'.$sShowButtonText.'">'."\n";
-
-        echo '</form>'."\n";
-
-        echo '</div>',"\n"; // end of the 'info_contents' div
-        echo '</div>',"\n"; // end of the 'info_container' div
+        $output .= $oManager->makeUrlFormData();
+        $output .= '<button type="submit" class="btn btn-default">'.$sShowButtonText."</button>\n";
+        $output .= "</form>\n";
+        return $output;
     }
 
     /* Convert a given rating string to a numeric scale */
