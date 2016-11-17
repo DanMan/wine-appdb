@@ -20,12 +20,10 @@ if(empty($aClean['iCategoryId']))
 
 apidb_header("Vote Stats - Top ".$aClean['iTopNumber']." Applications");
 
-echo "<div class='default_container'>\n";
-
 /* display the selection for the top number of apps to view */
 echo "<form method=\"post\" name=\"sMessage\" action=\"".$_SERVER['PHP_SELF']."\">";
 echo "<b>Number of top apps to display:</b>";
-echo "<select name='iTopNumber'>";
+echo "<select name='iTopNumber' class=\"form-control form-control-inline\">";
 $topNumberArray = array(25, 50, 100, 200);
 
 foreach ($topNumberArray as $i => $value)
@@ -70,7 +68,7 @@ if(!empty($aClean['iCategoryId']))
 /*******************************************************************/
 /* add options for all of the categories that we are recursed into */
 echo "<b>Section:</b>";
-echo '<select name="iCategoryId">';
+echo '<select name="iCategoryId" class="form-control form-control-inline">';
 
 if(empty($aClean['iCategoryId']))
     echo '<option value="0" SELECTED>Any</option>';
@@ -117,10 +115,8 @@ if($subs)
     }
 }
 echo '</select>';
-echo '<input type="submit" value="Refresh">';
+echo ' <input type="submit" value="Refresh" class="btn btn-default">';
 echo '</form>';
-echo '<br>';
-echo '<br>';
 
 /***************************************************/
 /* build a list of the apps in the chosen category */
@@ -163,32 +159,23 @@ if(empty($aClean['iCategoryId']))
 
 if($hResult)
 {
-    echo html_frame_start("", "90%", '', 0);
+    echo html_frame_start();
     
     $oTable = new Table();
-    $oTable->SetWidth("100%");
-    $oTable->SetAlign("center");
+    $oTable->setWidth("100%");
+    $oTable->SetClass("whq-table");
 
     $oTableRow = new TableRow();
-    $oTableRow->SetClass("color4");
-    $oTableRow->AddTextCell("<font color=white>Application Name</font>");
-    $oTableRow->AddTextCell("<font color=white>Votes</font>");
-    $oTable->AddRow($oTableRow);
+    $oTableRow->AddTextCell("Application Name");
+    $oTableRow->AddTextCell("Votes");
+    $oTable->SetHeader($oTableRow);
 
     $c = 1;
     while($oRow = query_fetch_object($hResult))
     {
-        $sColor = ($c % 2) ? "color0" : "color1";
-
-        $oTableRowHighlight = GetStandardRowHighlight($c);
-
         $shLink = version::fullNameLink($oRow->versionId);
-
         $oVersion = new Version($oRow->versionId);
-
         $oTableRowClick = new TableRowClick($oVersion->objectMakeUrl());
-        $oTableRowClick->SetHighlight($oTableRowHighlight);
-
         $oTableRow = new TableRow();
         $oTableRow->SetRowClick($oTableRowClick);
         $oTableRow->SetClass($sColor);
@@ -196,9 +183,7 @@ if($hResult)
         $oTableCell->SetWidth("90%");
         $oTableRow->AddCell($oTableCell);
         $oTableRow->AddTextCell($oRow->count);
-
         $oTable->AddRow($oTableRow);
-
         $c++;
     }
 
@@ -211,13 +196,11 @@ if($hResult)
     /* think that something went wrong with the server */
     if($c == 1)
     {
-        echo '<h2 align="center">No apps found in this category, please vote for your favorite apps!</h2>';
+        echo '<h2>No apps found in this category, please vote for your favorite apps!</h2>';
     }
- 
-    echo '<p align="center"><a href="help/?sTopic=voting">What does this screen mean?</a></p>';
-}
 
-echo "</div>\n";
+    echo '<p><a href="https://wiki.winehq.org/AppDB_Voting_Help">What does this screen mean?</a></p>';
+}
 
 apidb_footer();
 ?>
