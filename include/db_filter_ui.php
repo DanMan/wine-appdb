@@ -174,7 +174,7 @@ class FilterInterface
         $sId = $iId;
 
         $shEditor = "<input type=\"hidden\" name=\"i{$sColumn}Op$sId\" value=\"{$oFilter->getOperatorId()}\">";
-        $shEditor .= "<input type=\"hidden\" name=\"s{$sColumn}Data$sId\" value=\"{$oFilter->getData()}\" />";
+        $shEditor .= "<input type=\"hidden\" name=\"s{$sColumn}Data$sId\" value=\"{$oFilter->getData()}\">";
 
         return $shEditor;
     }
@@ -198,14 +198,14 @@ class FilterInterface
             $sData = $oFilter->getData();
         }
 
-        $shRet = "<input type=\"hidden\" name=\"i{$sColumn}Op$sId\" value=\"$iOp\" />";
+        $shRet = "<input type=\"hidden\" name=\"i{$sColumn}Op$sId\" value=\"$iOp\">";
 
         if($sData == 'true')
             $sChecked = ' checked="checked"';
         else
             $sChecked = '';
 
-        $shRet .= "<input value=\"true\" $sChecked name=\"s{$sColumn}Data$sId\" type=\"checkbox\" />";
+        $shRet .= "<input value=\"true\" $sChecked name=\"s{$sColumn}Data$sId\" type=\"checkbox\">";
         $shRet .= ' '.$oColumn->getDisplayName();
 
         return $shRet;
@@ -225,14 +225,14 @@ class FilterInterface
            If the filter is already active then there are more than one; one to remove */
         if($iId == -1 && sizeof($aTypes) == 1)
         {
-            echo "<input type=\"hidden\" name=\"i{$sColumn}Op$sId\" value=\"{$aTypes[0]}\" />";
+            echo "<input type=\"hidden\" name=\"i{$sColumn}Op$sId\" value=\"{$aTypes[0]}\">";
 
             /* Printing 'equal to' sounds weird if it is the only choice */
             if($aTypes[0] != FILTER_EQUALS)
                 $shEditor .= $oColumn->getOpName($aTypes[0]);
         } else if ($aTypes[0] != FILTER_OPTION_ENUM)
         {
-            $shEditor .= "<select name='i{$sColumn}Op$sId'>";
+            $shEditor .= "<select name='i{$sColumn}Op$sId' class='form-control form-control-inline'>";
 
             if($iId != -1)
             {
@@ -248,18 +248,18 @@ class FilterInterface
                     $sSel = " selected='selected'";
                 else
                     $sSel = '';
-                $shEditor .= "<option value='$iType'$sSel>".$oColumn->getOpName($iType).'</option><br />';
+                $shEditor .= "<option value='$iType'$sSel>".$oColumn->getOpName($iType).'</option><br>';
             }
             $shEditor .= '</select> ';
         } else
         {
-            echo "<input type=\"hidden\" name=\"i{$sColumn}Op$sId\" value=\"{$aTypes[0]}\" />";
+            echo "<input type=\"hidden\" name=\"i{$sColumn}Op$sId\" value=\"{$aTypes[0]}\">";
         }
 
         switch($oColumn->getValueType())
         {
             case FILTER_VALUES_NORMAL:
-                $shEditor .= "<input type='text' value=\"{$oFilter->getData()}\" name='s{$sColumn}Data$sId' size='30' />";
+                $shEditor .= "<input type='text' value=\"{$oFilter->getData()}\" name='s{$sColumn}Data$sId' size='30' class='form-control form-control-inline'>";
             break;
             case FILTER_VALUES_ENUM:
             case FILTER_VALUES_OPTION_ENUM:
@@ -278,7 +278,7 @@ class FilterInterface
 
         $sData = $oFilter->getData();
 
-        $shEditor = "<select name=\"s{$sColumn}Data$sId\">";
+        $shEditor = "<select name=\"s{$sColumn}Data$sId\" class=\"form-control form-control-inline\">";
 
         if($sData)
             $shEditor .= "<option value=\"\">-- remove --</option>";
@@ -314,7 +314,7 @@ class FilterInterface
 
             $shEditor .= $this->getUrlElement($aCounts[$sColumn], $oFilter);
 
-            $shEditor .= '<br />';
+            $shEditor .= '<br>';
 
             $aCounts[$sColumn]++;
         }
@@ -337,7 +337,7 @@ class FilterInterface
 
             $shEditor .= $this->getHiddenInputTag($aCounts[$sColumn], $oFilter);
 
-            $shEditor .= '<br />';
+            $shEditor .= '<br>';
 
             $aCounts[$sColumn]++;
         }
@@ -352,7 +352,7 @@ class FilterInterface
         $aCounts = array();
 
         if(sizeof($this->oFilterSet->getFilters()))
-             $shCurrentItemsEditor .= '<br /><b>Active filters</b><br />';
+             $shCurrentItemsEditor .= '<p><b>Active filters</b></p>';
         foreach($this->oFilterSet->getFilters() as $oFilter)
         {
             $sColumn = $oFilter->getColumn();
@@ -364,16 +364,14 @@ class FilterInterface
                 $shCurrentItemsEditor .= $this->getOptionBoolEditor($aCounts[$sColumn], $oFilter);
             else
                 $shCurrentItemsEditor .= $this->getItemEditor($aCounts[$sColumn], $oFilter);
-            $shCurrentItemsEditor .= '<br />';
+            $shCurrentItemsEditor .= '<br>';
 
             $aCounts[$sColumn]++;
         }
 
-        $shNewItemsEditor .= '<b>Add new filter</b> <i>(You don&#8217;t have to fill out all rows.)</i><br />';
-
         /* Show errors, if any */
         if($this->sErrors)
-            $shNewItemsEditor .= "<font color=\"red\">{$this->sErrors}</font>";
+            $shNewItemsEditor .= "<span color=\"text-danger\">{$this->sErrors}</span>";
 
         foreach($this->aFilterInfo as $oOption)
         {
@@ -384,14 +382,14 @@ class FilterInterface
             {
                 if(!array_key_exists($oOption->getColumn(), $aCounts))
                     $shNewItemsEditor .= $this->getOptionBoolEditor(-1, $oDummyFilter);
-                $shNewItemsEditor .= '<br />';
+                $shNewItemsEditor .= '<br>';
             } else
             {
                 /* Make necessary checks for filters that are only supposed to be shown once */
                 if($oOption->getValueType() != FILTER_VALUES_OPTION_ENUM || !array_key_exists($oOption->getColumn(), $aCounts))
                 {
                     $shNewItemsEditor .= $this->getItemEditor(-1, $oDummyFilter);
-                    $shNewItemsEditor .= '<br />';
+                    $shNewItemsEditor .= '<br>';
                 }
             }
         }
@@ -463,7 +461,7 @@ class FilterInterface
             {
                 /* The user probably meant to add a filter, but forgot to seelect
                    a filter criterion */
-                $this->sErrors .= 'You need to select a filter criterion from the drop-down list<br />';
+                $this->sErrors .= 'You need to select a filter criterion from the drop-down list<br>';
             }
         }
 
