@@ -745,7 +745,7 @@ function view_version_bugs($iVersionId = null, $aBuglinkIds)
         {
             //display row
             echo "<tr>\n";
-            echo "<td class=\"text-center\"><a href='".BUGZILLA_ROOT."show_bug.cgi?id={$oBuglink->iBug_id}><i class=\"fa fa-bug\"></i> {$oBuglink->iBug_id}</a></td>\n";
+            echo "<td class=\"text-center\"><a href=\"".BUGZILLA_ROOT."show_bug.cgi?id={$oBuglink->iBug_id}\"><i class=\"fa fa-bug\"></i> {$oBuglink->iBug_id}</a></td>\n";
             echo "<td>".$oBuglink->sShort_desc."</td>\n";
             echo "<td class=\"text-center\">".$oBuglink->sBug_status."</td>","\n";
             echo "<td class=\"text-center\">".$oBuglink->sResolution."</td>","\n";
