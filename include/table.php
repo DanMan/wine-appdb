@@ -2,89 +2,18 @@
 
 // classes for managing tables and data related to tables
 
-// class for managing the highlighting/inactive state of a row
-class TableRowHighlight
-{
-  private $oHighlightColor;
-  private $oInactiveColor;
-
-  // properties to apply to text when highlighted or inactive
-  private $sTextDecorationHighlight;
-  private $sTextDecorationInactive;
-
-  function TableRowHighlight(color $oHighlightColor, color $oInactiveColor,
-                          $sTextDecorationHighlight = "",
-                          $sTextDecorationInactive = "")
-  {
-    $this->oHighlightColor = $oHighlightColor;
-    $this->oInactiveColor = $oInactiveColor;
-
-    $this->sTextDecorationHighlight = $sTextDecorationHighlight;
-    $this->sTextDecorationInactive = $sTextDecorationInactive;
-  }
-
-  function GetHighlightColor()
-  {
-    return $this->oHighlightColor;
-  }
-
-  function GetInactiveColor()
-  {
-    return $this->oInactiveColor;
-  }
-
-  function GetTextDecorationHighlight()
-  {
-    return $this->sTextDecorationHighlight;
-  }
-
-  function GetTextDecorationInactive()
-  {
-    return $this->sTextDecorationInactive;
-  }
-}
-
 class TableRowClick
 {
-  var $oTableRowHighlight;
-  var $bHasHighlight;
   var $shUrl;
 
-  function TableRowClick($shUrl)
+  public function __construct($shUrl)
   {
     $this->shUrl = $shUrl;
-    $this->bHasHighlight = false;
-    $this->oTableRowHighlight = null;
   }
 
-  function SetHighlight(TableRowHighlight $oTableRowHighlight)
+  public function GetString()
   {
-    $this->oTableRowHighlight = $oTableRowHighlight;
-  }
-
-  function GetString()
-  {
-    $sStr = "";
-
-    // if we have highlighting output the attributes necessary to enable the javascript tht we use
-    // to perform the highlighting actions
-    if($this->oTableRowHighlight)
-    {
-      $sStr.= 'onmouseover="ChangeTr(this, true,'.
-                                    '\''.$this->oTableRowHighlight->getHighlightColor()->GetHexString().'\','.
-                                    '\''.$this->oTableRowHighlight->getInactiveColor()->GetHexString().'\','.
-                                    '\''.$this->oTableRowHighlight->getTextDecorationHighlight().'\','.
-                                    '\''.$this->oTableRowHighlight->getTextDecorationInactive().'\');"';
-      $sStr.= ' onmouseout="ChangeTr(this, false,'.
-                                   '\''.$this->oTableRowHighlight->getHighlightColor()->GetHexString().'\','.
-                                   '\''.$this->oTableRowHighlight->getInactiveColor()->GetHexString().'\','.
-                                   '\''.$this->oTableRowHighlight->getTextDecorationHighlight().'\','.
-                                   '\''.$this->oTableRowHighlight->getTextDecorationInactive().'\');"';
-    }
-
-    $sStr.= ' onclick="DoNav(\''.$this->shUrl.'\');"';
-
-    return $sStr;
+    return " data-donav=\"{$this->shUrl}\"";
   }
 }
 
@@ -103,7 +32,7 @@ class TableCell
   //       to only the contents of the cell. Additional parameters, while
   //       appearing convienent, make the parameters confusing
   //       Use accessors to set additional parameters.
-  function TableCell($sCellContents)
+  public function __construct($sCellContents)
   {
     $this->sCellContents = $sCellContents;
     $this->sStyle = null;
@@ -114,47 +43,47 @@ class TableCell
     $this->bBold = false;
   }
 
-  function SetCellContents($sCellContents)
+  public function SetCellContents($sCellContents)
   {
     $this->sCellContents = $sCellContents;
   }
 
-  function SetStyle($sStyle)
+  public function SetStyle($sStyle)
   {
     $this->sStyle = $sStyle;
   }
 
-  function SetClass($sClass)
+  public function SetClass($sClass)
   {
     $this->sClass = $sClass;
   }
 
-  function SetAlign($sAlign)
+  public function SetAlign($sAlign)
   {
     $this->sAlign = $sAlign;
   }
 
-  function SetValign($sValign)
+  public function SetValign($sValign)
   {
     $this->sValign = $sValign;
   }
 
-  function SetWidth($sWidth)
+  public function SetWidth($sWidth)
   {
     $this->sWidth = $sWidth;
   }
 
-  function SetCellLink($sUrl)
+  public function SetCellLink($sUrl)
   {
     $this->sUrl = $sUrl;
   }
 
-  function SetBold($bBold)
+  public function SetBold($bBold)
   {
     $this->bBold = $bBold;
   }
 
-  function GetString()
+  public function GetString()
   {
     $sStr = "<td";
 
@@ -207,7 +136,7 @@ class TableRow
 
     private $oTableRowClick; // information about whether the table row is clickable etc
 
-    function TableRow()
+    public function __construct()
     {
       $this->aTableCells = array();
       $this->sStyle = null;
@@ -216,12 +145,12 @@ class TableRow
       $this->oTableRowClick = null;
     }
 
-    function AddCell(TableCell $oTableCell)
+    public function AddCell(TableCell $oTableCell)
     {
       $this->aTableCells[] = $oTableCell;
     }
 
-    function AddCells($aTableCells)
+    public function AddCells($aTableCells)
     {
       foreach($aTableCells as $oTableCell)
       {
@@ -229,34 +158,34 @@ class TableRow
       }
     }
 
-    function AddTextCell($sCellText)
+    public function AddTextCell($sCellText)
     {
       $this->AddCell(new TableCell($sCellText));
     }
 
-    function SetStyle($sStyle)
+    public function SetStyle($sStyle)
     {
       $this->sStyle = $sStyle;
     }
 
-    function SetClass($sClass)
+    public function SetClass($sClass)
     {
       $this->sClass = $sClass;
     }
 
-    function SetValign($sValign)
+    public function SetValign($sValign)
     {
       $this->sValign = $sValign;
     }
 
-    function SetRowClick($oTableRowClick)
+    public function SetRowClick($oTableRowClick)
     {
       $this->oTableRowClick = $oTableRowClick;
     }
 
     // get a string that contains the html representation
     // of this table row
-    function GetString()
+    public function GetString()
     {
       // generate the opening of the tr element
       $sStr = "<tr";
@@ -287,12 +216,12 @@ class TableRow
       return $sStr;
     }
 
-    function GetClass()
+    public function GetClass()
     {
       return $this->sClass;
     }
 
-    function GetTableRowClick()
+    public function GetTableRowClick()
     {
       return $this->oTableRowClick;
     }
@@ -305,35 +234,34 @@ class TableRowSortable extends TableRow
     private $aSortVars; /* Array of sort variables.  Not all fields have to be sortable.
                            This is paired with the aTableCells array from TableRow */
 
-    function TableRowSortable()
+    public function __construct()
     {
         $this->aSortVars = array();
-
-        $this->TableRow();
+        parent::__construct();
     }
 
     /* Adds a table cell without sorting */
-    function AddCell(TableCell $oCell)
+    public function AddCell(TableCell $oCell)
     {
         $this->aTableCells[] = $oCell;
         $this->aSortVars[] = '';
     }
 
     /* Adds a text cell without sorting */
-    function AddTextCell($shText)
+    public function AddTextCell($shText)
     {
         $this->AddCell(new TableCell($shText));
     }
 
     /* Adds a text cell with a sorting var */
-    function AddSortableTextCell($shText, $sSortVar)
+    public function AddSortableTextCell($shText, $sSortVar)
     {
         $this->aTableCells[] = new TableCell($shText);
         $this->aSortVars[] = $sSortVar;
     }
 
     /* Sets sorting info on all cells that are sortable */
-    function SetSortInfo(TableSortInfo $oSortInfo)
+    public function SetSortInfo(TableSortInfo $oSortInfo)
     {
         for($i = 0; $i < sizeof($this->aTableCells); $i++)
         {
@@ -368,7 +296,7 @@ class TableSortInfo
     var $bAscending;
     var $shUrl;
 
-    function TableSortInfo($shUrl, $sCurrentSort = '', $bAscending = TRUE)
+    public function __construct($shUrl, $sCurrentSort = '', $bAscending = TRUE)
     {
         $this->sCurrentSort = $sCurrentSort;
         $this->shUrl = $shUrl;
@@ -377,7 +305,7 @@ class TableSortInfo
 
     /* Parses an array of HTTP vars to determine current sort settings.
        Optionally checks the sort var against an array of legal values */
-    function ParseArray($aClean, $aLegalValues = null)
+    public function ParseArray($aClean, $aLegalValues = null)
     {
         $sCurrentSort = key_exists('sOrderBy', $aClean) ? $aClean['sOrderBy'] : '';
 
@@ -400,45 +328,45 @@ class OMTableRow
   private $bHasDeleteLink;
   private $bCanEdit;
 
-  function OMTableRow($oTableRow)
+  public function __construct($oTableRow)
   {
     $this->oTableRow = $oTableRow;
     $this->bHasDeleteLink = false;
     $this->bCanEdit = false;
   }
 
-  function SetHasDeleteLink($bHasDeleteLink)
+  public function SetHasDeleteLink($bHasDeleteLink)
   {
     $this->bHasDeleteLink = $bHasDeleteLink;
   }
 
-  function GetHasDeleteLink()
+  public function GetHasDeleteLink()
   {
     return $this->bHasDeleteLink;
   }
 
-  function SetRowClickable(TableRowClick $oTableRowClick)
+  public function SetRowClickable(TableRowClick $oTableRowClick)
   {
     $this->oTableRowClick = $oTableRowClick;
   }
 
-  function SetStyle($sStyle)
+  public function SetStyle($sStyle)
   {
     $this->oTableRow->SetStyle($sStyle);
   }
 
   // add a TableCell to an existing row
-  function AddCell($oTableCell)
+  public function AddCell($oTableCell)
   {
     $this->oTableRow->AddCell($oTableCell);
   }
 
-  function GetString()
+  public function GetString()
   {
     return $this->oTableRow->GetString();
   }
 
-  function GetTableRow()
+  public function GetTableRow()
   {
     return $this->oTableRow;
   }
@@ -455,7 +383,7 @@ class Table
   private $iCellSpacing; // cellspacing="$iCellSpacing"
   private $iCellPadding; // cellpadding="$iCellPadding"
 
-  function Table()
+  public function __construct()
   {
     $this->oTableRowHeader = null;
     $this->aTableRows = array();
@@ -467,47 +395,47 @@ class Table
     $this->iCellPadding = null;
   }
 
-  function AddRow($oTableRow)
+  public function AddRow($oTableRow)
   {
     $this->aTableRows[] = $oTableRow;
   }
 
-  function SetHeader(TableRow $oTableRowHeader)
+  public function SetHeader(TableRow $oTableRowHeader)
   {
     $this->oTableRowHeader = $oTableRowHeader;
   }
 
-  function SetClass($sClass)
+  public function SetClass($sClass)
   {
     $this->sClass = $sClass;
   }
 
-  function SetWidth($sWidth)
+  public function SetWidth($sWidth)
   {
     $this->sWidth = $sWidth;
   }
 
-  function SetBorder($iBorder)
+  public function SetBorder($iBorder)
   {
     $this->iBorder = $iBorder;
   }
 
-  function SetAlign($sAlign)
+  public function SetAlign($sAlign)
   {
     $this->sAlign = $sAlign;
   }
 
-  function SetCellSpacing($iCellSpacing)
+  public function SetCellSpacing($iCellSpacing)
   {
     $this->iCellSpacing = $iCellSpacing;
   }
 
-  function SetCellPadding($iCellPadding)
+  public function SetCellPadding($iCellPadding)
   {
     $this->iCellPadding = $iCellPadding;
   }
 
-  function GetString()
+  public function GetString()
   {
     $sStr = "<table";
 
@@ -549,32 +477,5 @@ class Table
   }
 }
 
-// input is the row index, we alternate colors based on odd or even index rows
-// returns a TableRowHighlight instance
-function GetStandardRowHighlight($iRowIndex)
-{
-  //set row color
-  $sColor = ($iRowIndex % 2) ? "color0" : "color1";
-
-  $oInactiveColor = new color();
-  $oInactiveColor->SetColorByName($sColor);
-
-  $oHighlightColor = GetHighlightColorFromInactiveColor($oInactiveColor);
-
-  $oTableRowHighlight = new TableRowHighlight($oHighlightColor, $oInactiveColor);
-
-  return $oTableRowHighlight;
-}
-
-// returns a color class instance
-function GetHighlightColorFromInactiveColor(color $oInactiveColor)
-{
-  $oHighlightColor = new color($oInactiveColor->iRed,
-                               $oInactiveColor->iGreen,
-                               $oInactiveColor->iBlue);
-  $oHighlightColor->Add(50);
-
-  return $oHighlightColor;
-}
-
+// done
 ?>
