@@ -288,26 +288,15 @@ class Note {
             $shReturnTo = $aVars['shReturnTo'];
         }
 
-        $shOutput = html_frame_start("","98%",'',0);
-
-        $shOutput .= "<table width=\"100%\" border=\"0\" cellspacing=\"0\">\n";
-        $shOutput .= "<tr class=\"".$sClass."\" align=\"center\" valign=\"top\"><td>&nbsp;</td></tr><tr class=\"notetitle\" valign=\"top\" align=\"center\"><td>".$sTitle."</td></tr>\n";
-        $shOutput .= "<tr><td class=\"note\">\n";
-        $shOutput .= $this->shDescription;
-        $shOutput .= "</td></tr>\n";
-
+        $shOutput = "";
         if((!$aVars || $aVars['bEditing'] != "true") && $this->canEdit())
         {
-            $shOutput .= "<tr class=\"color1\" align=\"center\" valign=\"top\"><td>";
             $shOutput .= "<form method=\"post\" name=\"message\" action=\"objectManager.php?sClass=note&amp;sAction=edit&amp;iId=".$this->iNoteId."&amp;sReturnTo=".urlencode($shReturnTo)."\">";
-            $shOutput .= '<input type="submit" value="Edit note" class="button">';
-            $shOutput .= '</form></td></tr>';
+            $shOutput .= '<button type="submit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i> Edit note</button>';
+            $shOutput .= '</form>';
         }
 
-        $shOutput .= "</table>\n";
-        $shOutput .= html_frame_end();
-
-        echo $shOutput;
+        echo html_note("<span class=\"note-{$sClass}\">{$sTitle}</span>", $this->shDescription, $shOutput, 'default panel-scroll');
     }
 
     public static function displayNotesForEntry($iVersionId, $iAppId = null)
@@ -320,8 +309,9 @@ class Note {
             $oApp = $oVersion->objectGetParent();
             
             $oTag = new TagNoteVersion($iVersionId);
-            $aNotes = $oTag->getTaggedEntries();            
-        } else if($iAppId)
+            $aNotes = $oTag->getTaggedEntries();
+        }
+        else if($iAppId)
         {
             $hResult = query_parameters("SELECT noteId FROM appNotes WHERE appId = '?' AND (versionId = '?' OR versionId = '?')", $iAppId, APPNOTE_SHOW_FOR_ALL, APPNOTE_SHOW_FOR_APP);
 
