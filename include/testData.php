@@ -586,20 +586,12 @@ class testData{
         {
             $sTRClass = $bgcolor;
 
-            $oInactiveColor = new color();
-            $oInactiveColor->SetColorByName($this->sTestedRating);
-
-            $oHighlightColor = GetHighlightColorFromInactiveColor($oInactiveColor);
-
-            $oTableRowHighlight = new TableRowHighlight($oHighlightColor, $oInactiveColor);
-
             $sUrl = $sLink.$this->iTestingId;
 
             if($bShowAll)
                 $sUrl .= '&bShowAll=true';
 
             $oTableRowClick = new TableRowClick($sUrl);
-            $oTableRowClick->SetHighlight($oTableRowHighlight);
 
             // add the table element indicating that the user can show the row by clicking on it
             $oTableCell = new TableCell("Show");
