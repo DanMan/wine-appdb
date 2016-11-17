@@ -248,55 +248,43 @@ class Comment {
 
     private function output_comment($bShowAppName = false)
     {
-        echo html_frame_start('','98%');
-        echo '<table width="100%" border="0" cellpadding="2" cellspacing="1">',"\n";
-
-        // message header
-        echo "<tr bgcolor=\"#E0E0E0\"><td><a name=Comment-".$this->iCommentId."></a>\n";
-        echo " <b>".$this->sSubject."</b><br>\n";
-
+        // by line
+        $sBy = " by <i>".forum_lookup_user($this->oOwner->iUserId)."</i> on <i>".$this->sDateCreated."</i>\n";
         if($bShowAppName)
         {
             $oVersion = new version($this->iVersionId);
-            $sMaintainerText = $oVersion->bHasMaintainer ? 'has maintainer' : 'no maintainers';
-            echo 'Application: ' . version::fullNameLink($this->iVersionId);
-            echo " ($sMaintainerText)<br>\n";
+            $sBy .= " Application: ".version::fullNameLink($this->iVersionId).
+                    " (".$oVersion->bHasMaintainer ? 'has maintainer' : 'no maintainers'.")\n";
         }
 
-        echo " by  ".forum_lookup_user($this->oOwner->iUserId)." on ".$this->sDateCreated."<br>\n";
-        echo "</td></tr><tr><td>\n";
-    
-        // body
-        echo htmlify_urls($this->sBody), "<br><br>\n";
-    
+        // reply post buttons
         $oVersion = new version($this->iVersionId);
         $oM = new objectManager("comment", "Post new comment");
         $oM->setReturnTo($oVersion->objectMakeUrl());
-        // reply post buttons
-        echo " [<a href=\"".$oM->makeUrl("add")."&iVersionId=$this->iVersionId\"><small>post new</small></a>] \n";
-        echo " [<a href=\"".$oM->makeUrl("add")."&iVersionId=$this->iVersionId".
-                "&iThread=$this->iCommentId\"><small>reply to this</small></a>] \n";
-
-        echo "</td></tr>\n";
+        $sFooter = " <a href=\"".$oM->makeUrl("add")."&iVersionId={$this->iVersionId}\" class=\"btn btn-default btn-xs\">".
+                   "<i class=\"fa fa-comment\"></i> Comment</a> \n".
+                   "<a href=\"".$oM->makeUrl("add")."&iVersionId={$this->iVersionId}&iThread={$this->iCommentId}\" class=\"btn btn-default btn-xs\">".
+                   "<i class=\"fa fa-reply\"></i> Reply</a> ";
 
         // delete message button, for admins
         if ($this->canEdit())
         {
-            echo "<tr>";
-            echo "<td><form method=\"post\" name=\"sMessage\" action=\"".BASE."objectManager.php\"><input type=\"submit\" value=\"Delete\" class=\"button\">\n";
-            echo "<input type=\"hidden\" name=\"iId\" value=\"$this->iCommentId\">";
-            echo "<input type=\"hidden\" name=\"sClass\" value=\"comment\">";
-            echo "<input type=\"hidden\" name=\"bQueued\" value=\"false\">";
-            echo "<input type=\"hidden\" name=\"sAction\" value=\"delete\">";
-            echo "<input type=\"hidden\" name=\"sTitle\" value=\"Delete comment\">";
-            echo "<input type=\"hidden\" name=\"sReturnTo\" value=\"".$oVersion->objectMakeUrl()."\">";
-            echo "</form>\n";
-            echo "</td></tr>";
+            $sFooter .= "<form method=\"post\" name=\"sMessage\" action=\"".BASE."objectManager.php\" class=\"inline\">\n".
+                        "<button type=\"submit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>\n".
+                        "<input type=\"hidden\" name=\"iId\" value=\"$this->iCommentId\">".
+                        "<input type=\"hidden\" name=\"sClass\" value=\"comment\">".
+                        "<input type=\"hidden\" name=\"bQueued\" value=\"false\">".
+                        "<input type=\"hidden\" name=\"sAction\" value=\"delete\">".
+                        "<input type=\"hidden\" name=\"sTitle\" value=\"Delete comment\">".
+                        "<input type=\"hidden\" name=\"sReturnTo\" value=\"".$oVersion->objectMakeUrl()."\">".
+                        "</form>\n";
         }
 
-        echo "</table>\n";
-
-        echo html_frame_end();   
+        echo "<div id=\"Comment-{$this->iCommentId}\" class=\"panel panel-default panel-forum\">\n".
+               "<div class=\"panel-heading\"><b>{$this->sSubject}</b><br>{$sBy}</div>\n".
+               "<div class=\"panel-body\">".htmlify_urls($this->sBody)."</div>\n".
+               "<div class=\"panel-footer\">{$sFooter}</div>\n".
+               "</div>\n";
     }
 
     public function objectWantCustomDraw($sWhat, $sQueued)
@@ -699,12 +687,6 @@ class Comment {
         // count posts
         $hResult = query_parameters("SELECT commentId FROM appComments WHERE versionId = '?'", $versionId);
         $messageCount = query_num_rows($hResult);
-    
-        //start comment format table
-        echo html_frame_start("","98%",'',0);
-        echo '<table width="100%" border="0" cellpadding="1" cellspacing="0">',"\n";
-    
-        echo '<tr><td bgcolor="#C0C0C0" align="center"><table border="0" cellpadding="0" cellspacing="0"><tr bgcolor="#C0C0C0">',"\n";
 
         $oVersion = new version($versionId);
 
@@ -716,44 +698,32 @@ class Comment {
                 $_SESSION['current']->setPref("comments:mode", $aClean['sCmode']);
 
             $sel[$_SESSION['current']->getPref("comments:mode", "threaded")] = 'selected';
-            echo '<td><form method="post" name="sMode" action="'.
-                    $oVersion->objectMakeUrl().'">',"\n";
+            echo '<form method="post" name="sMode" action="'.$oVersion->objectMakeUrl().'">',"\n";
             echo "<b>Application comments:</b> $messageCount total comments ";
-            echo '<b>Mode:</b> <select name="sCmode" onchange="document.sMode.submit();">',"\n";
+            echo '<b>Mode:</b> <select name="sCmode" onchange="document.sMode.submit();" class="form-control form-control-inline input-sm">',"\n";
             echo '   <option value="flat" '.$sel['flat'].'>Flat</option>',"\n";
             echo '   <option value="threaded" '.$sel['threaded'].'>Threaded</option>',"\n";
             echo '   <option value="nested" '.$sel['nested'].'>Nested</option>',"\n";
             echo '   <option value="off" '.$sel['off'].'>No Comments</option>',"\n";
             echo '</select>',"\n";
-            echo '</form></td>',"\n";
+            echo '</form>',"\n";
         }
-    
-        // blank space
-        echo '<td> &nbsp; </td>',"\n";
 
         $oM = new objectManager("comment", "Add comment");
         $oM->setReturnTo($oVersion->objectMakeUrl());
 
         // post new message button
-        echo '<td><form method="post" name="sMessage" action="objectManager.php">';
+        echo '<form method="post" name="sMessage" action="objectManager.php">';
         echo '<input type="hidden" name="sAction" value="add">';
         echo $oM->makeUrlFormData();
-        echo '<input type="submit" value="Post new comment" class="button"> ',"\n";
-        echo '<input type="hidden" name="iVersionId" value="'.$versionId.'"></form></td>',"\n";
-        
-        //end comment format table
-        echo '</tr></table></td></tr>',"\n";  
-        echo '</table>',"\n";
-        echo html_frame_end();
+        echo '<button type="submit" class="btn btn-default"><i class="fa fa-comment"></i> Post new comment</button> ',"\n";
+        echo '<input type="hidden" name="iVersionId" value="'.$versionId.'"></form>',"\n";
 
         if( $messageCount > 0 )
         {
-            echo '<p align="center">The following comments are owned by whoever posted them. WineHQ is not responsible for what they say.</p>'."\n";
+            echo '<p class="margin-top-md text-muted">The following comments are owned by whoever posted them. WineHQ is not responsible for what they say.</p>'."\n";
         }
 
-        //start comments
-        echo '<table width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td>',"\n";
-    
         //hide or display depending on pref
         if ($_SESSION['current']->isLoggedIn())
             $mode = $_SESSION['current']->getPref("comments:mode", "threaded");
@@ -775,8 +745,6 @@ class Comment {
             Comment::display_comments_threaded($versionId, $threadId);
             break;
         }
-
-        echo '</td></tr></table>',"\n";
     }
 
     function allowAnonymousSubmissions()
