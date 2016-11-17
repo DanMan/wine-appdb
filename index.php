@@ -14,13 +14,17 @@ require(BASE."include/incl.php");
 apidb_header("Wine Application Database");
 
 ?>
-    <img style="float:right;" src="images/appdb_montage.jpg" width=391 height=266 alt="Wine AppDB">
+
+<div class="row">
+    <div class="col-md-6 col-lg-8">
 
 <h1>Welcome</h1>
 
 <p>This is the Wine Application Database (AppDB). Here you can get information on application
 compatibility with Wine.</p>
+
 <?php
+
 $str_benefits="
     <ul>
         <li>Ability to <a href=\"https://wiki.winehq.org/AppDB_Voting_Help\" title=\"help on voting\">vote</a> on your favorite applications</li>
@@ -32,21 +36,22 @@ $str_benefits="
         <li>Submit new screenshots</li>
     </ul>
 ";
-if(!$_SESSION['current']->isLoggedIn()) 
+
+if (!$_SESSION['current']->isLoggedIn())
 {
-    echo "
-    <p>Most of the features of the Application Database require that you have a user account and
-    are logged in. Some of the benefits of membership are:<p>
+    echo "<p>Most of the features of the Application Database require that you have a user account and
+    are logged in. Some of the benefits of membership are:</p>
 
     $str_benefits
 
-    <p>So, what are you waiting for? [<a href=\"".login_url()."\">Log in</a>]
-    or [<a href=\"account.php?sCmd=new\">register</a>] now! Your help in
+    <p>So, what are you waiting for? <a href=\"".login_url()."\" class=\"btn btn-default btn-sm btn-skinny\"><i class=\"fa fa-sign-in\"></i> Log in</a>
+    or <a href=\"account.php?sCmd=new\" class=\"btn btn-default btn-sm btn-skinny\"><i class=\"fa fa-user-plus\"></i> register</a> now! Your help in
     stomping out Wine issues will be greatly appreciated.</p>";
-} else 
+}
+else
 {
     echo "
-    <p>As an Application Database member you enjoy some exclusive benefits like:<p>
+    <p>As an Application Database member you enjoy some exclusive benefits like:</p>
 
     $str_benefits
 
@@ -66,27 +71,34 @@ if(!$_SESSION['current']->isLoggedIn())
     $hResult = query_parameters($voteQuery);
     $oRow = query_fetch_object($hResult);
 
-    echo "There are <b>$iNumApps</b> applications currently in the database,";
+    echo "<p>There are <b>$iNumApps</b> applications currently in the database,\n";
 
     // don't mention the top application if there are no votes yet
-    if( !empty($oRow) )
+    if (!empty($oRow))
     {
         if($oRow->versionId)
         {
             $shVoteAppLink = version::fullNameLink($oRow->versionId);
             echo " with $shVoteAppLink being the\n";
             echo "top <a href='votestats.php'>voted</a> application.\n";
-        } else
+        }
+        else
         {
             echo " please <a href=\"".BASE."help/?sTopic=voting\" title=\"help on voting\"".
                 "style=\"cursor: help\">vote</a> for your favourite application.\n";
         }
     }
+
+    echo "</p>\n";
 ?>
 
-<br><br>
+</div>
+    <div class="col-md-6 col-lg-4">
+        <img src="images/appdb_montage.jpg" class="fill-width" alt="Wine AppDB">
+    </div>
+</div>
 
-<div class="topx_style platinum">
+<div class="row topx_style platinum">
   <div class="rating_header">
     <div class="rating_title">
       Top-10 <a href="objectManager.php?sClass=application&sTitle=Browse+Applications&iappVersion-ratingOp0=5&sappVersion-ratingData0=Platinum&sOrderBy=appName&bAscending=true">Platinum</a> List
@@ -95,18 +107,22 @@ if(!$_SESSION['current']->isLoggedIn())
   </div>
   <div>
     <table class="platinum" width="100%">
+      <thead>
       <tr class="rowtitle">
-        <th width="10%">Application</th><th width="80%">Description</th><th width="10%">Screenshot</th>
+        <td width="10%">Application</td><td width="80%">Description</td><td width="10%">Screenshot</td>
       </tr>
+      </thead>
+      <tbody>
       <?php
       outputTopXRowAppsFromRating('Platinum', 10);
       ?>
+      </tbody>
     </table>
   </div>
 </div>
 <br>
 
-<div class="topx_style gold">
+<div class="row topx_style gold">
   <div class="rating_header">
     <div class="rating_title">
       Top-10 <a href="objectManager.php?sClass=application&sTitle=Browse+Applications&iappVersion-ratingOp0=5&sappVersion-ratingData0=Gold&sOrderBy=appName&bAscending=true">Gold</a> List
@@ -115,18 +131,22 @@ if(!$_SESSION['current']->isLoggedIn())
   </div>
   <div>
     <table class="gold" width="100%">
+      <thead>
       <tr class="rowtitle">
-        <th width="10%">Application</th><th width="80%">Description</th><th width="10%">Screenshot</th>
+        <td width="10%">Application</td><td width="80%">Description</td><td width="10%">Screenshot</td>
       </tr>
+      </thead>
+      <tbody>
       <?php
       outputTopXRowAppsFromRating('Gold', 10);
       ?>
+      </tbody>
     </table>
   </div>
 </div>
 <br>
 
-<div class="topx_style silver">
+<div class="row topx_style silver">
   <div class="rating_header">
     <div class="rating_title">
       Top-10 <a href="objectManager.php?sClass=application&sTitle=Browse+Applications&iappVersion-ratingOp0=5&sappVersion-ratingData0=Silver&sOrderBy=appName&bAscending=true">Silver</a> List
@@ -135,12 +155,16 @@ if(!$_SESSION['current']->isLoggedIn())
   </div>
   <div>
     <table class="silver" width="100%">
+      <thead>
       <tr class="rowtitle">
-        <th width="10%">Application</th><th width="80%">Description</th><th width="10%">Screenshot</th>
+        <td width="10%">Application</td><td width="80%">Description</td><td width="10%">Screenshot</td>
       </tr>
+      </thead>
+      <tbody>
       <?php
       outputTopXRowAppsFromRating('Silver', 10);
       ?>
+      </tbody>
     </table>
   </div>
 </div>
