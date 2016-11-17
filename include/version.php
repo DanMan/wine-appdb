@@ -1231,13 +1231,8 @@ class version {
             echo html_frame_start("","98%","",0);
 
             $oTable = new Table();
-            $oTable->SetWidth("100%");
-            $oTable->SetBorder(0);
-            $oTable->SetCellPadding(3);
-            $oTable->SetCellSpacing(1);
-
+            $oTable->SetClass('whq-table');
             $oTableRow = new TableRow();
-            $oTableRow->SetClass("color4");
 
             $oTableCell = new TableCell("Version");
             $oTableCell->SetWidth("80");
@@ -1270,33 +1265,15 @@ class version {
 
                 if ($oVersion->sState == $oApp->objectGetState())
                 {
-                    // set row color
-                    $bgcolor = ($c % 2 == 0) ? "color0" : "color1";
-
-                    $oTableRowHighlight = null;
-
                     // if we have a valid tested rating
                     if($oVersion->sTestedRating && ($oVersion->sTestedRating != "/") &&
                        ($oVersion->sTestedRating != " "))
                     {
                         $sClass = $oVersion->sTestedRating;
-
-                        $oInactiveColor = new Color();
-                        $oInactiveColor->SetColorByName($oVersion->sTestedRating);
-
-                        $oHighlightColor = GetHighlightColorFromInactiveColor($oInactiveColor);
-
-                        $oTableRowHighlight = new TableRowHighlight($oHighlightColor, $oInactiveColor);
-                    } else
-                    {
-                        $sClass = $bgcolor;
-
-                        $oTableRowHighlight = GetStandardRowHighlight($c);
                     }
 
                     //display row
                     $oTableRowClick = new TableRowClick($oVersion->objectMakeUrl());
-                    $oTableRowClick->SetHighlight($oTableRowHighlight);
 
                     $oTableRow = new TableRow();
                     $oTableRow->SetRowClick($oTableRowClick); // make the row clickable
