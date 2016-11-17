@@ -9,6 +9,10 @@
   =====================================================================================================================
 */
 
+HTML {
+    height: 100%;
+}
+
 /* Body Document Defaults */
 BODY {
     background-color: #000000 !important;
@@ -22,7 +26,7 @@ BODY {
 
 /*
   =====================================================================================================================
-   bootstrap tweaks
+   bootstrap tweaks, bs is awesome, but there are a few tweaks needed.
   =====================================================================================================================
 */
 
@@ -30,6 +34,27 @@ BODY {
 PRE {
   background-color: inherit; color: inherit;
   border: none; border-radius: none;
+}
+
+/* make a form control inline */
+input.form-control-inline {
+    display: inline;
+    width: 100%;
+}
+select.form-control-inline {
+    display: inline;
+    width: auto;
+}
+
+/* thin buttons, good for inline */
+.btn-skinny {
+    padding-top: 0.15em !important;
+    padding-bottom: 0.15em !important;
+}
+
+/* fix button text on a tags */
+a.btn, a.btn:visited {
+    color: inherit;
 }
 
 /*
@@ -300,8 +325,12 @@ P.newstitle A:hover { color: #FF6666; text-decoration: none; }
 DIV.newsblock       { margin: 0 5px 25px 10px; padding: 0; }
 
 /* stuff */
-img                 { border: 0; }
 .clear              { clear: both; }
+
+/* IMG options */
+IMG                 { border: 0; text-decoration: none !important; }
+IMG.absmiddle       { vertical-align: top; }
+IMG.fill-width      { width: 100%; }
 
 /* Link Colors */
 A                   { color: #A50D0D; }
@@ -458,7 +487,42 @@ table {
     border-spacing: 0.25em;
     border-collapse: separate;
 }
-table td { padding: 0.25em; }
+table td {
+    padding: 0.25em;
+}
+
+/* wine hq table style */
+table.whq-table {
+    border-spacing: 0.25em;
+    border-collapse: separate;
+}
+table.whq-table-full {
+    width: 100%;
+}
+table.winehq td {
+    padding: 0.25em;
+}
+table.whq-table thead tr td {
+    background-color: #95493A;
+    border: 1px solid #732010;
+    font-weight: bold;
+    color: #ffffff;
+}
+table.whq-table thead tr td a {
+    color: #ffffff;
+}
+table.whq-table thead tr td:first-child {
+    border-top-left-radius: 5px;
+}
+table.whq-table thead tr td:last-child {
+    border-top-right-radius: 5px;
+}
+table.whq-table tbody tr td {
+    background-color: #ffffff;
+}
+table.whq-table tbody tr:nth-child(odd) td {
+    background-color: #ddd;
+}
 
 /* box */
 .box-title {
@@ -503,7 +567,19 @@ TD.button { background-color: #BDDAE5 }
 TD.button2 { background-color: #ABB2D5; }
 
 /* misc table styles */
-.rowtitle { background-color: black; color: white; font-weight: bold; }
+table tr.rowtitle td {
+    background-color: #95493A;
+    border: 1px solid #732010;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 0.25em;
+}
+table tr.rowtitle td:first-child  {
+    border-top-left-radius: 5px;
+}
+table tr.rowtitle td:last-child {
+    border-top-right-radius: 5px;
+}
 
 /* misc backgrounds from color name */
 .white { background-color: #FFFFFF; }
@@ -620,10 +696,14 @@ div.session_note { border: 1px solid; margin-bottom: 5px;}
 /* classes for the main page */
 div.rating_header { padding: 8px; }
 div.rating_title { padding-bottom: 4px; font-weight: bold; font-size: 160%; }
-div.topx_style { padding:7px; margin:6px; border:2px solid; }
-div.imgarea { text-align:center;    text-align:center;
-    margin-top:0px;
-    margin-bottom:0px;
-    padding:0px;}
+div.topx_style {
+    padding: 7px;
+    margin: 6px;
+    border: 2px solid #999999;
+    border-radius: 5px;
+}
+div.imgarea {
+    text-align:center;
+}
 
 /* done */
