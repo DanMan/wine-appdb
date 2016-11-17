@@ -722,99 +722,82 @@ function view_version_bugs($iVersionId = null, $aBuglinkIds)
     } 
     
     //start format table
-    if($_SESSION['current']->isLoggedIn())
-    {
-        echo "<form method=post action='".APPDB_ROOT."objectManager.php'>\n";
-    }
-    echo html_frame_start("Known bugs","98%",'',0);
-    echo "<table width=\"100%\" border=\"0\" cellpadding=\"3\" cellspacing=\"1\">\n\n";
-    echo "<tr class=color4>\n";
-    echo "    <td align=center width=\"80\">Bug #</td>\n";
+    echo "<table class=\"whq-table whq-table-full\">\n\n";
+    echo "<thead><tr>\n";
+    echo "    <td class=\"text-center\" width=\"80\">Bug #</td>\n";
     echo "    <td>Description</td>\n";
-    echo "    <td align=center width=\"80\">Status</td>\n";
-    echo "    <td align=center width=\"80\">Resolution</td>\n";
-    echo "    <td align=center width=\"80\">Other apps affected</td>\n";
+    echo "    <td class=\"text-center\" width=\"80\">Status</td>\n";
+    echo "    <td class=\"text-center\" width=\"80\">Resolution</td>\n";
+    echo "    <td class=\"text-center\" width=\"80\">Other apps affected</td>\n";
 
     if($bCanEdit == true)
     {
-        echo "    <td align=center width=\"80\">Delete</td>\n";
-        echo "    <td align=center width=\"80\">Checked</td>\n";
+        echo "    <td class=\"text-center\"width=\"80\">Delete</td>\n";
+        echo "    <td class=\"text-center\"width=\"80\">Checked</td>\n";
     }
-    echo "</tr>\n\n";
+    echo "</tr></thead><tbody>\n\n";
 
-    $c = 0;
     foreach($aBuglinkIds as $iBuglinkId)
     {
         $oBuglink = new Bug($iBuglinkId);
 
-        if (
-                (!isset($aClean['sAllBugs']) && $oBuglink->isOpen() )
-                ||
-                isset($aClean['sAllBugs'])
-            )
+        if ((!isset($aClean['sAllBugs']) && $oBuglink->isOpen() ) || isset($aClean['sAllBugs']))
         {
-            // set row color
-            $bgcolor = ($c % 2 == 0) ? "color0" : "color1";
-
             //display row
-            echo "<tr class=$bgcolor>\n";
-            echo "<td align=center><a href='".BUGZILLA_ROOT."show_bug.cgi?id=".$oBuglink->iBug_id."'>".$oBuglink->iBug_id."</a></td>\n";
+            echo "<tr>\n";
+            echo "<td class=\"text-center\"><a href='".BUGZILLA_ROOT."show_bug.cgi?id={$oBuglink->iBug_id}><i class=\"fa fa-bug\"></i> {$oBuglink->iBug_id}</a></td>\n";
             echo "<td>".$oBuglink->sShort_desc."</td>\n";
-            echo "<td align=center>".$oBuglink->sBug_status."</td>","\n";
-            echo "<td align=center>".$oBuglink->sResolution."</td>","\n";
-            echo "<td align=center><a href='viewbugs.php?bug_id=".$oBuglink->iBug_id."'>View</a></td>\n";
-    
-            
+            echo "<td class=\"text-center\">".$oBuglink->sBug_status."</td>","\n";
+            echo "<td class=\"text-center\">".$oBuglink->sResolution."</td>","\n";
+            echo "<td class=\"text-center\"><a href=\"viewbugs.php?bug_id={$oBuglink->iBug_id}\" class=\"btn btn-default\">View</a></td>\n";
+
             if($bCanEdit == true)
             {
                 $oM = new objectManager("bug");
                 $oM->setReturnTo($oVersion->objectMakeUrl());
-                echo "<td align=center>[<a href='".$oM->makeUrl("delete", $oBuglink->iLinkId)."&amp;sSubmit=delete'>delete</a>]</td>\n";
+                echo "<td class=\"text-center\"><a href=\"".$oM->makeUrl("delete", $oBuglink->iLinkId)."&amp;sSubmit=delete\" class=\"btn btn-default btn-skinny\"><i class=\"fa fa-trash-o\"></i></a></td>\n";
                 if ($oBuglink->bQueued)
                 {
-                    echo "<td align=center>[<a href='".$oM->makeUrl("edit", $oBuglink->iLinkId)."&amp;sSubmit=Submit&amp;bIsQueue=true'>OK</a>]</td>\n";
-                } else
+                    echo "<td class=\"text-center\"><a href=\"".$oM->makeUrl("edit", $oBuglink->iLinkId)."&amp;sSubmit=Submit&amp;bIsQueue=true\" class=\"btn btn-default btn-skinny\"><i class=\"fa fa-check\"></i></a></td>\n";
+                }
+                else
                 {
-                    echo "<td align=center>Yes</td>\n";
+                    echo "<td class=\"text-center\">Yes</td>\n";
                 }
                 
             }
             echo "</tr>\n\n";
-    
-
-            $c++;
         }
     }
 
+    echo '</tbody></table>',"\n";
+
     if($_SESSION['current']->isLoggedIn())
     {
+        echo "<form method=post action='".APPDB_ROOT."objectManager.php'>\n";
         echo '<input type="hidden" name="iVersionId" value="'.$iVersionId.'">',"\n";
-        echo '<tr class=color3><td align=center>',"\n";
         $sBuglinkId = isset($aClean['buglinkId']) ? $aClean['buglinkId'] : '';
-        echo '<input type="text" name="iBuglinkId" value="'.$sBuglinkId.'" size="8"></td>',"\n";
+        echo '<input type="text" name="iBuglinkId" value="'.$sBuglinkId.'" size="8">',"\n";
         echo '<input type="hidden" name="sSubmit" value="Submit">',"\n";
         echo '<input type="hidden" name="sClass" value="bug">',"\n";
         echo '<input type="hidden" name="sReturnTo" value="'.$oVersion->objectMakeUrl().'">',"\n";
-        echo '<td><input type="submit" name="sSub" value="Submit a new bug link."></td>',"\n";
-        echo '<td colspan=6></td></tr></form>',"\n";
+        echo '<button type="submit" name="sSub" class="btn btn-default"><i class=\"fa fa-bug\"></i> Submit a new bug link</button>',"\n";
+        echo '</form>',"\n";
     }
-    echo '</table>',"\n";
 
     // show only open link
     if ( isset( $aClean['sAllBugs'] ) )
     {
-        $sURL = str_replace( '&sAllBugs', '', $_SERVER['REQUEST_URI'] );
-        $sLink = '<a href="' . htmlentities($sURL) . '">Show open bugs</a>';
+        $sURL = htmlentities(str_replace( '&sAllBugs', '', $_SERVER['REQUEST_URI']));
+        $sLink = "<a href=\"{$sURL}\" class=\"btn btn-default\"><i class=\"fa fa-bug\"></i> Show <b>open</b> bugs</a>";
     }
     // show all link
     else
     {
-        $sURL = $_SERVER['REQUEST_URI'] . '&sAllBugs';
-        $sLink = '<a href="' . htmlentities($sURL) . '">Show all bugs</a>';
+        $sURL = htmlentities($_SERVER['REQUEST_URI'] . '&sAllBugs');
+        $sLink = "<a href=\"{$sURL}\" class=\"btn btn-default\"><i class=\"fa fa-bug\"></i> Show <b>all</b> bugs</a>";
     }
-    
-    echo '<div style="text-align:right;">' . $sLink .'</div>';
-    echo html_frame_end();
+    echo "<p>{$sLink}</p>\n";
 }
 
 ?>
