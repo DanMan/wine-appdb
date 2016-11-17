@@ -110,4 +110,6 @@ echo "</div>\n";
 ?>
 
 <div id="whq-page-body">
+<div class="container-fluid">
+
 <!-- Start Content -->

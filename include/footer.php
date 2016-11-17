@@ -1,6 +1,7 @@
 
 <!-- End Content -->
 </div>
+</div>
 
 <div id="footer">
     <a href="https://wiki.winehq.org/WineHQ_Wiki:Privacy_policy">Privacy Policy</a><br><br>
