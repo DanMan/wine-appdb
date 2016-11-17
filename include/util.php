@@ -1,5 +1,9 @@
 <?php
 /**
+ * misc global utility functions
+ */
+
+/**
  * display an error page
  */
 function util_show_error_page_and_exit($text = null, $message = null)
@@ -9,8 +13,12 @@ function util_show_error_page_and_exit($text = null, $message = null)
     }
     header("HTTP/1.0 404 Object not found or user is not logged in");
     apidb_header("Oops");
-    echo "<div align=center><font color=red><b>$text</b></font></div>\n";
-    echo "<p>$message</p>\n";
+    echo "<h1 class=\"text-danger\"><i class=\"fa fa-exclamation-triangle\"></i> $text</h1>\n";
+    if (!empty($message))
+    {
+        echo "<hr>\n";
+        echo "<p>$message</p>\n";
+    }
     apidb_footer();
     exit;
 }
@@ -185,7 +193,7 @@ function make_bugzilla_version_list($sVarname, $sSelectedValue = '')
     $aVersions = get_bugzilla_versions();
 
     // build the selection array
-    $sStr.= "<select name='$sVarname'>\n";
+    $sStr.= "<select name='$sVarname' class='form-control form-control-inline'>\n";
     $sStr.= "<option value=\"\">Choose ...</option>\n";
     $bFoundSelectedValue = false;
     foreach($aVersions as $sKey => $sValue)
@@ -216,7 +224,7 @@ function make_bugzilla_version_list($sVarname, $sSelectedValue = '')
 // returns a string containing the html for the maintainer rating list
 function make_maintainer_rating_list($varname, $cvalue)
 {
-    $sTxt = "<select id='ratingSelect' name='$varname'>\n";
+    $sTxt = "<select id='ratingSelect' name='$varname' class='form-control form-control-inline'>\n";
     $sTxt .= "<option value=\"\">Choose ...</option>\n";
     $aRating = array("Platinum", "Gold", "Silver", "Bronze", "Garbage");
     $iMax = count($aRating);
@@ -278,15 +286,8 @@ function outputTopXRow($oRow)
     $oTableCell->SetStyle("text-align:center;");
     $oTableRow->AddCell($oTableCell);
 
-    // create a new TableRowHighlight instance
-    $oHighlightColor = new color(0xf0, 0xf6, 0xff);
-    $oInactiveColor = new color();
-    $oInactiveColor->SetColorByName("White");
-    $oTableRowHighlight = new TableRowHighlight($oHighlightColor, $oInactiveColor);
-
     // create a new TableRowclick
     $oTableRowClick = new TableRowClick($oVersion->objectMakeUrl());
-    $oTableRowClick->SetHighlight($oTableRowHighlight);
 
     // set the click property of the html table row
     $oTableRow->SetRowClick($oTableRowClick);
@@ -511,47 +512,43 @@ function outputSearchTableForhResult($search_words, $hResult)
     if(($hResult == null) || (query_num_rows($hResult) == 0))
     {
         // do something
-        echo html_frame_start("","98%");
-        echo "No matches found for '". urlencode($search_words) .  "'\n";
+        echo html_frame_start();
+        echo "No matches found for <b>'".urlencode($search_words)."'</b>\n";
         echo html_frame_end();
-    } else
+    }
+    else
     {
-        echo html_frame_start("","98%","",0);
-        echo "<table width='100%' border=0 cellpadding=3 cellspacing=1>\n\n";
+        echo html_frame_start();
+        echo "<table class=\"whq-table whq-table-full\">\n\n";
 
-        echo "<tr class=color4>\n";
-        echo "    <td><font color=white>Application Name</font></td>\n";
-        echo "    <td><font color=white>Description</font></td>\n";
-        echo "    <td><font color=white>No. Versions</font></td>\n";
-        echo "</tr>\n\n";
+        echo "<thead><tr>\n";
+        echo "    <td>Application Name</td>\n";
+        echo "    <td>Description</td>\n";
+        echo "    <td>No. Versions</td>\n";
+        echo "</tr></thead><tbody>\n";
 
-        $c = 0;
         while($oRow = query_fetch_object($hResult))
         {
             $oApp = new application($oRow->appId);
+
             //skip if a NONAME
             if ($oRow->appName == "NONAME") { continue; }
-		
-            //set row color
-            $bgcolor = ($c % 2) ? 'color0' : 'color1';
-		
+
             //count versions
             $hResult2 = query_parameters("SELECT count(*) as versions FROM appVersion WHERE appId = '?' AND versionName != 'NONAME' and state = 'accepted'",
                                      $oRow->appId);
             $y = query_fetch_object($hResult2);
-		
+
             //display row
-            echo "<tr class=$bgcolor>\n";
+            echo "<tr>\n";
             echo "    <td>".html_ahref($oRow->appName,$oApp->objectMakeUrl())."</td>\n";
             echo "    <td>".util_trim_description($oRow->description)."</td>\n";
-            echo "    <td>$y->versions &nbsp;</td>\n";
+            echo "    <td>{$y->versions} &nbsp;</td>\n";
             echo "</tr>\n\n";
-		
-            $c++;    
         }
 
-        echo "<tr><td colspan=3 class=color4><font color=white>$c match(es) found</font></td></tr>\n";
-        echo "</table>\n\n";
+        echo "</tbody></table>\n";
+        echo "<p><b>$c</b> match(es) found</p>";
         echo html_frame_end();
     }
 }
@@ -582,13 +579,13 @@ function process_app_version_changes($bIsVersion)
 
 function perform_search_and_output_results($search_words)
 {
-    echo "<b>Searching for '".$search_words."'";
+    echo "<b>Searching for '".$search_words."' ";
 
-    echo "<center><b>Like matches</b></center>";
+    echo "<b>Like matches</b> ";
     $hResult = searchForApplication($search_words);
     outputSearchTableForhResult($search_words, $hResult);
 
-    echo "<center><b>Partial matches</b></center>";
+    echo "<b>Partial matches</b> ";
     $hResult = searchForApplicationPartial($search_words);
     outputSearchTableForhResult($search_words, $hResult);
 }
@@ -621,32 +618,36 @@ function display_page_range($iCurrentPage=1, $iPageRange=1, $iTotalPages=1, $sLi
     }
     $iStartPage = max(1,$iStartPage);
 
+    echo " ";
+
     if($iCurrentPage != 1)
     {
-        echo "<a href='".$sLinkurl."&amp;iPage=1'>|&lt</a>&nbsp;";
+        echo "<a href=\"{$sLinkurl}&amp;iPage=1\" class=\"btn btn-default btn-sm btn-skinny\"><i class=\"fa fa-step-backward\"></i></a> ";
         $iPreviousPage = $iCurrentPage - 1;
-        echo "<a href='".$sLinkurl."&amp;iPage=$iPreviousPage'>&lt</a>&nbsp;";
+        echo "<a href=\"{$sLinkurl}&amp;iPage=$iPreviousPage\" class=\"btn btn-default btn-sm btn-skinny\"><i class=\"fa fa-chevron-left\"></i></a> ";
     } else
     {
-        echo "|&lt &lt ";
+        echo "<button class=\"btn btn-default btn-sm btn-skinny\" disabled=\"disabled\"><i class=\"fa fa-step-backward text-muted\"></i></button> ".
+             "<button class=\"btn btn-default btn-sm btn-skinny\" disabled=\"disabled\"><i class=\"fa fa-chevron-left text-muted\"></i></button> ";
     }
     /* display the desired range */
     for($iPg = $iStartPage; $iPg <= $iEndPage; $iPg++)
     {
         if($iPg != $iCurrentPage)
-            echo "<a href='".$sLinkurl."&amp;iPage=".$iPg."'>$iPg</a> ";
+            echo "<a href=\"{$sLinkurl}&amp;iPage={$iPg}\" class=\"btn btn-default btn-sm btn-skinny\">{$iPg}</a> ";
         else
-            echo "$iPg ";
+            echo "<button class=\"btn btn-default btn-sm btn-skinny\" disabled=\"disabled\"><span class=\"text-muted\">$iPg</span></button> ";
     }
 
     if($iCurrentPage < $iTotalPages)
     {
         $iNextPage = $iCurrentPage + 1;
-        echo "<a href='".$sLinkurl."&amp;iPage=$iNextPage'>&gt</a> ";
-        echo "<a href='".$sLinkurl."&amp;iPage=$iTotalPages'>&gt|</a> ";
+        echo "<a href=\"{$sLinkurl}&amp;iPage={$iNextPage}\" class=\"btn btn-default btn-sm btn-skinny\"><i class=\"fa fa-chevron-right\"></i></a> ";
+        echo "<a href=\"{$sLinkurl}&amp;iPage={$iTotalPages}\" class=\"btn btn-default btn-sm btn-skinny\"><i class=\"fa fa-step-forward\"></i></a> ";
     } else
     {
-        echo "&gt &gt|";
+        echo "<button class=\"btn btn-default btn-sm btn-skinny\" disabled=\"disabled\"><i class=\"fa fa-chevron-right text-muted\"></i></button> ".
+             "<button class=\"btn btn-default btn-sm btn-skinny\" disabled=\"disabled\"><i class=\"fa fa-step-forward text-muted\"></i></button> ";
     }
 }
 
