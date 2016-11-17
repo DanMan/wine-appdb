@@ -773,121 +773,131 @@ class Application {
             objectManager::error_exit($sError);
         }
 
-        // cat display
-        $oCategory = new Category($this->iCatId);
-        $oCategory->displayPath($this->iAppId);
-
         // set developer
         $oVendor = new Vendor($this->iVendorId);
 
         // set URL
         $appLinkURL = ($this->sWebpage) ? trimmed_link($this->sWebpage,30) : "&nbsp;";
-  
-        // start display application
-        echo html_frame_start("","98%","",0);
-        echo "<tr><td class=color4 valign=top>\n";
-        echo "  <table>\n";
-        echo "    <tr><td>\n";
 
-        echo '      <table width="250" border="0" cellpadding="3" cellspacing="1">',"\n";
-        echo "        <tr class=color0 valign=top><td width=\"100\"><b>Name</b></td><td width='100%'> ".$this->sName." </td>\n";
-        echo "        <tr class=\"color1\"><td><b>Developer</b></td><td> ".
-            $oVendor->objectMakeLink()."&nbsp;\n";
-        echo "        </td></tr>\n";
-    
-        // main URL
-        echo "        <tr class=\"color0\"><td><b>URL</b></td><td>".$appLinkURL."</td></tr>\n";
+        // set developer URL
+        $devLinkURL = $oVendor->objectMakeLink();
 
         // optional links
-        if($sUrls = url::display(NULL, $this->iAppId))
-            echo $sUrls;
+        $sUrls = url::display(NULL, $this->iAppId);
 
         // image
         $img = Screenshot::get_random_screenshot_img($this->iAppId, null, false);
-        echo "<tr><td align=\"center\" colspan=\"2\">$img</td></tr>\n";
 
-        echo "      </table>\n"; /* close of name/developer/bugs/url table */
-
-        echo "    </td></tr>\n";
-        echo "    <tr><td>\n";
-
-        // Display all supermaintainers maintainers of this application
-        echo "      <table class=\"color4\" width=\"250\" border=\"1\">\n";
-        echo "        <tr><td align=\"left\"><b>Super maintainers:</b></td></tr>\n";
+        // maintainers area
         $other_maintainers = Maintainer::getSuperMaintainersUserIdsFromAppId($this->iAppId);
-        if($other_maintainers)
+        $maintainers = "";
+        if ($other_maintainers)
         {
-            echo "        <tr><td align=\"left\"><ul>\n";
+            $maintainers = "<ul>\n";
             while(list($index, $userIdValue) = each($other_maintainers))
             {
                 $oUser = new User($userIdValue);
-                echo "        <li>".$oUser->objectMakeLink()."</li>\n";
+                $maintainers .= "<li>".$oUser->objectMakeLink()."</li>\n";
             }
-            echo "</ul></td></tr>\n";
-        } else
+            $maintainers .= "</ul>\n";
+        }
+        else
         {
-            echo "        <tr><td align=right>No maintainers.Volunteer today!</td></tr>\n";
+            $maintainers = "<p>No maintainers. Volunteer today!</p>\n";
         }
 
         // Display the app maintainer button
-        echo '        <tr><td align="center">';
+        $mtrscmds = "";
         if($_SESSION['current']->isLoggedIn())
         {
             /* are we already a maintainer? */
             if($_SESSION['current']->isSuperMaintainer($this->iAppId)) /* yep */
             {
-                echo '        <form method="post" name="sMessage" action="maintainerdelete.php"><input type=submit value="Remove yourself as a super maintainer" class="button">';
-            } else /* nope */
+                $mtrscmds .= '<form method="post" name="sMessage" action="maintainerdelete.php">'.
+                             '<input type=submit value="Remove Yourself" class="btn btn-default btn-sm btn-skinny">';
+            }
+            else
             {
-                echo '        <form method="post" name="sMessage" action="objectManager.php?sClass=maintainer&amp;iAppId='.$this->iAppId.'&amp;sAction=add&amp;sTitle='.urlencode("Be a Super Maintainer for ".$this->sName).'&sReturnTo='.urlencode($this->objectMakeUrl()).'"><input type="submit" value="Be a super maintainer of this app" class="button" title="Click here to know more about super maintainers.">';
+                $mtrscmds .= '<form method="post" name="sMessage" action="objectManager.php?sClass=maintainer&amp;iAppId='.$this->iAppId.'&amp;sAction=add&amp;sTitle='.urlencode("Be a Super Maintainer for ".$this->sName).'&sReturnTo='.urlencode($this->objectMakeUrl()).'"><input type="submit" value="Be a super maintainer" class="btn btn-default btn-sm btn-skinny" title="Click here to know more about super maintainers.">';
             }
 
-            echo "        <input type=\"hidden\" name=\"iAppId\" value=\"".$this->iAppId."\">";
-            echo "        <input type=\"hidden\" name=\"iSuperMaintainer\" value=\"1\">"; /* set superMaintainer to 1 because we are at the appFamily level */
-            echo "        </form>";
-            
+            /* set superMaintainer to 1 because we are at the appFamily level */
+            $mtrscmds .= "<input type=\"hidden\" name=\"iAppId\" value=\"".$this->iAppId."\">".
+                         "<input type=\"hidden\" name=\"iSuperMaintainer\" value=\"1\">".
+                         "</form>";
+
             if($_SESSION['current']->isSuperMaintainer($this->iAppId) || $_SESSION['current']->hasPriv("admin"))
             {
-                echo '        <form method="post" name="sEdit" action="admin/editAppFamily.php"><input type="hidden" name="iAppId" value="'.$this->iAppId.'"><input type="submit" value="Edit application" class="button"></form>';
-                echo '<form method="post" action="objectManager.php?sClass=note&sAction=add&sTitle=Add+note&iAppId='.$this->iAppId.'&sNoteTitle=HOWTO&sReturnTo='.urlencode($this->objectMakeUrl()).'">';
-                echo '<input type="submit" value="Add note/how-to" />';
-                echo '</form>';
+                $mtrscmds .= '<form method="post" name="sEdit" action="admin/editAppFamily.php">'.
+                             '<input type="hidden" name="iAppId" value="'.$this->iAppId.'">'.
+                             '<input type="submit" value="Edit Application" class="btn btn-default"></form>'.
+                             '<form method="post" action="objectManager.php?sClass=note&sAction=add&sTitle=Add+note&iAppId='.$this->iAppId.'&sNoteTitle=HOWTO&sReturnTo='.urlencode($this->objectMakeUrl()).'">'.
+                             '<input type="submit" value="Add note/how-to" class="btn btn-default btn-sm btn-skinny">'.
+                             '</form>';
             }
             if($_SESSION['current']->isLoggedIn())
             {
-                echo '<form method="post" name="sMessage" action="'.
-                        'objectManager.php?sClass=version_queue&amp;iAppId='.$this->iAppId
-                        .'&amp;sTitle=Submit+New+Version&amp;sAction=add">';
-                echo '<input type=submit value="Submit new version" class="button">';
-                echo '</form>';
+                $mtrscmds .= '<form method="post" name="sMessage" action="'.
+                             'objectManager.php?sClass=version_queue&amp;iAppId='.$this->iAppId.
+                             '&amp;sTitle=Submit+New+Version&amp;sAction=add">'.
+                             '<input type="submit" value="Submit Version" class="btn btn-default btn-sm btn-skinny">'.
+                             '</form>';
             }
             if($_SESSION['current']->hasPriv("admin"))
             {
                 $url = BASE."objectManager.php?sClass=application&amp;bIsQueue=false&amp;sAction=delete&amp;iId=".$this->iAppId;
-                echo "        <form method=\"post\" name=\"sEdit\" action=\"javascript:self.location = '".$url."'\"><input type=\"submit\" value=\"Delete app\" class=\"button\"></form>";
-                echo '        <form method="post" name="sEdit" action="admin/editBundle.php"><input type="hidden" name="iBundleId" value="'.$this->iAppId.'"><input type="submit" value="Edit bundle" class="button"></form>';
+                $mtrscmds .= "<form method=\"post\" name=\"sEdit\" action=\"javascript:self.location = '".$url."'\"><input type=\"submit\" value=\"Delete app\" class=\"btn btn-default\"></form>";
+                $mtrscmds .= '<form method="post" name="sEdit" action="admin/editBundle.php"><input type="hidden" name="iBundleId" value="'.$this->iAppId.'"><input type="submit" value="Edit bundle" class="btn btn-default btn-sm btn-skinny"></form>';
             }
         } else
         {
-            echo '<form method="post" action="account.php?sCmd=login"><input type="submit" value="Log in to become a super maintainer" class="button"></form>';
+            $mtrscmds .= '<form method="post" action="account.php?sCmd=login">'.
+                            '<input type="submit" value="Be a super maintainer" class="btn btn-default btn-sm btn-skinny"></form>';
         }
-        echo "        </td></tr>\n";
-        echo "      </table>\n"; /* close of super maintainers table */
-        echo "    </td></tr>\n";
-        echo "  </table>\n"; /* close the table that contains the whole left hand side of the upper table */
 
-        // description
-        echo "  <td class=color2 valign=top width='100%'>\n";
-        echo "<div class='info_container'>\n";
-        echo "\t<div class='title_class'>\n";
-        echo "\t\tDescription\n";
-        echo "\t</div>\n";                      // close the 'title_class' div
-        echo "\t<div class='info_contents'>\n";
-        echo "\t\t".$this->sDescription."\n";
-        echo "\t</div>\n";                      // close the 'info_contents' div
-        echo "</div>\n";                        // close the 'info_container' div
+        // cat display
+        $oCategory = new Category($this->iCatId);
+        $oCategory->displayPath($this->iAppId);
 
-        echo html_frame_end("For more details and user comments, view the versions of this application.");
+        // display page
+        echo <<<EOT
+        <h1 class="whq-app-title">{$this->sName}</h1>
+        <div class="row">
+            <div class="col-xs-7">
+                <div class="pull-left margin-right-lg margin-bottom-md">{$img}</div>
+                {$this->sDescription}
+            </div>
+            <div class="col-xs-5">
+                <p><b>Application Details:</b></p>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><b>Developer:</b></td>
+                            <td>{$devLinkURL}</td>
+                        </tr>
+                        <tr>
+                            <td><b>URL:</b></td>
+                            <td>{$appLinkURL}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><b>Super Maintainers:</b>
+                    <a href="https://wiki.winehq.org/AppDB_Maintainers" class="btn btn-default btn-small btn-skinny"><i class="fa fa-question-circle"></i>
+                    About Maintainership</a></p>
+                <div class="row">
+                    <div class="col-xs-6">
+                        {$maintainers}
+                    </div>
+                    <div class="col-xs-6">
+                        {$mtrscmds}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+EOT;
+
+        echo "<p>For more details and user comments, view the versions of this application</p>\n";
 
         // display versions
         Version::displayList($this->getVersions());

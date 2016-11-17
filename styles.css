@@ -57,6 +57,11 @@ a.btn, a.btn:visited {
     color: inherit;
 }
 
+.panel.panel-scroll .panel-body {
+    height: 250px;
+    overflow: auto;
+}
+
 /*
   =====================================================================================================================
    PAGE LAYOUT
@@ -357,6 +362,66 @@ H3                  { font-size: 14pt; }
 H4                  { font-size: 12pt; }
 H5                  { font-size: 10pt; }
 
+/* Padding and Margin Removal */
+.nomargin        { margin: 0px !important; }
+.nomargin-top    { margin-top: 0px !important; }
+.nomargin-bottom { margin-bottom: 0px !important; }
+.nopadding       { padding: 0px !important; }
+
+/* add margins */
+.margin-xs         { margin: 0.25em; }
+.margin-sm         { margin: 0.5em; }
+.margin-md         { margin: 1.0em; }
+.margin-lg         { margin: 2.0em; }
+.margin-xl         { margin: 3.0em; }
+.margin-top-xs     { margin-top: 0.25em; }
+.margin-top-sm     { margin-top: 0.5em; }
+.margin-top-md     { margin-top: 1.0em; }
+.margin-top-lg     { margin-top: 2.0em; }
+.margin-top-xl     { margin-top: 3.0em; }
+.margin-right-xs   { margin-right: 0.25em; }
+.margin-right-sm   { margin-right: 0.5em; }
+.margin-right-md   { margin-right: 1.0em; }
+.margin-right-lg   { margin-right: 2.0em; }
+.margin-right-xl   { margin-right: 3.0em; }
+.margin-bottom-xs  { margin-bottom: 0.25em; }
+.margin-bottom-sm  { margin-bottom: 0.5em; }
+.margin-bottom-md  { margin-bottom: 1.0em; }
+.margin-bottom-lg  { margin-bottom: 2.0em; }
+.margin-bottom-xl  { margin-bottom: 3.0em; }
+.margin-left-xs    { margin-left: 0.25em; }
+.margin-left-sm    { margin-left: 0.5em; }
+.margin-left-md    { margin-left: 1.0em; }
+.margin-left-lg    { margin-left: 2.0em; }
+.margin-left-xl    { margin-left: 3.0em; }
+
+/* add padding */
+.padding-xs        { padding: 0.25em; }
+.padding-sm        { padding: 0.5em; }
+.padding-md        { padding: 1.0em; }
+.padding-lg        { padding: 2.0em; }
+.padding-xl        { padding: 3.0em; }
+.padding-top-xs    { padding-top: 0.25em; }
+.padding-top-sm    { padding-top: 0.5em; }
+.padding-top-md    { padding-top: 1.0em; }
+.padding-top-lg    { padding-top: 2.0em; }
+.padding-top-xl    { padding-top: 3.0em; }
+.padding-right-xs  { padding-right: 0.25em; }
+.padding-right-sm  { padding-right: 0.5em; }
+.padding-right-md  { padding-right: 1.0em; }
+.padding-right-lg  { padding-right: 2.0em; }
+.padding-right-xl  { padding-right: 3.0em; }
+.padding-bottom-xs { padding-bottom: 0.25em; }
+.padding-bottom-sm { padding-bottom: 0.5em; }
+.padding-bottom-md { padding-bottom: 1.0em; }
+.padding-bottom-lg { padding-bottom: 2.0em; }
+.padding-bottom-xl { padding-bottom: 3.0em; }
+.padding-left-xs   { padding-left: 0.25em; }
+.padding-left-sm   { padding-left: 0.5em; }
+.padding-left-md   { padding-left: 1.0em; }
+.padding-left-lg   { padding-left: 2.0em; }
+.padding-left-xl   { padding-left: 3.0em; }
+
 /* HR */
 hr
 {
@@ -451,6 +516,15 @@ hr
 
 /* zoom image overlay style */
 .zoom_overlay { position:relative; top:10px; left:10px; margin-left:-32px; padding:0px; }
+
+/* application title/name */
+h1.whq-app-title, h2.whq-app-title {
+    font-size: 36px;
+    color: #732010;
+    border-bottom: 1px solid #732010;
+    margin: 0.25em 0 0.5em 0;
+}
+h2.whq-app-title { margin-top: 1em; font-size: 24px; }
 
 /* breadcrumb */
 .whq-breadcrumb a, .whq-breadcrumb a:visited {
@@ -665,21 +739,23 @@ table.historyTable { border: 1px;
                      font-family: "bitstream vera sans", "verdana", "arial", "helvetica", sans-serif;
                      font-size: 12px; }
 
+/* rank row colors */
 td.platinum         { background-color: #ECECEC; }
 td.gold             { background-color: #fff600; }
 td.silver           { background-color: silver;  }
 td.bronze           { background-color: #fcba0a; }
 td.garbage          { background-color: #999966; }
 
-td.platinum         { background-color: #ECECEC; }
+tr.platinum         { background-color: #ECECEC; }
 tr.gold             { background-color: #fff600; }
 tr.silver           { background-color: silver;  }
 tr.bronze           { background-color: #fcba0a; }
 tr.garbage          { background-color: #999966; }
 tr.warning          { background-color: #ff3333; } /* novascotia salmon */
-tr.howto            { background-color: green;   }
-tr.defaultnote      { background-color: #0066CC; } /* mid-light blue */
-tr.notetitle        { background-color: #cccccc; font-weight: bold; }
+
+/* note/howto colors */
+.note-howto            { font-weight: bold; color: green;   }
+.note-defaultnote      { font-weight: bold; color: #0066CC; } /* mid-light blue */
 
 /* classes for the version info pane */
 /* version info pane is the right hand pane at the top of the version page */

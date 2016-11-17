@@ -840,26 +840,15 @@ class version {
 
         $oApp = $this->objectGetParent();
 
+        // screenshot
+        $img = Screenshot::get_random_screenshot_img($oApp->iAppId, $this->iVersionId, false);
+
         // cat
         $oCategory = new Category($oApp->iCatId);
         $oCategory->displayPath($oApp->iAppId, $this->iVersionId);
-  
+
         // set URL
         $appLinkURL = ($oApp->sWebpage) ? trimmed_link($oApp->sWebpage,30) : "&nbsp;";
-
-        // start version display
-        echo html_frame_start("","98%","",0);
-        echo '<tr><td class="color4" valign="top">',"\n";
-        echo '<table width="250" border="0" cellpadding="3" cellspacing="1">',"\n";
-        echo "<tr class=\"color0\" valign=\"top\"><td width=\"100\"> <b>Name</b></td><td width=\"100%\">".$oApp->sName."</td>\n";
-        echo "<tr class=\"color1\" valign=\"top\"><td><b>Version</b></td><td>".$this->sName."</td></tr>\n";
-        echo html_tr(array(
-            "<b>License</b>",
-            $this->sLicense),
-            "color0");
-
-        // main URL
-        echo "        <tr class=\"color1\"><td><b>URL</b></td><td>".$appLinkURL."</td></tr>\n";
 
         // Votes
         if(!$this->iObsoleteBy)
@@ -868,32 +857,194 @@ class version {
             $oM->setReturnTo($this->objectMakeUrl());
 
             if($_SESSION['current']->isLoggedIn())
-                $shVoteLink = ' &nbsp; <a href="'.$oM->makeUrl("edit", $_SESSION['current']->iUserId).'&amp;iVersionId='.$this->iVersionId.'">Vote</a>';
+                $shVoteLink = ' <a href="'.$oM->makeUrl("edit", $_SESSION['current']->iUserId).'&amp;iVersionId='.$this->iVersionId.
+                              '" class="btn btn-default btn-small btn-skinny">Vote</a>';
             else
                 $shVoteLink = '';
 
-            // Allow admins to see which users have voted, in order to identify
-            // bogus votes
+            // Allow admins to see which users have voted, in order to identify bogus votes
             if($_SESSION['current']->hasPriv('admin'))
             {
                 $oMVoteInspector = new objectManager('voteInspector', 'Vote inspector');
-                $shVoteLink .= ' &nbsp; <a href="'.$oMVoteInspector->makeUrl('edit',$this->iVersionId).'">Inspect</a>';
+                $shVoteLink .= ' <a href="'.$oMVoteInspector->makeUrl('edit',$this->iVersionId).
+                               '" class="btn btn-default btn-small btn-skinny">Inspect</a>';
             }
 
             $shVoteText = vote_count_version_total($this->iVersionId).$shVoteLink;
-        } else
+        }
+        else
         {
             $shVoteText = 'Marked as obsolete';
         }
 
-        echo html_tr(array('<b>Votes</b>', $shVoteText), 'color0');
-
-        $sRating = $this->sTestedRating;
-        $sRelease = $this->sTestedRelease;
-        if($sRating != "/" && $sRating)
-            $sRatingColor = $sRating;
+        // display all maintainers of this application
+        $maintainers = "";
+        $aMaintainers = $this->getMaintainersUserIds();
+        if(sizeof($aMaintainers) > 0)
+        {
+            $maintainers .= "<ul>";
+            while(list($index, $userIdValue) = each($aMaintainers))
+            {
+                $oUser = new User($userIdValue);
+                $maintainers .= "<li>".$oUser->objectMakeLink()."</li>";
+            }
+            $maintainers .= "</ul>\n";
+        }
         else
-            $sRatingColor = 'color0';
+        {
+            $maintainers .= "<p>No maintainers. Volunteer today!</p>\n";
+        }
+
+        // display the app maintainer button
+        $mtrscmds = "";
+        if($_SESSION['current']->isLoggedIn())
+        {
+            /* is this user a maintainer of this version by virtue of being a super maintainer */
+            /* of this app family? */
+            if($_SESSION['current']->isSuperMaintainer($oApp->iAppId))
+            {
+                $mtrscmds .= '<form method="post" name="sMessage" action="maintainerdelete.php">'."\n";
+                $mtrscmds .= '<input type="submit" value="Remove yourself as a super maintainer" class="btn btn-default btn-small btn-skinny">'."\n";
+                $mtrscmds .= '<input type="hidden" name="iSuperMaintainer" value="1">'."\n";
+                $mtrscmds .= "<input type=hidden name=\"iAppId\" value=\"".$oApp->iAppId."\">\n";
+                $mtrscmds .= "<input type=hidden name=\"iVersionId\" value=\"".$this->iVersionId."\">\n";
+                $mtrscmds .= "</form>\n";
+            } else
+            {
+                /* are we already a maintainer? */
+                if($_SESSION['current']->isMaintainer($this->iVersionId)) /* yep */
+                {
+                    $mtrscmds .= '<form method="post" name="sMessage" action="maintainerdelete.php">'."\n";
+                    $mtrscmds .= '<input type="submit" value="Remove yourself as a maintainer" class="btn btn-default btn-small btn-skinny">'."\n";
+                    $mtrscmds .= '<input type="hidden" name="iSuperMaintainer" value="0">'."\n";
+                    $mtrscmds .= "<input type=hidden name=\"iAppId\" value=\"".$oApp->iAppId."\">\n";
+                    $mtrscmds .= "<input type=hidden name=\"iVersionId\" value=\"".$this->iVersionId."\">\n";
+                    $mtrscmds .= "</form>\n";
+                } else /* nope */
+                {
+                    $mtrscmds .= '<form method="post" name="sMessage" action="objectManager.php?sClass=maintainer&amp;sAction=add&amp;iVersionId='.$this->iVersionId.'&amp;sTitle='.urlencode("Be a maintainer of ".version::fullName($this->iVersionId)).'&amp;sReturnTo='.urlencode($this->objectMakeUrl()).'">'."\n";
+                    $mtrscmds .= '<input type="submit" value="Be a maintainer of this version" class="btn btn-default btn-small btn-skinny" title="Click here to know more about maintainers.">'."\n";
+                    $mtrscmds .= "<input type=hidden name=\"iAppId\" value=\"".$oApp->iAppId."\">\n";
+                    $mtrscmds .= "<input type=hidden name=\"iVersionId\" value=\"".$this->iVersionId."\">\n";
+                    $mtrscmds .= "</form>\n";
+
+                    $oMonitor = new Monitor();
+                    $oMonitor->find($_SESSION['current']->iUserId, $this->iVersionId);
+                    if(!$oMonitor->iMonitorId)
+                    {
+                        $mtrscmds .= '<form method="post" name="sMessage" action="'.
+                                 APPDB_ROOT."objectManager.php\">\n";
+                        $mtrscmds .= "<input type=\"hidden\" name=\"iAppId\" value=\"".
+                                $this->iAppId."\" >\n";
+                        $mtrscmds .= "<input type=\"hidden\" name=\"iVersionId\" value=\"".
+                                $this->iVersionId."\" >\n";
+                        $mtrscmds .= "<input type=\"hidden\" name=\"sSubmit\" value=\"Submit\" >\n";
+                        $mtrscmds .= "<input type=\"hidden\" name=\"sClass\" value=\"monitor\" >\n";
+                        $mtrscmds .= "<input type=\"hidden\" name=\"sReturnTo\" value=\"".
+                                $this->objectMakeUrl()."\" >\n";
+                        $mtrscmds .= '<input type="submit" value="Monitor changes" class="btn btn-default btn-small btn-skinny">'."\n";
+                        $mtrscmds .= "</form>\n";
+                    }
+                }
+            }
+            
+        } else
+        {
+            $mtrscmds .= '<form method="post" name="sMessage" action="account.php">'."\n";
+            $mtrscmds .= '<input type="hidden" name="sCmd" value="login">'."\n";
+            $mtrscmds .= '<input type="submit" value="Become App Maintainer" class="btn btn-default btn-small btn-skinny">'."\n";
+            $mtrscmds .= '</form>'."\n";
+        }
+
+        if ($_SESSION['current']->hasPriv("admin") || $_SESSION['current']->isMaintainer($this->iVersionId) || $_SESSION['current']->isSuperMaintainer($this->iAppId))
+        {
+            $mtrscmds .= '<form method="post" name="sMessage" action="admin/editAppVersion.php">'."\n";
+            $mtrscmds .= '<input type="hidden" name="iAppId" value="'.$oApp->iAppId.'">'."\n";
+            $mtrscmds .= '<input type="hidden" name="iVersionId" value="'.$this->iVersionId.'">'."\n";
+            $mtrscmds .= '<input type="submit" value="Edit version" class="btn btn-default btn-small btn-skinny">'."\n";
+            $mtrscmds .= '</form>'."\n";
+
+            $mtrscmds .= "<form method=\"post\" name=\"sDelete\" action=\"javascript:self.location = '".BASE."objectManager.php?sClass=version&amp;sAction=delete&amp;bQueued=false&amp;iId=".$this->iVersionId."'\">\n";
+            $mtrscmds .= '<input type="submit" value="Delete version" class="btn btn-default btn-small btn-skinny">'."\n";
+            $mtrscmds .= '</form>'."\n";
+
+            $mtrscmds .= '<form method="post" name="sMessage" action="objectManager.php?sClass=note&amp;sAction=add&amp;iVersionId='.$this->iVersionId.'&amp;sReturnTo='.urlencode($this->objectMakeUrl()).'">';
+            $mtrscmds .= '<input type="submit" value="Add Note/How-To" class="btn btn-default btn-small btn-skinny">'."\n";
+            $mtrscmds .= '</form>'."\n";
+
+            $mtrscmds .= '<form method="post" action="'.BASE.'objectManager.php?sClass=tagNoteVersionAssignMgr&amp;sAction=edit&amp;iId='.$this->iVersionId.'&amp;sReturnTo='.urlencode($this->objectMakeUrl()).'">';
+            $mtrscmds .= '<input type="submit" value="Manage notes" class="btn btn-default btn-small btn-skinny">';
+            $mtrscmds .= '</form>';
+        }
+
+        $oMonitor = new Monitor();
+        $oMonitor->find($_SESSION['current']->iUserId, $this->iVersionId);
+        if($oMonitor->iMonitorId)
+        {
+            $mtrscmds .= '<form method="post" name="sMessage" action="'.
+                    APPDB_ROOT."objectManager.php\">\n";
+            $mtrscmds .= "<input type=\"hidden\" name=\"iId\" value=\"".
+                    $oMonitor->iMonitorId."\">\n";
+            $mtrscmds .= "<input type=\"hidden\" name=\"sSubmit\" value=\"Delete\">\n";
+            $mtrscmds .= "<input type=\"hidden\" name=\"sClass\" value=\"monitor\">\n";
+            $mtrscmds .= "<input type=\"hidden\" name=\"sReturnTo\" value=\"".
+                    $this->objectMakeUrl()."\">\n";
+            $mtrscmds .= '<input type="submit" value="Stop Monitoring" class="btn btn-default btn-small btn-skinny">'."\n";
+            $mtrscmds .= "</form>\n";
+        }
+
+        // display page
+        echo <<<EOT
+        <h1 class="whq-app-title">{$oApp->sName}</h1>
+        <div class="row">
+            <div class="col-xs-7">
+                <div class="pull-left margin-right-lg margin-bottom-md">{$img}</div>
+                {$this->sDescription}
+            </div>
+            <div class="col-xs-5">
+                <p><b>Application Details:</b></p>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><b>Version:</b></td>
+                            <td>{$this->sName}</td>
+                        </tr>
+                        <tr>
+                            <td><b>License:</b></td>
+                            <td>{$this->sLicense}</td>
+                        </tr>
+                        <tr>
+                            <td><b>URL:</b></td>
+                            <td>{$appLinkURL}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Votes:</b></td>
+                            <td>{$shVoteText}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Rating:</b></td>
+                            <td>{$this->sTestedRating}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Wine Version:</b></td>
+                            <td>{$this->sTestedRelease}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><b>Maintainers:</b>
+                    <a href="https://wiki.winehq.org/AppDB_Maintainers" class="btn btn-default btn-small btn-skinny"><i class="fa fa-question-circle"></i>
+                    About Maintainership</a></p>
+                <div class="row">
+                    <div class="col-xs-6">
+                        {$maintainers}
+                    </div>
+                    <div class="col-xs-6">
+                        {$mtrscmds}
+                    </div>
+                </div>
+            </div>
+        </div>
+EOT;
 
         // URLs
         if($sUrls = url::display($this->iVersionId))
@@ -901,194 +1052,44 @@ class version {
             echo $sUrls;
         }
 
-        // rating Area
-                echo "<tr class=\"$sRatingColor\" valign=\"top\"><td><b>Rating</b></td><td>".$sRating."</td></tr>\n";
-        echo "<tr class=\"$sRatingColor\" valign=\"top\"><td><b>Wine Version</b></td><td>".$sRelease."</td></tr>\n";
-
         // Download URLs
         if($sDownloadurls = downloadurl::display($this->iVersionId))
             echo $sDownloadurls;
 
-        // image
-        $img = Screenshot::get_random_screenshot_img($oApp->iAppId, $this->iVersionId, false);
-        echo "<tr><td align=\"center\" colspan=\"2\">$img</td></tr>\n";
 
-        // display all maintainers of this application
-        echo "<tr class=\"color0\"><td align=\"left\" colspan=\"2\"><b>Maintainers of this version:</b>\n";
-        echo "<table width=\"250\" border=\"0\">";
-        $aMaintainers = $this->getMaintainersUserIds();
-        if(sizeof($aMaintainers)>0)
-        {
-            echo "<tr class=\"color0\"><td align=\"left\" colspan=\"2\"><ul>";
-            while(list($index, $userIdValue) = each($aMaintainers))
-            {
-                $oUser = new User($userIdValue);
-                echo "<li>".$oUser->objectMakeLink()."</li>";
-            }
-            echo "</ul></td></tr>\n";
-        } else
-        {
-            echo "<tr class=color0><td align=right colspan=2>";
-            echo "No maintainers. Volunteer today!</td></tr>\n";
-        }
-        echo "</table></td></tr>\n";
-
-        // display the app maintainer button
-        echo '<tr><td colspan="2" align="center">'."\n";
-        if($_SESSION['current']->isLoggedIn())
-        {
-            /* is this user a maintainer of this version by virtue of being a super maintainer */
-            /* of this app family? */
-            if($_SESSION['current']->isSuperMaintainer($oApp->iAppId))
-            {
-                echo '<form method="post" name="sMessage" action="maintainerdelete.php">'."\n";
-                echo "\t".'<input type="submit" value="Remove yourself as a super maintainer" class="button">'."\n";
-                echo "\t".'<input type="hidden" name="iSuperMaintainer" value="1">'."\n";
-                echo "\t<input type=hidden name=\"iAppId\" value=\"".$oApp->iAppId."\">\n";
-                echo "\t<input type=hidden name=\"iVersionId\" value=\"".$this->iVersionId."\">\n";
-                echo "</form>\n";
-            } else
-            {
-                /* are we already a maintainer? */
-                if($_SESSION['current']->isMaintainer($this->iVersionId)) /* yep */
-                {
-                    echo '<form method="post" name="sMessage" action="maintainerdelete.php">'."\n";
-                    echo "\t".'<input type="submit" value="Remove yourself as a maintainer" class=button>'."\n";
-                    echo "\t".'<input type="hidden" name="iSuperMaintainer" value="0">'."\n";
-                    echo "\t"."<input type=hidden name=\"iAppId\" value=\"".$oApp->iAppId."\">\n";
-                    echo "\t"."<input type=hidden name=\"iVersionId\" value=\"".$this->iVersionId."\">\n";
-                    echo "</form>\n";
-                } else /* nope */
-                {
-                    echo '<form method="post" name="sMessage" action="objectManager.php?sClass=maintainer&amp;sAction=add&amp;iVersionId='.$this->iVersionId.'&amp;sTitle='.urlencode("Be a maintainer of ".version::fullName($this->iVersionId)).'&amp;sReturnTo='.urlencode($this->objectMakeUrl()).'">'."\n";
-                    echo "\t".'<input type="submit" value="Be a maintainer of this version" class="button" title="Click here to know more about maintainers.">'."\n";
-                    echo "\t"."<input type=hidden name=\"iAppId\" value=\"".$oApp->iAppId."\">\n";
-                    echo "\t"."<input type=hidden name=\"iVersionId\" value=\"".$this->iVersionId."\">\n";
-                    echo "</form>\n";
-                    $oMonitor = new Monitor();
-                    $oMonitor->find($_SESSION['current']->iUserId, $this->iVersionId);
-                    if(!$oMonitor->iMonitorId)
-                    {
-                        echo '<form method="post" name="sMessage" action="'.
-                                 APPDB_ROOT."objectManager.php\">\n";
-                        echo "\t<input type=\"hidden\" name=\"iAppId\" value=\"".
-                                $this->iAppId."\" >\n";
-                        echo "\t<input type=\"hidden\" name=\"iVersionId\" value=\"".
-                                $this->iVersionId."\" >\n";
-                        echo "\t<input type=\"hidden\" name=\"sSubmit\" value=\"Submit\" >\n";
-                        echo "\t<input type=\"hidden\" name=\"sClass\" value=\"monitor\" >\n";
-                        echo "\t<input type=\"hidden\" name=\"sReturnTo\" value=\"".
-                                $this->objectMakeUrl()."\" >\n";
-                        echo "\t".'<input type=submit value="Monitor changes" class="button">'."\n";
-                        echo "</form>\n";
-                    }
-                }
-            }
-            
-        } else
-        {
-            echo '<form method="post" name="sMessage" action="account.php">'."\n";
-            echo "\t".'<input type="hidden" name="sCmd" value="login">'."\n";
-            echo "\t".'<input type=submit value="Log in to become an app maintainer" class="button">'."\n";
-            echo '</form>'."\n";
-        }
-    
-        echo "</td></tr>";
-
-        if ($_SESSION['current']->hasPriv("admin") || $_SESSION['current']->isMaintainer($this->iVersionId) || $_SESSION['current']->isSuperMaintainer($this->iAppId))
-        {
-            $shAdd = '<form method="post" name="sMessage" action="objectManager.php?sClass=note&amp;sAction=add&amp;iVersionId='.$this->iVersionId.'&amp;sReturnTo='.urlencode($this->objectMakeUrl());
-            echo '<tr><td colspan="2" align="center">'."\n";
-            echo '<form method="post" name="sMessage" action="admin/editAppVersion.php">'."\n";
-            echo "\t".'<input type="hidden" name="iAppId" value="'.$oApp->iAppId.'">'."\n";
-            echo "\t".'<input type="hidden" name="iVersionId" value="'.$this->iVersionId.'">'."\n";
-            echo "\t".'<input type=submit value="Edit version" class="button">'."\n";
-            echo '</form>'."\n";
-            $url = BASE."objectManager.php?sClass=version&amp;sAction=delete&amp;bQueued=false&amp;iId=".$this->iVersionId;
-            echo "<form method=\"post\" name=\"sDelete\" action=\"javascript:self.location = '".$url."'\">\n";
-            echo "\t".'<input type=submit value="Delete version" class="button">'."\n";
-            echo '</form>'."\n";
-            echo $shAdd.'" />';
-            echo "\t".'<input type="submit" value="Add note/how-to" class="button">'."\n";
-            echo '</form>'."\n";
-            echo '<form method="post" action="'.BASE.'objectManager.php?sClass=tagNoteVersionAssignMgr&amp;sAction=edit&amp;iId='.$this->iVersionId.'&amp;sReturnTo='.urlencode($this->objectMakeUrl()).'">';
-            echo '<input type="submit" value="Manage notes" />';
-            echo '</form>';
-            echo "</td></tr>";
-        }
-        $oMonitor = new Monitor();
-        $oMonitor->find($_SESSION['current']->iUserId, $this->iVersionId);
-        if($oMonitor->iMonitorId)
-        {
-            echo '<tr><td colspan="2" align="center">'."\n";
-            echo '</form>'."\n";
-            echo '<form method="post" name="sMessage" action="'.
-                    APPDB_ROOT."objectManager.php\">\n";
-            echo "\t<input type=\"hidden\" name=\"iId\" value=\"".
-                    $oMonitor->iMonitorId."\">\n";
-            echo "\t<input type=\"hidden\" name=\"sSubmit\" value=\"Delete\">\n";
-            echo "\t<input type=\"hidden\" name=\"sClass\" value=\"monitor\">\n";
-            echo "\t<input type=\"hidden\" name=\"sReturnTo\" value=\"".
-                    $this->objectMakeUrl()."\">\n";
-            echo '<input type=submit value="Stop monitoring version" class="button" >'."\n";
-            echo "</form>\n";
-            echo "</td></tr>\n";
-        } 
-        echo "</table>\n";
-
-        // start of the right hand pane in the version display
-        echo "<td class=color2 valign=top width='100%'>\n";
-        echo "<div class='version_info_pane'>\n";
-
-        /////////////////////////
-        // output the description
-        echo "<div class='info_container'>\n";
-
-        // output the description title
-        echo "\t<div class='title_class'>\n";
-        echo "\t\tDescription\n";
-        echo "\t</div>\n";
-
-        // output the description
-        echo "\t<div class='info_contents'>\n";
-        echo "\t\t".$this->sDescription."\n";
-        echo "\t</div>\n";
-
-        echo "</div>\n"; // end the 'info_container' div
-        // end description
-        /////////////////////////
-
-
-        //////////////////////
         // Show test data
-
+        echo "<h2 class=\"whq-app-title\">Test Results</h2>\n";
         $iNewestId = 0;
         $oTest = null;
 
-        /* Set if the use chose to display a particular test report */
+        // Set if the use chose to display a particular test report
         if($iTestingId)
-	{
-            $oTest = new testData($iTestingId);
-	    $oTestParent = $oTest->objectGetParent();
-
-	    /* Check that the test report doesn't belong to another version */
-	    if($oTestParent->objectGetId() && $oTestParent->objectGetId() != $this->objectGetId())
-		$oTest = null;
-	}
-
-        if(!$oTest && $this->iVersionId) /* Let's query for the latest rest report */
         {
+            $oTest = new testData($iTestingId);
+            $oTestParent = $oTest->objectGetParent();
+
+            // Check that the test report doesn't belong to another version
+            if($oTestParent->objectGetId() && $oTestParent->objectGetId() != $this->objectGetId())
+                $oTest = null;
+        }
+
+        if(!$oTest && $this->iVersionId)
+        {
+            // Let's query for the latest rest report
             $iNewestId = testData::getNewestTestIdFromVersionId($this->iVersionId);
             $iTestingId = $iNewestId;
 
-            if($iTestingId) /* We want all entries to have test data, but old versions might lack
-                               it, or data may have been deleted */
+            // We want all entries to have test data, but old versions might lack it, or data may have been deleted
+            if($iTestingId) 
                 $oTest = new testData($iTestingId);
-        } else if(!$oTest) /* Perhaps we have a cached entry? There should be */
+        }
+        else if(!$oTest) 
         {
+            // Perhaps we have a cached entry? There should be
             $aTests = $this->getTestResults();
 
-            if(sizeof($aTests)) /* ... but we cannot be certain */
+            // ... but we cannot be certain
+            if(sizeof($aTests)) 
                 $oTest = $aTests[0];
         }
 
@@ -1104,47 +1105,33 @@ class version {
                     $sWarnOldText = 'The test results for this version are very old, and as such they may not represent '.
                                     'the current state of Wine.  Please consider submitting a new test report.';
                 }
-                echo html_note('Old test results', $sWarnOldText);
+                echo html_note('Old test results', $sWarnOldText, '', 'warning');
             }
-
-            echo "<div class='info_container'>\n";
-
-            echo "\t<div class='title_class'>\n";
-            echo "\t\tSelected Test Results <small><small>(selected in 'Test Results' table below)</small></small>\n";
-            echo "\t</div>\n";
-
-            echo "<div class='info_contents'>\n";
-
-            $oTest->ShowTestResult();
-
-            echo "</div>\n";
-
-            echo "</div>\n";
-        } else /* Show a note saying that no test results are present,
-                  and encourage the user to take action */
+            echo html_note('Selected Test Results',
+                           $oTest->ShowTestResult(),
+                           '<small class="text-muted">selected in <i>Test Results</i> table below</small>');
+        }
+        else
         {
+            // Show a note saying that no test results are present, and encourage the user to take action
             echo html_note('No Test Results',
                            'This version has no test results, please consider submitting some.<br>'.
                            'They may be part of the '.
                            'version or application description. If they are, please '.
                            'consider becoming a maintainer and remove them, submitting '.
-                           'a proper test report instead.');
+                           'a proper test report instead.','','warning');
         }
 
-        // end the 'info_container' div
-        // end show test data
-        /////////////////////
-
-
-        //////////////////////////////
         // show the test results table
-	if($oTest)
-	{
+        if($oTest)
+       {
             if($oTest->iTestingId)
             {
-                $oTest->ShowVersionsTestingTable($this->objectMakeUrl()."&amp;iTestingId=", 5);
-            } else /* We are previewing the version */
+                echo $oTest->ShowVersionsTestingTable($this->objectMakeUrl()."&amp;iTestingId=", 5);
+            }
+            else
             {
+                /* We are previewing the version */
                 $oTable = $oTest->CreateTestTable();
                 $oTable->AddRow($oTest->CreateTestTableRow(0, ""));
                 echo $oTable->GetString();
@@ -1157,30 +1144,27 @@ class version {
                     'sClass=testData_queue&amp;sAction=add&amp;iVersionId='.$this->iVersionId.
                     '&amp;sTitle=Add+Test+Data&amp;sReturnTo='.
                     urlencode($this->objectMakeUrl()).'>'."\n";
-            echo "\t".'<input type=submit value="Add test data" class="button" >'."\n";
+            echo '<button type="submit" class="btn btn-default" >Add test data</button>'."\n";
             echo '</form>'."\n";
-        } else
+        }
+        else
         {
             echo '<form method="post" name="sMessage" action="'.login_url().'">'."\n";
-            echo "\t".'<input type="hidden" name="sCmd" value="login">'."\n";
-            echo "\t".'<input type=submit value="Log in to add test data" class="button">'."\n";
+            echo '<input type="hidden" name="sCmd" value="login">'."\n";
+            echo '<button type="submit" value="" class="btn btn-default">Log in to add test data</button>'."\n";
             echo '</form>'."\n";
         }
 
-        // end show test results table
-        /////////////////////////////
+        // bugs table
+        echo "<h2 id=\"viewBugs\" class=\"whq-app-title\">Known Bugs</h2>\n";
+        view_version_bugs($this->iVersionId, $this->get_buglink_ids());
 
-
-        echo "</div>\n"; // end the version info pane, the right hand pane in the
-                         // version display
-
-        echo html_frame_end();
-
-        view_version_bugs($this->iVersionId, $this->get_buglink_ids());    
-
+        // notes / how-to
+        echo "<h2 id=\"viewHowTo\" class=\"whq-app-title\">HowTo / Notes</h2>\n";
         echo note::displayNotesForEntry($this->iVersionId);
 
         // Comments Section
+        echo "<h2 id=\"viewComments\" class=\"whq-app-title\">Comments</h2>\n";
         if($this->iVersionId)
             Comment::view_app_comments($this->iVersionId);
     }
