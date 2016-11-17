@@ -452,6 +452,15 @@ hr
 /* zoom image overlay style */
 .zoom_overlay { position:relative; top:10px; left:10px; margin-left:-32px; padding:0px; }
 
+/* breadcrumb */
+.whq-breadcrumb a, .whq-breadcrumb a:visited {
+    color: inherit;
+}
+.whq-breadcrumb i {
+    font-size: 80%;
+    color: #aaaaaa;
+}
+
 /*
   =====================================================================================================================
    Boxes

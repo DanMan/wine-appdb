@@ -269,7 +269,7 @@ class Category {
             else
                 $sCatname = $sName;
 
-            if ($iCatCount > 0) $sStr .= " &gt; ";
+            if ($iCatCount > 0) $sStr .= " <i class=\"fa fa-arrow-right\"></i> ";
             $sStr .= html_ahref($sCatname,"objectManager.php?sClass=category&iId=$iCatId&sAction=view&sTitle=Browse+Applications");
             $iCatCount++;
         }
@@ -280,11 +280,11 @@ class Category {
             if($iVersionId)
             {
                 $oVersion = new Version($iVersionId);
-                $sStr .= " &gt; ".$oApp->objectMakeLink();
-                $sStr .= " &gt; ".$oVersion->sName;
+                $sStr .= " <i class=\"fa fa-arrow-right\"></i> ".$oApp->objectMakeLink();
+                $sStr .= " <i class=\"fa fa-arrow-right\"></i> ".$oVersion->sName;
             } else
             {
-                $sStr .= " &gt; ".$oApp->sName;
+                $sStr .= " <i class=\"fa fa-arrow-right\"></i> ".$oApp->sName;
             }
         }
 
@@ -408,8 +408,8 @@ class Category {
     function displayPath($appId, $versionId = '')
     {
         $sCatFullPath = Category::make_cat_path($this->getCategoryPath(), $appId, $versionId);
-        echo html_frame_start("",'98%','',2);
-        echo "<p><b>Category: ". $sCatFullPath ."</b><br>\n";
+        echo html_frame_start();
+        echo "<div class=\"whq-breadcrumb\"><b>Category:</b> {$sCatFullPath}</div>\n";
         echo html_frame_end();
     }
 
@@ -418,8 +418,6 @@ class Category {
         // list sub categories
         $sCatFullPath = Category::make_cat_path($this->getCategoryPath());
         $aSubs = $this->aSubcatsIds;
-
-        echo "<div class='default_container'>\n";
 
         // Allow editing categories
         if($this->canEdit())
@@ -441,20 +439,17 @@ class Category {
         // Output sub-categories
         if($aSubs)
         {
-            echo html_frame_start("",'98%','',2);
-            echo "<p><b>Category: ". $sCatFullPath ."</b><br>\n";
+            echo html_frame_start();
+            echo "<div class=\"whq-breadcrumb\"><b>Category:</b> {$sCatFullPath}</div>\n";
             echo html_frame_end();
 
-            echo html_frame_start("","98%","",0);
+            echo html_frame_start();
 
             $oTable = new Table();
-            $oTable->SetWidth("100%");
-            $oTable->SetBorder(0);
-            $oTable->SetCellPadding(3);
-            $oTable->SetCellSpacing(1);
+            $oTable->setWidth('100%');
+            $oTable->setClass('whq-table');
 
             $oTableRow = new TableRow();
-            $oTableRow->SetClass("color4");
             $oTableRow->AddTextCell("Sub Category");
             $oTableRow->AddTextCell("Description");
             $oTableRow->AddTextCell("No. Apps");
@@ -463,16 +458,8 @@ class Category {
             while(list($i,$iSubcatId) = each($aSubs))
             {
                 $oSubCat= new Category($iSubcatId);
-
-                //set row color
-                $sColor = ($i % 2) ? "color0" : "color1"; 
-
-                $oTableRowHighlight = GetStandardRowHighlight($i);
-
                 $sUrl = $oSubCat->objectMakeUrl();
-
                 $oTableRowClick = new TableRowClick($sUrl);
-                $oTableRowClick->SetHighlight($oTableRowHighlight);
 
                 //get number of apps in this sub-category
                 $iAppcount = $oSubCat->getApplicationCount();
@@ -482,7 +469,6 @@ class Category {
 
                 //display row
                 $oTableRow = new TableRow();
-                $oTableRow->SetClass($sColor);
                 $oTableRow->SetRowClick($oTableRowClick);
 
                 $oTableCell = new TableCell($oSubCat->sName);
@@ -505,47 +491,35 @@ class Category {
         $aApps = $this->aApplicationsIds;
         if($aApps)
         {
-            echo html_frame_start("",'98%','',2);
-            echo "<p><b>Category: ". $sCatFullPath ."</b><br>\n";
+            echo html_frame_start();
+            echo "<div class=\"whq-breadcrumb\"><b>Category:</b> {$sCatFullPath}</div>\n";
             echo html_frame_end();
             
-            echo html_frame_start("","98%","",0);
+            echo html_frame_start();
 
             $oTable = new Table();
-            $oTable->SetWidth("100%");
-            $oTable->SetBorder(0);
-            $oTable->SetCellPadding(3);
-            $oTable->SetCellSpacing(1);
+            $oTable->setClass('whq-table');
+
 
             $oTableRow = new TableRow();
-            $oTableRow->SetClass("color4");
             $oTableRow->AddTextCell("Application name");
             $oTableRow->AddTextCell("Description");
             $oTableRow->AddTextCell("No. Versions");
 
             $oTable->SetHeader($oTableRow);
-                    
+
             while(list($i, $iAppId) = each($aApps))
             {
                 $oApp = new Application($iAppId);
-
-                //set row color
-                $sColor = ($i % 2) ? "color0" : "color1";
-
-                $oTableRowHighlight = GetStandardRowHighlight($i);
-
                 $sUrl = $oApp->objectMakeUrl();
-
                 $oTableRowClick = new TableRowClick($sUrl);
-                $oTableRowClick->SetHighlight($oTableRowHighlight);
-                
+
                 //format desc
                 $sDesc = util_trim_description($oApp->sDescription);
-                
+
                 //display row
                 $oTableRow = new TableRow();
                 $oTableRow->SetRowClick($oTableRowClick);
-                $oTableRow->SetClass($sColor);
                 $oTableRow->AddTextCell($oApp->objectMakeLink());
                 $oTableRow->AddTextCell("$sDesc &nbsp;");
                 $oTableRow->AddTextCell(sizeof($oApp->aVersionsIds));
@@ -562,11 +536,11 @@ class Category {
         // Show a message if this category is empty
         if(!$aApps && !$aSubs)
         {
-            echo html_frame_start("",'98%','',2);
-            echo "<p><b>Category: ". $sCatFullPath ."</b><br>\n";
+            echo html_frame_start();
+            echo "<div class=\"whq-breadcrumb\"><b>Category:</b> {$sCatFullPath}</div>\n";
             echo html_frame_end();
 
-            echo html_frame_start('','90%','',2);
+            echo html_frame_start();
             echo 'This category has no sub-categories or applications';
             echo html_frame_end();
         }
