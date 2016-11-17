@@ -39,7 +39,7 @@ PRE {
 /* make a form control inline */
 input.form-control-inline {
     display: inline;
-    width: 100%;
+    width: auto;
 }
 select.form-control-inline {
     display: inline;
