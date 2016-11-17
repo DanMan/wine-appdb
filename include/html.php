@@ -198,18 +198,15 @@ function make_inx_option_list($varname, $inx = null)
 
 }
 
-/* Displays a note box */
-function html_note($shTitle, $shBody)
+/* Displays a note box using bootstrap panel */
+/*  mode: default, primary, success, info, warning, danger */
+function html_note($heading = '', $body = '', $footer = '', $mode = 'default')
 {
-    $shRet = '<div class="note_container">';
-    $shRet .= '<div class="note_title">';
-    $shRet .= $shTitle;
-    $shRet .= '</div>';
-    $shRet .= '<div class="note_body">';
-    $shRet .= $shBody;
-    $shRet .= '</div></div>';
-
-    return $shRet;
+    return "<div class=\"panel panel-{$mode}\">\n".
+           ($heading ? "<div class=\"panel-heading\">{$heading}</div>\n" : '').
+           ($body ? "<div class=\"panel-body\">{$body}</div>\n" : '').
+           ($footer ? "<div class=\"panel-heading\">{$footer}</div>\n" : '').
+           "</div>\n";
 }
 
 function html_radiobuttons($aIds, $aOptions, $sName, $sDefault = '', $bLineBreaks = true)
