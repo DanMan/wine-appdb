@@ -191,10 +191,10 @@ class ObjectManager
     public function drawTable($hResult)
     {
         /* output the header */
-        echo '<table width="100%" border="0" cellpadding="3" cellspacing="0">';
+        echo '<table class="whq-table whq-table-full">';
 
         /* Output header cells */
-        $this->outputHeader("color4");
+        $this->outputHeader();
 
         /* Preserve the page title */
         $this->setReturnToTitle($this->sTitle);
@@ -206,23 +206,6 @@ class ObjectManager
 
             $this->oTableRow = $oObject->objectGetTableRow();
 
-            $sColor = ($iCount % 2) ? "color0" : "color1";
-
-            // if there is no class set for a given row use the
-            // default one in $sColor
-            if(!$this->oTableRow->GetTableRow()->GetClass())
-            {
-                $this->oTableRow->GetTableRow()->SetClass($sColor);
-            }
-
-            // if this row is clickable, make it highlight appropirately
-            $oTableRowClick = $this->oTableRow->GetTableRow()->GetTableRowClick();
-            if($oTableRowClick)
-            {
-            $oTableRowHighlight = GetStandardRowHighlight($iCount);
-            $oTableRowClick->SetHighlight($oTableRowHighlight);
-            }
-
             $sEditLinkLabel = $this->getIsQueue() ? 'process' : 'edit';
 
             /* We add some action links */
@@ -231,12 +214,12 @@ class ObjectManager
                 $shDeleteLink = "";
                 if($this->oTableRow->GetHasDeleteLink())
                 {
-                $shDeleteLink = ' [&nbsp;<a href="'.$this->makeUrl("delete", $oObject->objectGetId()).
-                    '">delete</a>&nbsp;]';
+                    $shDeleteLink = '<a href="'.$this->makeUrl("delete", $oObject->objectGetId()).
+                                    '" class="btn btn-default btn-sm"><i class="fa fa-trash"></i> delete</a>';
                 }
 
-                $oTableCell = new TableCell('[&nbsp;<a href="'.$this->makeUrl("edit",
-                                $oObject->objectGetId()).'">'.$sEditLinkLabel.'</a>&nbsp;]'.$shDeleteLink);
+                $oTableCell = new TableCell('<a href="'.$this->makeUrl("edit", $oObject->objectGetId()).
+                                            'class="btn btn-default btn-sm"><i class="fa fa-pencil-square-o"></i> '.$sEditLinkLabel.'</a>'.$shDeleteLink);
                 $this->oTableRow->AddCell($oTableCell);
             }
 
@@ -296,30 +279,30 @@ class ObjectManager
         {
             if($this->oFilters && $this->oFilters->getFilterCount())
             {
-                echo '<center>No matches found</center>';
+                echo '<p class="text-center">No matches found</p>';
             } else
             {
                 switch($this->getQueueString($this->getIsQueue(), $this->sState == 'rejected'))
                 {
                     case "true":
-                        echo "<center>The queue for '$this->sClass' is empty</center>";
+                        echo "<p class=\"text-center\">The queue for '$this->sClass' is empty</p>";
                     break;
                     case "false":
-                        echo "<center>No entries of '$this->sClass' are present</center>";
+                        echo "<p class=\"text-center\">No entries of '$this->sClass' are present</p>";
                     break;
                     case "rejected":
-                        echo "<center>No rejected entries of '$this->sClass' are ".
-                                "present</center>";
+                        echo "<p class=\"text-center\">No rejected entries of '$this->sClass' are ".
+                                "present</p>";
                     break;
                 }
             }
 
             if($this->GetOptionalSetting("objectShowAddEntry", FALSE) && $oObject->canEdit())
             {
-                echo "<br><center><a href=\"".
+                echo "<p class=\"text-center\"><a href=\"".
                      $this->makeUrl("add", false,
                      "Add $this->sClass entry").
-                     "\">Add an entry?</a></center>";
+                     "\" class=\"\">Add an entry?</a></p>";
             }
             return;
         }
@@ -327,13 +310,13 @@ class ObjectManager
         /* Show a link to the 'purge rejected entries' page if we are an admin */
         if($_SESSION['current']->hasPriv('admin') && $this->getOptionalSetting('objectAllowPurgingRejected', FALSE))
         {
-            echo '<div align="center">';
+            echo '<div class="text-center">';
             $oM = new objectManager($this->sClass, 'Purge Rejected Entries');
-            echo '<a href="'.$oM->makeUrl('purgeRejected').'">Purge rejected entries</a><br><br>';
+            echo '<a href="'.$oM->makeUrl('purgeRejected').'">Purge rejected entries</a>';
             echo '</div>';
         }
 
-        $sQueued = $this->getQueueString($this->getIsQueue(),                                                                         $this->sState == 'rejected');
+        $sQueued = $this->getQueueString($this->getIsQueue(), $this->sState == 'rejected');
 
         $this->showNumberOfResults($oObject);
 
@@ -347,8 +330,8 @@ class ObjectManager
         $oObject = new $this->sClass();
         if($oObject->canEdit() && $this->GetOptionalSetting("objectShowAddEntry", FALSE))
         {
-            echo "<br><br><a href=\"".$this->makeUrl("add", false,
-                    "Add $this->sClass")."\">Add entry</a>\n";
+            echo "<p><a href=\"".$this->makeUrl("add", false,
+                    "Add $this->sClass")."\">Add entry</a></p>\n";
         }
 
         // Display bottom of page selectors current page, if applicable
@@ -371,9 +354,6 @@ class ObjectManager
         $this->checkMethods(array("outputEditor", "getOutputEditorValues",
                                   "update", "create"));
 
-        // open up the div for the default container
-        echo "<div class='default_container'>\n";
-
         // link back to the previous page
         echo html_back_link(1, null);
 
@@ -383,7 +363,6 @@ class ObjectManager
         if(!$oObject->objectGetId())
         {
             echo "<font color=\"red\">There is no entry with that id in the database</font>.\n";
-            echo "</div>";
             return;
         }
 
@@ -485,9 +464,6 @@ class ObjectManager
         echo html_frame_end();
 
         echo '</form>';
-
-        echo "</div>\n";
-
     }
 
     /* Ask whether the user really wants to delete the entry and display a delete reason box */
@@ -532,7 +508,7 @@ class ObjectManager
         $oTable->setAlign("center");
         $oTable->addRow($oTableRow);
         $oTableRow->addTextCell(
-        '<div style="left: 200px; width: 400px;" align="center" class="default_container">'.
+        '<div style="left: 200px; width: 400px;" align="center">'.
         '<div style="text-align: left;" class="info_container">'.
         '<div class="title_class">'.
         "Confirm deletion".
@@ -913,7 +889,7 @@ class ObjectManager
         $oObject = new $this->sClass($this->iId);
         if(!$oObject->canEdit())
         {
-            echo "Insufficient privileges.<br>\n";
+            echo "<p>Insufficient privileges.</p>\n";
             return FALSE;
         }
 
@@ -947,7 +923,7 @@ class ObjectManager
         {
             $aParentSiblings = $oGrandFather->objectGetChildrenClassSpecific(get_class($oParent));
 
-            echo "Children of " . $oGrandFather->objectMakeLink() . " <br />";
+            echo "Children of " . $oGrandFather->objectMakeLink() . " <br>";
 
             $i = 0;
             foreach($aParentSiblings as $oCandidate)
@@ -1021,7 +997,7 @@ class ObjectManager
 
             $aParentChildren = $oParent->objectGetChildrenClassSpecific($this->sClass);
 
-            echo "Children of " . $oParent->objectMakeLink() . " <br />";
+            echo "Children of " . $oParent->objectMakeLink() . " <br>";
 
             $i = 0;
             foreach($aParentChildren as $oCandidate)
@@ -1090,8 +1066,6 @@ class ObjectManager
 
         $oObject = new $this->sClass();
 
-        echo "<div class='default_container'>\n";
-
         /* Display errors, if any, and fetch form data */
         if($this->displayErrors($sErrors))
         {
@@ -1131,8 +1105,6 @@ class ObjectManager
         $this->handle_preview_button();
         echo "</div></form>\n";
         echo html_back_link(1);
-
-        echo "</div>\n";
     }
 
     public function move_to_new_parent($aClean, $sErrors = '')
@@ -1142,8 +1114,6 @@ class ObjectManager
         $sParentClass = get_class($oOldParent);
         $oParent = new $sParentClass();
         $oParentOM = new objectManager($sParentClass);
-
-        echo "<div class='default_container'>\n";
 
         echo '<p>Move '.$oObject->objectMakeLink().' to a new entry:</p>';
 
@@ -1186,8 +1156,6 @@ class ObjectManager
         $this->handle_preview_button();
         echo "</div></form>\n";
         echo html_back_link(1);
-
-        echo "</div>\n";
     }
 
     private function handle_preview_button()
@@ -1330,7 +1298,7 @@ class ObjectManager
 
         /* Check if the entry has been deleted */
         if($oObject->objectGetState() == 'deleted')
-            $this->error_exit("This entry has been deleted (class: {$this->sClass}, id: {$this->iId})<br />Its content may have been moved to another entry");
+            $this->error_exit("This entry has been deleted (class: {$this->sClass}, id: {$this->iId})<br>\nIts content may have been moved to another entry");
 
         /* Show a note if the entry is queued or rejected */
         if($oObject->objectGetState() != 'accepted')
@@ -1354,26 +1322,20 @@ class ObjectManager
 
         $aVars = $this->get_custom_vars($aClean, "view");
 
-        echo "<br />";
         // display the move children entry
         if($this->displayMoveChildren($oObject))
             echo " &nbsp; &nbsp; ";
         $this->displayChangeParent($oObject);
-
-        echo "<br /><br />";
 
         if(!$aVars)
             $oObject->display();
         else
             $oObject->display($aVars);
 
-        echo '<br />';
         // display the move children entry
         if($this->displayMoveChildren($oObject))
             echo " &nbsp; &nbsp; ";
         $this->displayChangeParent($oObject);
-
-        echo "<br /><br />";
 
         echo html_back_link(1, $sBackLink);
     }
@@ -1636,7 +1598,7 @@ class ObjectManager
         if(get_class($oTableRow) == "TableRowSortable")
             $oTableRow->SetSortInfo($this->oSortInfo);
 
-        echo $oTableRow->GetString();
+        echo '<thead>'.$oTableRow->GetString().'</thead>';
     }
 
     private function handleFilterControls($aClean)
@@ -1648,7 +1610,7 @@ class ObjectManager
 
             echo $this->oFilters->getEditor();
 
-            echo "<br><input type='submit' value='Update filter' name='sFilterSubmit' >";
+            echo "<p><button type='submit' name='sFilterSubmit' class='btn btn-default'><i class='fa fa-filter'></i> Update filter</button></p>";
             echo "</form>";
         }
     }
@@ -1661,10 +1623,10 @@ class ObjectManager
         {
             $iShowingEntryFrom = $this->oMultiPage->iLowerLimit + 1;
             $iShowingEntryTo = min($this->oMultiPage->iLowerLimit + $this->oMultiPage->iItemsPerPage, $iTotalEntries);
-            echo "Showing entry $iShowingEntryFrom to $iShowingEntryTo of $iTotalEntries<br /><br />\n";
+            echo "<p>Showing entry <b>$iShowingEntryFrom</b> to <b>$iShowingEntryTo</b> of <b>$iTotalEntries</b></p>\n";
         } else
         {
-            echo "Showing $iTotalEntries entries";
+            echo "<p>Showing <b>$iTotalEntries</b> entries</p>";
         }
     }
 
@@ -1707,8 +1669,8 @@ class ObjectManager
 
             /* Fill in form data for the objectManager URL */
             $sControls .= $this->makeUrlFormData();
-            $sControls .= "<p><b>&nbsp;Items per page</b>";
-            $sControls .= " <select name=\"iItemsPerPage\">";
+            $sControls .= "Items per page ";
+            $sControls .= "<select name=\"iItemsPerPage\" class=\"form-control form-control-inline input-sm\">";
 
             foreach($aItemsPerPage as $iNum)
             {
@@ -1716,7 +1678,7 @@ class ObjectManager
                 $sControls .= "<option$sSelected>$iNum</option>";
             }
             $sControls .= "</select>";
-            $sControls .= " &nbsp; <input type=\"submit\" value=\"Update\">";
+            $sControls .= " <input type=\"submit\" value=\"Update\" class=\"btn btn-default btn-sm\">";
             $sControls .= "</form>";
         }
 
@@ -1735,8 +1697,8 @@ class ObjectManager
           $iPage = $iNumPages;
 
         /* Display selectors and info */
-        echo '<div align="center">';
-        echo "<b>Page $iPage of $iNumPages</b><br>";
+        echo '<div class="text-center">';
+        echo "Page <b>$iPage</b> of <b>$iNumPages</b>";
 
         /* Page controls */
         $iPageRange = 7; // the number of page links we want to display
@@ -1821,10 +1783,10 @@ class ObjectManager
             if($sErrors == PREVIEW_ENTRY)
                 return TRUE;
 
-            echo "<font color=\"red\">\n";
-            echo "The following errors were found<br>\n";
+            echo "<p class=\"error\">\n";
+            echo "The following errors were found:\n";
             echo "<ul>$sErrors</ul>\n";
-            echo "</font><br>";
+            echo "</p>";
             return TRUE;
         } else
         {
