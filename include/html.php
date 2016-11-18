@@ -109,7 +109,6 @@ function html_frame_end($text = "")
     return "</div>\n";
 }
 
-
 function html_select($name, $values, $default = null, $descs = null)
 {
     $str = "<select name='$name'>\n";
@@ -136,51 +135,6 @@ function html_back_link($howmany = 1, $url = "")
         $url = 'javascript:history.back('.$howmany.');';
     }
     return ' <a href="'.htmlentities($url).'" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back</a> '."\n";
-}
-
-
-function p()
-{
-    return "\n<p>&nbsp;</p>\n";
-}
-
-function add_br($text = "")
-{
-    $text = str_replace("\n","<br>\n",$text);
-    return $text;
-}
-
-function make_dll_option_list($varname, $dllid = -1)
-{
-    $db = new ApiDB();
-
-    echo "<select name='$varname'>\n";
-    //echo "<option value='ALL'>ALL\n";
-    $list = $db->get_dll_names();
-    while(list($name, $id) = each($list))
-    {
-        if($dllid == $id)
-        echo "<option value=$id selected>$name  ($id)\n";
-        else
-        echo "<option value=$id>$name  ($id)\n";
-    }
-    echo "</select>\n";
-}
-
-
-function make_inx_option_list($varname, $inx = null)
-{
-    $list = array("yes", "no", "stub", "unknown");
-    echo "<select name='$varname'>\n";
-    while(list($idx, $value) = each($list))
-        {
-            if($value == $inx)
-                echo "<option value=$value selected>$value\n";
-            else
-                echo "<option value=$value>$value\n";
-        }
-    echo "</select>\n";
-
 }
 
 /* Displays a note box using bootstrap panel */
@@ -212,38 +166,6 @@ function html_radiobuttons($aIds, $aOptions, $sName, $sDefault = '', $bLineBreak
     }
 
     return $shRet;
-}
-
-function html_checkbox($sName, $sValue, $shText, $bChecked)
-{
-    if($bChecked)
-        $sSelected = ' checked="checked"';
-    else
-        $sSelected = '';
-
-    return "<input type=\"checkbox\" name=\"$sName\" value=\"$sValue\"$sSelected /> $shText\n";
-}
-
-function html_checkboxes($sName, $aValues, $aTexts, $aSelected)
-{
-    $shRet = '';
-
-    for($i = 0; $i < sizeof($aValues); $i++)
-        $shRet .= html_checkbox($sName.$i, $aValues[$i], $aTexts[$i], $aSelected[$i]).'<br />';
-
-    return $shRet;
-}
-
-function html_read_input_series($sName, $aInput, $iCount)
-{
-    $aRet = array();
-
-    for($i = 0; $i < $iCount; $i++)
-    {
-        $aRet[] = getInput($sName.$i, $aInput);
-    }
-
-    return $aRet;
 }
 
 ?>
