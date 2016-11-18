@@ -677,9 +677,9 @@ class distribution {
 
         if($this->aTestingIds)
         {
-            echo '<p><span class="title">Test Results for '.$this->sName.'</span><br>',"\n";
-            echo '<table width="100%" border="1">',"\n";
-            echo '<thead class="historyHeader">',"\n";
+            echo '<h1 class="whq-app-title">Test Results for '.$this->sName.'</h1>',"\n";
+            echo '<table class="whq-table whq-table-full">',"\n";
+            echo '<thead>',"\n";
             echo '<tr>',"\n";
             echo '<td>Application Version</td>',"\n";
             echo '<td>Submitter</td>',"\n";
@@ -688,7 +688,8 @@ class distribution {
             echo '<td>Installs?</td>',"\n";
             echo '<td>Runs?</td>',"\n";
             echo '<td>Rating</td>',"\n";
-            echo '</tr></thead>',"\n";
+            echo '<td></td>',"\n";
+            echo '</tr></thead><tbody>',"\n";
             foreach($this->aTestingIds as $iTestingId)
             {
                 $oTest = new testData($iTestingId);
@@ -708,11 +709,11 @@ class distribution {
                 if(!$_SESSION['current']->canViewVersion($oVersion))
                     continue;
 
-                echo '<tr class='.$bgcolor.'>',"\n";
+                echo "<tr>\n";
                 echo '<td><a href="'.$oVersion->objectMakeUrl().'&amp;iTestingId='.$oTest->iTestingId.'">',"\n";
                 echo version::fullName($oVersion->iVersionId).'</a></td>',"\n";
-                echo '<td>',"\n";
-		
+                echo "<td>\n";
+
                 echo $oSubmitter->objectMakeLink();
 
                 echo '</td>',"\n";
@@ -720,15 +721,15 @@ class distribution {
                 echo '<td>'.$oTest->sTestedRelease.'&nbsp;</td>',"\n";
                 echo '<td>'.$oTest->sInstalls.'&nbsp;</td>',"\n";
                 echo '<td>'.$oTest->sRuns.'&nbsp;</td>',"\n";
-                echo '<td>'.$oTest->sTestedRating.'&nbsp;</td>',"\n";
+                echo "<td class=\"{$bgcolor}\">{$oTest->sTestedRating}</td>\n";
                 if ($_SESSION['current']->hasAppVersionModifyPermission($oVersion))
                 {
-                    echo '<td><a href="'.$oTest->objectMakeUrl().'">',"\n";
-                    echo 'Edit</a></td>',"\n";
+                    echo '<td><a href="'.$oTest->objectMakeUrl().'" class="btn btn-default btn-xs">',"\n";
+                    echo '<i class="fa fa-pencil-square-o"></i> Edit</a></td>',"\n";
                 }
                 echo '</tr>',"\n";
             }
-            echo '</table>',"\n";
+            echo '</tbody></table>',"\n";
         }
     }
 
