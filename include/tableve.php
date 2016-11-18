@@ -268,8 +268,6 @@ class TableVE {
             echo "$value &nbsp;\n";
             break;
         }
-
-        $this->entry_add_extra($field, $value);
     }
 
     function view_entry_output_field($field, $value, $len)
@@ -319,32 +317,7 @@ class TableVE {
             echo "$value &nbsp;\n";
             break;
         }
-
-        $this->entry_add_extra($field, $value);
     }
-
-
-    /*
-     * add extra stuff to certain fields
-     */
-    function entry_add_extra($field, $value)
-    {
-        /*
-         * add extra stuff to certain fields
-         */
-	
-        if($field->name == "mslink" && $value)
-        {
-            echo html_imagebutton("Go!", $value);
-        }
-
-        if($field->name == "apiname")
-        {
-            echo html_imagebutton("Wine LXR", "http://twine.codeweavers.com/lxr/ident?i=$value");
-            echo html_imagebutton("Wine API", "http://www.winehq.com/WineAPI/$value.html");
-        }
-    }
-
 
     /*
      * required field for each table.

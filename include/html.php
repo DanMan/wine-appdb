@@ -84,21 +84,6 @@ function html_ahref($label, $url, $extra = "")
     }
 }
 
-function html_imagebutton($text, $url, $extra = "")
-{
-    static $i = 1;
-
-    $i++;
-    $img1 = apidb_url("util/button.php?text=".urlencode($text)."&amp;pressed=0");
-    $img2 = apidb_url("util/button.php?text=".urlencode($text)."&amp;pressed=1");
-
-    $java  = "onMouseDown = 'document.img$i.src = \"$img2\"; return true;' ";
-    $java .= "onMouseUp = 'document.img$i.src = \"$img1\"; return true;' ";
-
-    return "\n<a href=\"$url\" $extra $java>\n <img src=\"$img1\" name=\"img$i\" alt=\"$text\"> </a>\n";
-}
-
-
 function html_frame_start($title = "", $width = "", $extra = "", $innerPad = 0)
 {
     $style = "";

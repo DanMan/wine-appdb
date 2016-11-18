@@ -6,7 +6,6 @@
 /*
  * TODO:
  *   + replace all apidb_ calls with appdb_
- *   + apidb_url and apidb_fullurl should be merged
  *   + addmsg should be removed, and calls replaced with session->addmsg
  */
 
@@ -210,14 +209,6 @@ function appdb_clear_buffer()
             @eval("ob_end_clean();");
         }
     }
-}
-
-/**
- * return url with docroot prepended
- */
-function apidb_url($path)
-{
-    return BASE.$path;
 }
 
 /**
