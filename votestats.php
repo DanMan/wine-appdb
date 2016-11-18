@@ -20,6 +20,8 @@ if(empty($aClean['iCategoryId']))
 
 apidb_header("Vote Stats - Top ".$aClean['iTopNumber']." Applications");
 
+echo "<h1 class=\"whq-app-title\">Vote Stats - Top ".$aClean['iTopNumber']." Applications</h1>\n";
+
 /* display the selection for the top number of apps to view */
 echo "<form method=\"post\" name=\"sMessage\" action=\"".$_SERVER['PHP_SELF']."\">";
 echo "<b>Number of top apps to display:</b>";
