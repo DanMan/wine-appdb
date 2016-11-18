@@ -673,19 +673,36 @@ table tr.rowtitle td:last-child {
 .color4 { background-color: #999999 }
 
 /* Colors for supported apps table */
-.platinum {background-color: #ECECEC; }
-.gold { background-color: #FFF600 }
-.silver { background-color: silver; }
-.bronze { background-color: #FCBA0A; }
-.garbage { background-color: #999966; }
+.platinum { background-color: #cccccc; }
+.gold     { background-color: #FFF600; }
+.silver   { background-color: #C0C0C0; }
+.bronze   { background-color: #FCBA0A; }
+.garbage  { background-color: #999966; }
+
+/* table row colors for ratings (alternating colors for rows) */
+tr.Platinum a, tr.Platinum a:visited { color: #ffcccc; }
+tr.Platinum:nth-child(odd) td   { background-color: #333333 !important; color: #ffffff !important; }
+tr.Platinum:nth-child(even) td  { background-color: #666666 !important; color: #ffffff !important; }
+
+tr.Gold:nth-child(odd) td       { background-color: #FFF600 !important; }
+tr.Gold:nth-child(even) td      { background-color: #fffcb3 !important; }
+
+tr.Silver:nth-child(odd) td     { background-color: #C0C0C0 !important; }
+tr.Silver:nth-child(even) td    { background-color: #e6e6e6 !important; }
+
+tr.Bronze:nth-child(odd) td     { background-color: #FCBA0A !important; }
+tr.Bronze:nth-child(even) td    { background-color: #FCBA0A !important; }
+
+tr.Garbage:nth-child(odd) td    { background-color: #999966 !important; }
+tr.Garbage:nth-child(even) td   { background-color: #ebebe0 !important; }
 
 /* labels */
-TD.label { font-weight: bold }
+TD.label  { font-weight: bold }
 
 /* for inwine/intwine */
-TD.yes { color: #00B100; font-style: italic; text-align: center }
-TD.no  { color: #B10000; font-style: italic; text-align: center }
-TD.stub { color: #0000B1; font-style: italic; text-align: center }
+TD.yes    { color: #00B100; font-style: italic; text-align: center }
+TD.no     { color: #B10000; font-style: italic; text-align: center }
+TD.stub   { color: #0000B1; font-style: italic; text-align: center }
 
 /* width of the application column in the top 'X' lists on the main page */
 TD.app_name { padding:10px; width: 150px }
