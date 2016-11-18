@@ -150,7 +150,7 @@ function html_back_link($howmany = 1, $url = "")
     {
         $url = 'javascript:history.back('.$howmany.');';
     }
-    return '<p><a href="'.htmlentities($url).'" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back</a></p>'."\n";
+    return ' <a href="'.htmlentities($url).'" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back</a> '."\n";
 }
 
 
