@@ -55,6 +55,17 @@ $(document).ready(function()
         });
     });
 
+    // load table row by clicking anywhere on the row
+    $("table").find("tr[data-donav]").each(function()
+    {
+        var sURL = $(this).data('donav');
+        $(this).addClass('cursor-pointer');
+        $(this).click(function()
+        {
+            document.location = sURL;
+        });
+    });
+
     // remove alert messages by clicking
     $("#whq-alert").click(function(){ $(this).fadeOut("slow"); });
 
@@ -98,37 +109,6 @@ function openWin(fileToOpen,nameOfWindow,width,height) {
     myWindow.document.write('<a onclick="self.close();" href=""><img src="'+ fileToOpen +'" alt="Screenshot"></a>');
     myWindow.document.write('</body></html>');
     myWindow.document.close();
-}
-
-// confirmation message (FIXME: replace with jquery utils: dialog)
-function deleteURL(text, url) {
-    if (confirm(text)) {
-       self.location = url;
-    }
-}
-
-// row color change
-function ChangeTr(tableRow, bRowActive, sHighlightColor, sInactiveColor,
-                       sTextDecorationHighlight, sTextDecorationInactive)
-{
-    if (bRowActive)
-    {
-        tableRow.style.backgroundColor = sHighlightColor;
-        tableRow.style.cursor = "hand";
-        tableRow.style.textDecoration = sTextDecorationHighlight;
-    }
-    else
-    {
-        tableRow.style.backgroundColor = sInactiveColor;
-        tableRow.style.cursor = "pointer";
-        tableRow.style.textDecoration = sTextDecorationInactive;
-    }
-}
-
-// doNav
-function DoNav(sUrl)
-{
-    document.location.href = sUrl;
 }
 
 // done

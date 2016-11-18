@@ -339,6 +339,7 @@ DIV.newsblock       { margin: 0 5px 25px 10px; padding: 0; }
 .clear              { clear: both; }
 .inline             { display: inline-block; }
 .small              { font-size: 8pt; }
+.cursor-pointer     { cursor: pointer; }
 
 /* IMG options */
 IMG                 { border: 0; text-decoration: none !important; }
