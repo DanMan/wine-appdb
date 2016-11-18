@@ -544,6 +544,7 @@ class testData{
         $oTableRowHeader->AddTextCell("Runs?");
         $oTableRowHeader->AddTextCell("Rating");
         $oTableRowHeader->AddTextCell("Submitter");
+        $oTableRowHeader->AddTextCell("");
         $oTable->SetHeader($oTableRowHeader);
         return $oTable;
     }
@@ -567,18 +568,15 @@ class testData{
         if ($this->iTestingId == $iCurrentId)
         {
             $sTRClass = $bgcolor;
-
             $oTableCell = new TableCell("<b>Current</b>");
             $oTableCell->SetAlign("center");
-        } else /* make all non-current rows clickable so clicking on them selects the test as current */
+        }
+        else
         {
-            $sTRClass = $bgcolor;
-
+            /* make all non-current rows clickable so clicking on them selects the test as current */
             $sUrl = $sLink.$this->iTestingId;
-
             if($bShowAll)
                 $sUrl .= '&bShowAll=true';
-
             $oTableRowClick = new TableRowClick($sUrl);
 
             // add the table element indicating that the user can show the row by clicking on it
@@ -588,29 +586,29 @@ class testData{
         }
 
         $oTableRow->AddCell($oTableCell);
-        $oTableRow->SetClass($sTRClass);
-
         $oTableRow->AddTextCell($oDistribution->objectMakeLink());
         $oTableRow->AddTextCell(date("M d Y", mysqldatetime_to_unixtimestamp($this->sTestedDate)));
         $oTableRow->AddTextCell($this->sTestedRelease.'&nbsp;');
         $oTableRow->AddTextCell($this->sInstalls.'&nbsp;');
         $oTableRow->AddTextCell($this->sRuns.'&nbsp;');
-        $oTableRow->AddTextCell($this->sTestedRating.'&nbsp;');
+        $oTableCell = new TableCell($this->sTestedRating);
+        $oTableCell->SetClass($bgcolor);
+        $oTableRow->AddCell($oTableCell);
         $oTableRow->AddTextCell($oSubmitter->objectMakeLink().'&nbsp;');
         if ($this->iTestingId && $_SESSION['current']->hasAppVersionModifyPermission($oVersion))
         {
             $oObject = new objectManager('testData');
             if($oApp->canEdit())
-                $shChangeParentLink = '<a href="'.$oObject->makeUrl('showChangeParent', $this->iTestingId, 'Move test report to another version').'&amp;sReturnTo='.urlencode($_SERVER['REQUEST_URI']).'">Move</a>'."\n";
+                $shChangeParentLink = '<a href="'.$oObject->makeUrl('showChangeParent', $this->iTestingId, 'Move test report to another version').'&amp;sReturnTo='.urlencode($_SERVER['REQUEST_URI']).'" class="btn btn-default button-xs">Move</a>'."\n";
             else
                 $shChangeParentLink = '';
 
             $oTableRow->AddTextCell('<a href="'.$oObject->makeUrl('edit', $this->iTestingId,
-                                    'Edit Test Results').'&amp;sReturnTo='.urlencode($_SERVER['REQUEST_URI']).'">'.
-                                    'Edit</a> &nbsp; '."\n".
+                                    'Edit Test Results').'&amp;sReturnTo='.urlencode($_SERVER['REQUEST_URI']).'" class="btn btn-default button-xs">'.
+                                    'Edit</a> '."\n".
                                     $shChangeParentLink.
                                     '<a href="'.$oObject->makeUrl('delete', $this->iTestingId, 'Delete+Test+Results').
-                                    '&amp;sReturnTo='.urlencode($_SERVER['REQUEST_URI']).'">Delete</a></td>'."\n");
+                                    '&amp;sReturnTo='.urlencode($_SERVER['REQUEST_URI']).'" class="btn btn-default button-xs">Delete</a></td>'."\n");
         }
 
         // if this is a clickable row, set the appropriate property
