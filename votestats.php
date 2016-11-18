@@ -69,6 +69,7 @@ if(!empty($aClean['iCategoryId']))
 
 /*******************************************************************/
 /* add options for all of the categories that we are recursed into */
+echo "<br>\n";
 echo "<b>Section:</b>";
 echo '<select name="iCategoryId" class="form-control form-control-inline">';
 
@@ -116,8 +117,9 @@ if($subs)
         echo stripslashes($oSubcat->sName);
     }
 }
-echo '</select>';
-echo ' <input type="submit" value="Refresh" class="btn btn-default">';
+echo "</select>\n";
+echo "<br>\n";
+echo '<button type="submit" class="btn btn-default"><i class="fa fa-refresh"></i> Refresh</button>';
 echo '</form>';
 
 /***************************************************/
@@ -164,7 +166,6 @@ if($hResult)
     echo html_frame_start();
     
     $oTable = new Table();
-    $oTable->setWidth("100%");
     $oTable->SetClass("whq-table");
 
     $oTableRow = new TableRow();
