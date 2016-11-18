@@ -1212,8 +1212,6 @@ EOT;
     {
         if ($aVersions)
         {
-            echo html_frame_start("","98%","",0);
-
             $oTable = new Table();
             $oTable->SetClass('whq-table');
             $oTableRow = new TableRow();
@@ -1262,11 +1260,11 @@ EOT;
                     $oTableRow = new TableRow();
                     $oTableRow->SetRowClick($oTableRowClick); // make the row clickable
                     $oTableRow->AddTextCell($oVersion->objectMakeLink());
-                    $oTableRow->SetClass($sClass);
                     $oTableRow->AddTextCell(util_trim_description($oVersion->sDescription));
 
                     $oTableCell = new TableCell($oVersion->sTestedRating);
                     $oTableCell->SetAlign("center");
+                    $oTableCell->SetClass($sClass);
                     $oTableRow->AddCell($oTableCell);
 
                     $oTableCell = new TableCell($oVersion->sTestedRelease);
@@ -1284,14 +1282,12 @@ EOT;
                     // add the row to the table
                     $oTable->AddRow($oTableRow);
 
-                    $c++;   
+                    $c++;
                 }
             }
 
             // output the table
             echo $oTable->GetString();
-
-            echo html_frame_end("Click the Version Name to view the details of that Version");
         }
     }
 
