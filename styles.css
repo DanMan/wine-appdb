@@ -533,6 +533,25 @@ h2.whq-app-title { margin-top: 1em; font-size: 24px; }
     word-wrap: break-word;
 }
 
+/* screenshots */
+div.imgarea {
+    text-align:center;
+}
+
+/* classes for the main page */
+div.topx_style {
+    padding: 7px;
+    margin: 6px;
+    border: 2px solid #999999;
+    border-radius: 5px;
+}
+div.topx_style.platinum { background-color: #333333; }
+div.topx_style.platinum div.rating_header { color: #ffffff; }
+div.topx_style.gold     { background-color: #FFF600; }
+div.topx_style.silver   { background-color: #C0C0C0; }
+div.rating_header { padding: 8px; }
+div.rating_title { padding-bottom: 4px; font-weight: bold; font-size: 160%; }
+
 /*
   =====================================================================================================================
    Boxes
@@ -672,13 +691,6 @@ table tr.rowtitle td:last-child {
 .color3 { background-color: #666666 }
 .color4 { background-color: #999999 }
 
-/* Colors for supported apps table */
-.platinum { background-color: #333333; color: #ffffff; }
-.gold     { background-color: #FFF600; }
-.silver   { background-color: #C0C0C0; }
-.bronze   { background-color: #FCBA0A; }
-.garbage  { background-color: #999966; }
-
 /* table row colors for ratings (alternating colors for rows) */
 tr:nth-child(odd) td.Platinum   { background-color: #333333 !important; color: #ffffff !important; }
 tr:nth-child(even) td.Platinum  { background-color: #666666 !important; color: #ffffff !important; }
@@ -745,35 +757,8 @@ table.historyTable { border: 1px;
                      font-family: "bitstream vera sans", "verdana", "arial", "helvetica", sans-serif;
                      font-size: 12px; }
 
-/* rank row colors */
-td.platinum         { background-color: #ECECEC; }
-td.gold             { background-color: #fff600; }
-td.silver           { background-color: silver;  }
-td.bronze           { background-color: #fcba0a; }
-td.garbage          { background-color: #999966; }
-
-tr.platinum         { background-color: #ECECEC; }
-tr.gold             { background-color: #fff600; }
-tr.silver           { background-color: silver;  }
-tr.bronze           { background-color: #fcba0a; }
-tr.garbage          { background-color: #999966; }
-tr.warning          { background-color: #ff3333; } /* novascotia salmon */
-
 /* note/howto colors */
 .note-howto            { font-weight: bold; color: green;   }
 .note-defaultnote      { font-weight: bold; color: #0066CC; } /* mid-light blue */
-
-/* classes for the main page */
-div.rating_header { padding: 8px; }
-div.rating_title { padding-bottom: 4px; font-weight: bold; font-size: 160%; }
-div.topx_style {
-    padding: 7px;
-    margin: 6px;
-    border: 2px solid #999999;
-    border-radius: 5px;
-}
-div.imgarea {
-    text-align:center;
-}
 
 /* done */
