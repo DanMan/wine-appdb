@@ -116,7 +116,7 @@ if($hResult && query_num_rows($hResult))
         {
             $oM = new objectManager("screenshot");
             $oM->setReturnTo("screenshots.php?iAppId=".$oScreenshot->iAppId."&amp;iVersionId=".$oScreenshot->iVersionId);
-            echo '<br>[<a href="'.$oM->makeUrl("delete", $oScreenshot->iScreenshotId, "Delete Screenshot").'">Delete</a>]';
+            echo '<br><a href="'.$oM->makeUrl("delete", $oScreenshot->iScreenshotId, "Delete Screenshot").'" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</a>';
         }
 
         echo "</div></td>\n";

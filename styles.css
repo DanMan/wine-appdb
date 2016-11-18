@@ -535,8 +535,28 @@ h2.whq-app-title { margin-top: 1em; font-size: 24px; }
 }
 
 /* screenshots */
-div.imgarea {
-    text-align:center;
+.whq-shot {
+    display: inline-block;
+}
+.whq-shot img {
+    display: inline-block;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.whq-shot img:hover {
+    opacity: 0.8;
+}
+.whq-shot i.fa {
+    display: inline-block;
+    margin: 0px 0 0 -25px;
+    font-size: 20px;
+    opacity: 0.8;
+    color: #ffffff;
+    text-shadow: 1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+.whq-shot-link {
+    font-size: 70%;
+    white-space: nowrap;
 }
 
 /* classes for the main page */

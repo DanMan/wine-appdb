@@ -60,9 +60,23 @@ $(document).ready(function()
     {
         var sURL = $(this).data('donav');
         $(this).addClass('cursor-pointer');
-        $(this).click(function()
+        $(this).click(function(e)
         {
+
             document.location = sURL;
+        });
+    });
+
+    // simple screenshot viewer
+    // FIXME - this is a quickee hack of a viewer, could use some improving
+    $(".whq-shot img").click(function(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        var sImg = '<div><img src="'+$(this).data("shot")+'" class="fill-width"></div>';
+        $(sImg).dialog({
+            'width': ((50 / 100) * $(window).width()),
+            'height': ((70 / 100) * $(window).height())
         });
     });
 

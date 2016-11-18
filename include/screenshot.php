@@ -417,7 +417,6 @@ class screenshot
         }
     }
 
- 
     function mailMaintainers($bDeleted=false)
     {
         $oVersion = new version($this->iVersionId);
@@ -462,21 +461,6 @@ class screenshot
         $sEmail = User::get_notify_email_address_list(null, $this->iVersionId);
         if($sEmail)
             mail_appdb($sEmail, $sSubject ,$sMsg);
-    } 
-
-    public static function get_zoomicon_overlay()
-    {
-        /* if the user is using mozilla or firefox show the zoom icon over images */
-        /* otherwise because IE doesn't support transparent PNGs or proper css we have to */
-        /* skip it for IE */
-        if(strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") === false)
-        {
-            $sZoomIcon = '<img class="zoom_overlay" src="'.BASE.'images/xmag_32.png" alt="">';
-        }
-        else
-            $sZoomIcon = "";
-
-        return $sZoomIcon;
     }
 
     /**
@@ -512,44 +496,41 @@ class screenshot
                                 ORDER BY rand", $iVersionId);
         }
 
-        if($bFormatting)
-            $sImgFile .= '<center>';
-
-        if(!$hResult || !query_num_rows($hResult))
+        if (!$hResult || !query_num_rows($hResult))
         {
-            $sImgFile.= '<img src="images/no_screenshot.png" alt="No Screenshot">';
-        } else
+            $sImgFile.= '<div class="whq-shot-none">No Screenshot</div>';
+        }
+        else
         {
             $oRow = query_fetch_object($hResult);
-            $sImgFile.= '<img src="appimage.php?bThumbnail=true&amp;iId='.$oRow->id.'" alt="'.$oRow->description.'">';
+            $oScreenshot = new Screenshot($oRow->id);
+            $sImgFile .= $oScreenshot->get_thumbnail_img();
+            unset($oScreenshot);
         }
-
-        if($bFormatting)
-            $sImgFile .= '</center>';
-
-        if($bFormatting)
-            $sImg = html_frame_start("",'128','',2);
-
-        /* retrieve the url for the zoom icon overlay */
-        $sZoomIcon = Screenshot::get_zoomicon_overlay();
 
         /* we have screenshots */
-        if($hResult && $numShots = query_num_rows($hResult))
+        if ($hResult && $numShots = query_num_rows($hResult))
         {
             if($iVersionId)
-                $sImg .= "<div class=\"imgarea\"><a href='screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId'>".$sImgFile.$sZoomIcon."<br>View/Submit&nbsp;Screenshot</a></div>";
+                $sImg .= "{$sImgFile}<br>\n<a href=\"screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId\" class=\"whq-shot-link\">".
+                         "View / Submit Screenshot</a>";
             else
-                $sImg .= "<div class=\"imgarea\"><a href='screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId'>".$sImgFile.$sZoomIcon."<br>View&nbsp;Screenshot".($numShots > 1 ? "s" : "")."</a></div>";
-        } else if($iVersionId) /* we are asking for a specific app version but it has no screenshots */
+                $sImg .= "{$sImgFile}<br>\n<a href=\"screenshots.php?iAppId=$iAppId\" class=\"whq-shot-link\">View Screenshot".
+                         ($numShots > 1 ? "s" : "")."</a>";
+        }
+        else if ($iVersionId)
         {
-            $sImg .= "<div class=\"imgarea\"><a href='screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId'>".$sImgFile.$sZoomIcon."<br>Submit&nbsp;Screenshot</a></div>";
-        } else /* we have no screenshots and we aren't a specific version, we don't allow adding screenshots for an app */
+            /* we are asking for a specific app version but it has no screenshots */
+            $sImg .= "{$sImgFile}<br>\n<a href=\"screenshots.php?iAppId=$iAppId&amp;iVersionId=$iVersionId\" class=\"whq-shot-link\">Submit Screenshot</a>";
+        }
+        else
         {
-            $sImg .= $sImgFile.$sZoomIcon; 
+            /* we have no screenshots and we aren't a specific version, we don't allow adding screenshots for an app */
+            $sImg .= $sImgFile;
         }
 
         if($bFormatting)
-            $sImg .= html_frame_end()."<br>";
+            $sImg = "<div class=\"whq-shot-block\">{$sImg}</div>\n";
 
         return $sImg;
     }
@@ -596,31 +577,16 @@ class screenshot
 
     function get_thumbnail_img()
     {
-        // generate random tag for popup window
-        $sRandName = User::generate_passwd(5);
-        // set img tag        
-        $shImgSRC  = '<img src="'.apidb_fullurl("appimage.php").
-            '?bThumbnail=true&amp;iId='.$this->iScreenshotId.'" alt="'.$this->sDescription.
-            '" width="'.$this->get_thumbnail_width().
-            '" height="'.$this->get_thumbnail_height().'">';
-        $shImg = '<a href="'.apidb_fullurl("appimage.php").
-            '?iId='.$this->iScreenshotId.
-            '" onclick="javascript:openWin(\''.apidb_fullurl("appimage.php").
-            '?iId='.$this->iScreenshotId.'\',\''.$sRandName.'\','.
-            ($this->get_screenshot_width() + 20).','.
-            ($this->get_screenshot_height() + 6).
-            ');return false;">'.$shImgSRC.Screenshot::get_zoomicon_overlay().'</a>';
-
-        // set image link based on user pref
-        if ($_SESSION['current']->isLoggedIn())
-        {
-            if ($_SESSION['current']->getpref("window:screenshot") == "no")
-            {
-                $shImg = '<a href="'.apidb_fullurl("appimage.php").
-                    '?iImageId='.$this->iScreenshotId.'">'.$shImgSRC.'</a>';
-            }
-        }
-        return $shImg;
+        $sImgUrl = apidb_fullurl("appimage.php").'?iId='.$this->iScreenshotId;
+        $sImgWidth = $this->get_thumbnail_width();
+        $sImgHeight = $this->get_thumbnail_height();
+        if (!$sImgWidth)
+            $sImgWidth = '130';
+        if (!$sImgHeight)
+            $sImgHeight = '100';
+        $this->sDescription = preg_replace('/\n/', '', $this->sDescription);
+        return "<div class=\"whq-shot\"><img src=\"{$sImgUrl}&amp;bThumbnail=true\" style=\"width:{$sImgWidth}px;height{$sImgHeight}:px;\" ".
+               "alt=\"{$this->sDescription}\" data-shot=\"{$sImgUrl}\"><i class=\"fa fa-search-plus\"></i></div>\n";
     }
 
     public static function objectGetItemsPerPage($sState = 'accepted')
@@ -671,7 +637,8 @@ class screenshot
             if($oScreenshot->canEdit())
             {
                 $oM = new objectManager('screenshot');
-                echo '<br />[<a href="'.$oM->makeUrl('delete', $oScreenshot->objectGetId(), 'Delete Screenshot').'">Delete</a>]';
+                echo '<br><a href="'.$oM->makeUrl('delete', $oScreenshot->objectGetId(), 'Delete Screenshot').
+                     '" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</a>';
             }
 
             echo "</div></td>\n";
@@ -770,30 +737,11 @@ class screenshot
     {
         $oAppData = new appData($this->iScreenshotId, null, $this);
         $oAppData->outputEditorGeneric();
-
         echo '<tr valign=top><td class=color0><b>Submitted screenshot</b></td>',"\n";
         echo '<td>';
-        $imgSRC = '<img width="'.$this->get_thumbnail_width().'" height="'.
-                $this->get_thumbnail_height().'" src="'.BASE.
-                'appimage.php?bQueued=true&amp;iId='.$this->iScreenshotId.'" />';
-        // generate random tag for popup window
-        $randName = User::generate_passwd(5);
-        // set image link based on user pref
-        $img = '<a href="javascript:openWin(\''.BASE.'appimage.php?bQueued=true&amp;iId='.
-                $this->iScreenshotId.'\',\''.$randName.'\','.$this->get_screenshot_width()
-                .','.($this->get_screenshot_height()+4).');">'.$imgSRC.'</a>';
-        if ($_SESSION['current']->isLoggedIn())
-        {
-            if ($_SESSION['current']->getpref("window:screenshot") == "no")
-            {
-                $img = '<a href="'.BASE.'appimage.php?bQueued=true&amp;iId='.
-                        $this->iScreenshotId.'">'.$imgSRC.'</a>';
-            }
-        }
-        echo $img;
+        echo $this->get_thumbnail_img();
         echo '</td></tr>',"\n";
-        echo '<input type="hidden" name="iScreenshotId" value="'.
-                $this->iScreenshotId.'" />';
+        echo '<input type="hidden" name="iScreenshotId" value="'.$this->iScreenshotId.'">';
         echo html_frame_end();
     }
 
