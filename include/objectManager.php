@@ -1063,7 +1063,6 @@ class ObjectManager
         $this->checkMethods(array("outputEditor", "getOutputEditorValues",
                                   "update", "create"));
 
-
         $oObject = new $this->sClass();
 
         /* Display errors, if any, and fetch form data */
@@ -1087,7 +1086,7 @@ class ObjectManager
                 $oObject->objectDisplayAddItemHelp();
         }
 
-        echo "<form method=\"post\" action=\"".$this->makeUrl("add")."\">\n";
+        echo "<form method=\"post\" class=\"form-horizontal\" action=\"".$this->makeUrl("add")."\">\n";
 
         echo $this->makeUrlFormData();
 
@@ -1099,12 +1098,10 @@ class ObjectManager
             $oObject->outputEditor();
 
         $this->oObject = $oObject;
-        echo "<div align=\"center\">";
-        echo "<input type=\"submit\" class=\"button\" value=\"Submit\" ". 
-        "name=\"sSubmit\">\n";
-        $this->handle_preview_button();
-        echo "</div></form>\n";
         echo html_back_link(1);
+        $this->handle_preview_button();
+        echo " <button type=\"submit\" class=\"btn btn-default\" name=\"sSubmit\" value=\"Submit\">Submit <i class=\"fa fa-arrow-right\"></i></button> \n";
+        echo "</form>\n";
     }
 
     public function move_to_new_parent($aClean, $sErrors = '')
@@ -1150,12 +1147,10 @@ class ObjectManager
             $oParent->outputEditor();
 
         $this->oObject = $oObject;
-        echo "<div align=\"center\">";
-        echo "<input type=\"submit\" class=\"button\" value=\"Move to new parent\" ". 
-        "name=\"sSubmit\">\n";
+        echo "<input type=\"submit\" class=\"btn btn-default\" value=\"Move to new parent\" name=\"sSubmit\">\n";
         $this->handle_preview_button();
-        echo "</div></form>\n";
-        echo html_back_link(1);
+        echo "</form>\n";
+        //echo html_back_link(1);
     }
 
     private function handle_preview_button()
@@ -1168,7 +1163,7 @@ class ObjectManager
         if(!$oObject->objectShowPreview())
             return;
 
-        echo '<input type="submit" name="sSubmit" class="button" value="Preview">';
+        echo '<button type="submit" name="sSubmit" class="btn btn-default" value="Preview"><i class="fa fa-circle-o"></i> Preview</button>';
     }
 
     public function show_form_help_session_timeout()

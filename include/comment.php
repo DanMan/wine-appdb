@@ -226,64 +226,68 @@ class Comment {
     /**
      * Displays the body of one comment.
      */
-    public static function view_comment_body($iCommentId)
+    public static function view_comment_body($iCommentId, $bShowAppName = false, $bShowForm = true)
     {
         $hResult = Comment::grab_comment($iCommentId);
 
         if ($hResult)
         {
             $oRow = query_fetch_object($hResult);
-            Comment::view_app_comment($oRow);
-        }     
+            Comment::view_app_comment($oRow, $bShowAppName, $bShowForm);
+        }
     }
 
     /**
      * display a single comment (in $oRow)
      */
-    public static function view_app_comment($oRow, $bShowAppName = false)
+    public static function view_app_comment($oRow, $bShowAppName = false, $bShowForm = true)
     {
         $oComment = new comment(null, $oRow);
-        $oComment->output_comment($bShowAppName);
+        $oComment->output_comment($bShowAppName, $bShowForm);
     }
 
-    private function output_comment($bShowAppName = false)
+    private function output_comment($bShowAppName = false, $bShowForm = true)
     {
         // by line
         $sBy = " by <i>".forum_lookup_user($this->oOwner->iUserId)."</i> on <i>".$this->sDateCreated."</i>\n";
-        if($bShowAppName)
+        if ($bShowAppName)
         {
             $oVersion = new version($this->iVersionId);
             $sBy .= " Application: ".version::fullNameLink($this->iVersionId).
                     " (".$oVersion->bHasMaintainer ? 'has maintainer' : 'no maintainers'.")\n";
         }
 
-        // reply post buttons
-        $oVersion = new version($this->iVersionId);
-        $oM = new objectManager("comment", "Post new comment");
-        $oM->setReturnTo($oVersion->objectMakeUrl());
-        $sFooter = " <a href=\"".$oM->makeUrl("add")."&iVersionId={$this->iVersionId}\" class=\"btn btn-default btn-xs\">".
-                   "<i class=\"fa fa-comment\"></i> Comment</a> \n".
-                   "<a href=\"".$oM->makeUrl("add")."&iVersionId={$this->iVersionId}&iThread={$this->iCommentId}\" class=\"btn btn-default btn-xs\">".
-                   "<i class=\"fa fa-reply\"></i> Reply</a> ";
-
-        // delete message button, for admins
-        if ($this->canEdit())
+        $sFooter = "";
+        if ($bShowForm)
         {
-            $sFooter .= "<form method=\"post\" name=\"sMessage\" action=\"".BASE."objectManager.php\" class=\"inline\">\n".
-                        "<button type=\"submit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>\n".
-                        "<input type=\"hidden\" name=\"iId\" value=\"$this->iCommentId\">".
-                        "<input type=\"hidden\" name=\"sClass\" value=\"comment\">".
-                        "<input type=\"hidden\" name=\"bQueued\" value=\"false\">".
-                        "<input type=\"hidden\" name=\"sAction\" value=\"delete\">".
-                        "<input type=\"hidden\" name=\"sTitle\" value=\"Delete comment\">".
-                        "<input type=\"hidden\" name=\"sReturnTo\" value=\"".$oVersion->objectMakeUrl()."\">".
-                        "</form>\n";
+            // reply post buttons
+            $oVersion = new version($this->iVersionId);
+            $oM = new objectManager("comment", "Post new comment");
+            $oM->setReturnTo($oVersion->objectMakeUrl());
+            $sFooter = " <a href=\"".$oM->makeUrl("add")."&iVersionId={$this->iVersionId}\" class=\"btn btn-default btn-xs\">".
+                       "<i class=\"fa fa-comment\"></i> Comment</a> \n".
+                       "<a href=\"".$oM->makeUrl("add")."&iVersionId={$this->iVersionId}&iThread={$this->iCommentId}\" class=\"btn btn-default btn-xs\">".
+                       "<i class=\"fa fa-reply\"></i> Reply</a> ";
+
+            // delete message button, for admins
+            if ($this->canEdit())
+            {
+                $sFooter .= "<form method=\"post\" name=\"sMessage\" action=\"".BASE."objectManager.php\" class=\"inline\">\n".
+                            "<button type=\"submit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>\n".
+                            "<input type=\"hidden\" name=\"iId\" value=\"$this->iCommentId\">".
+                            "<input type=\"hidden\" name=\"sClass\" value=\"comment\">".
+                            "<input type=\"hidden\" name=\"bQueued\" value=\"false\">".
+                            "<input type=\"hidden\" name=\"sAction\" value=\"delete\">".
+                            "<input type=\"hidden\" name=\"sTitle\" value=\"Delete comment\">".
+                            "<input type=\"hidden\" name=\"sReturnTo\" value=\"".$oVersion->objectMakeUrl()."\">".
+                            "</form>\n";
+            }
         }
 
         echo "<div id=\"Comment-{$this->iCommentId}\" class=\"panel panel-default panel-forum\">\n".
                "<div class=\"panel-heading\"><b>{$this->sSubject}</b><br>{$sBy}</div>\n".
                "<div class=\"panel-body\">".htmlify_urls($this->sBody)."</div>\n".
-               "<div class=\"panel-footer\">{$sFooter}</div>\n".
+               ($sFooter ? "<div class=\"panel-footer\">{$sFooter}</div>\n" : '').
                "</div>\n";
     }
 
@@ -779,8 +783,7 @@ class Comment {
 
     function outputEditor($aClean)
     {
-        $sMesTitle = "<b>Post New Comment</b>";
-
+        echo "<h1 class=\"whq-app-title\">New Comment</h1>\n";
         if($aClean['iThread'] > 0)
         {
             $hResult = query_parameters("SELECT * FROM appComments WHERE commentId = '?'",
@@ -788,42 +791,48 @@ class Comment {
             $oRow = query_fetch_object($hResult);
             if($oRow)
             {
-                $sMesTitle = "<b>Replying To ...</b> $oRow->subject\n";
-                echo html_frame_start($oRow->subject,500);
-                echo htmlify_urls($oRow->body), "<br><br>\n";
-                echo html_frame_end();
+                // display post reply
+                echo "<p><b>Replying To ...</b></p>\n";
+                $this->view_comment_body($aClean['iThread'], true, false);
 
-                /* Set default reply subject */
+                // Set default reply subject
                 if(!$this->sSubject)
                 {
                     // Only add RE: once
                     if(stripos($oRow->subject, "RE:") !== false)
                         $this->sSubject = $oRow->subject;
                     else
-                        $this->sSubject = "RE: ".$oRow->subject;
+                        $this->sSubject = "RE: {$oRow->subject}";
                 }
-
             }
         }
-
-        echo "<p align=\"center\">Enter your comment in the box below.";
-        echo "</br>Please do not paste large terminal or debug outputs here.</p>";
-
-        echo html_frame_start($sMesTitle,500,"",0);
-
-        echo '<table width="100%" border=0 cellpadding=0 cellspacing=1>',"\n";
-        echo "<tr class=\"color0\"><td align=right><b>From:</b>&nbsp;</td>\n";
-        echo "	<td>&nbsp;".$_SESSION['current']->sRealname."</td></tr>\n";
-        echo "<tr class=\"color0\"><td align=right><b>Subject:</b>&nbsp;</td>\n";
-        echo "	<td>&nbsp;<input type=\"text\" size=\"35\" name=\"sSubject\" value=\"".$this->sSubject."\"> </td></tr>\n";
-        echo "<tr class=\"color1\"><td colspan=2><textarea name=\"sBody\" cols=\"70\" rows=\"15\" wrap=\"virtual\">".$this->sBody."</textarea></td></tr>\n";
-
-        echo "</table>\n";
-
-        echo html_frame_end();
-
-        echo "<input type=\"hidden\" name=\"iThread\" value=\"".$aClean['iThread']."\">\n";
-        echo "<input type=\"hidden\" name=\"iVersionId\" value=\"".$aClean['iVersionId']."\">\n";
+        // help pane
+        echo html_note(
+                       "<i class=\"fa fa-exclamation-circle\"></i> Enter your comment in the box below<br>\n".
+                       "Please <b>DO NOT</b> paste large terminal or debug outputs here. ".
+                       "If you need to post debug output, please file a <a href=\"https://bugs.winehq.org/\"><i class=\"fa fa-bug\"></i> bug</a>",
+                       "","","warning"
+                      );
+        // post form
+        $form = "";
+        $form .= "<div class=\"form-group\">\n";
+        $form .= "  <label for=\"inputEmail3\" class=\"col-sm-2 control-label\">From:</label>\n";
+        $form .= "  <div class=\"col-sm-10\"><p class=\"form-control-static\">".$_SESSION['current']->sRealname."</p></div>\n";
+        $form .= "</div>\n";
+        $form .= "<div class=\"form-group\">\n";
+        $form .= "  <label for=\"inputPassword3\" class=\"col-sm-2 control-label\">Subject</label>\n";
+        $form .= "  <div class=\"col-sm-10\">\n";
+        $form .= "    <input type=\"text\" class=\"form-control\" id=\"sSubject\" name=\"sSubject\" value=\"{$this->sSubject}\">\n";
+        $form .= "  </div>\n";
+        $form .= "</div>\n";
+        $form .= "<div class=\"form-group\">\n";
+        $form .= "  <div class=\"col-sm-offset-2 col-sm-10\">\n";
+        $form .= "    <textarea name=\"sBody\" rows=\"15\" class=\"form-control\">{$this->sBody}</textarea>\n";
+        $form .= "  </div>\n";
+        $form .= "</div>\n";
+        $form .= "<input type=\"hidden\" name=\"iThread\" value=\"{$aClean['iThread']}\">\n";
+        $form .= "<input type=\"hidden\" name=\"iVersionId\" value=\"{$aClean['iVersionId']}\">\n";
+        echo $form;
     }
 
     function objectShowPreview()
