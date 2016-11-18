@@ -1165,8 +1165,17 @@ EOT;
 
         // Comments Section
         echo "<h2 id=\"viewComments\" class=\"whq-app-title\">Comments</h2>\n";
-        if($this->iVersionId)
-            Comment::view_app_comments($this->iVersionId);
+        if(sizeof($aMaintainers)>0)
+        {
+            if($this->iVersionId)
+                Comment::view_app_comments($this->iVersionId);
+        }
+        else
+        {
+            echo html_note('<i class="fa fa-exclamation-circle"></i> <b>Comments Disabled</b><br><br> '.
+                           'Comments for this application have be disabled becuase there are no maintainers.',
+                           "","","warning");
+        }
     }
 
     public static function lookup_name($versionId)
