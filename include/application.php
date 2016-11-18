@@ -830,7 +830,7 @@ class Application {
             {
                 $mtrscmds .= '<form method="post" name="sEdit" action="admin/editAppFamily.php">'.
                              '<input type="hidden" name="iAppId" value="'.$this->iAppId.'">'.
-                             '<input type="submit" value="Edit Application" class="btn btn-default"></form>'.
+                             '<input type="submit" value="Edit Application" class="btn btn-default btn-sm btn-skinny"></form>'.
                              '<form method="post" action="objectManager.php?sClass=note&sAction=add&sTitle=Add+note&iAppId='.$this->iAppId.'&sNoteTitle=HOWTO&sReturnTo='.urlencode($this->objectMakeUrl()).'">'.
                              '<input type="submit" value="Add note/how-to" class="btn btn-default btn-sm btn-skinny">'.
                              '</form>';
@@ -846,7 +846,7 @@ class Application {
             if($_SESSION['current']->hasPriv("admin"))
             {
                 $url = BASE."objectManager.php?sClass=application&amp;bIsQueue=false&amp;sAction=delete&amp;iId=".$this->iAppId;
-                $mtrscmds .= "<form method=\"post\" name=\"sEdit\" action=\"javascript:self.location = '".$url."'\"><input type=\"submit\" value=\"Delete app\" class=\"btn btn-default\"></form>";
+                $mtrscmds .= "<form method=\"post\" name=\"sEdit\" action=\"javascript:self.location = '".$url."'\"><input type=\"submit\" value=\"Delete app\" class=\"btn btn-default btn-sm btn-skinny\"></form>";
                 $mtrscmds .= '<form method="post" name="sEdit" action="admin/editBundle.php"><input type="hidden" name="iBundleId" value="'.$this->iAppId.'"><input type="submit" value="Edit bundle" class="btn btn-default btn-sm btn-skinny"></form>';
             }
         } else
