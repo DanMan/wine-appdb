@@ -18,7 +18,7 @@ apidb_header("Wine Application Database");
 <div class="row">
     <div class="col-md-6 col-lg-8">
 
-<h1>Welcome</h1>
+<h1 class="whq-app-title">Welcome</h1>
 
 <p>This is the Wine Application Database (AppDB). Here you can get information on application
 compatibility with Wine.</p>
