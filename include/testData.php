@@ -901,7 +901,7 @@ class testData{
         // Rating
         echo '<tr><td class="color0"><b>Rating</b></td><td class="color0">',"\n";
         echo make_maintainer_rating_list("sTestedRating", $this->sTestedRating);
-        echo '<a href="'.BASE.'/help/?sTopic=maintainer_ratings" target="_blank">Rating definitions</a></td></tr>',"\n";
+        echo '<a href="https://wiki.winehq.org/AppDB_Maintainer_Rating_Definitions" target="_blank">Rating definitions</a></td></tr>',"\n";
         // extra comments
         echo '<tr valign=top><td class="color1"><b>Extra comments</b></td>',"\n";
         echo '<td class="color0"><textarea name="sComments" id="extra_comments" rows=10 cols=65>';

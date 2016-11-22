@@ -84,8 +84,7 @@ else
         }
         else
         {
-            echo " please <a href=\"".BASE."help/?sTopic=voting\" title=\"help on voting\"".
-                "style=\"cursor: help\">vote</a> for your favourite application.\n";
+            echo " please <a href=\"https://wiki.winehq.org/AppDB_Voting_Help\">vote</a> for your favorite application.\n";
         }
     }
 

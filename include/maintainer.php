@@ -755,7 +755,7 @@ class maintainer
         echo "An application maintainer is someone who runs the application \n";
         echo "regularly and who is willing to be active in reporting regressions with newer \n";
         echo "versions of Wine and to help other users run this application under Wine.</p>";
-        echo "<p>Being an application maintainer comes with new rights and new responsibilities; please be sure to read the <a href=\"".BASE."/help/?sTopic=maintainer_guidelines\">maintainer's guidelines</a> before to proceed.</p> ";
+        echo "<p>Being an application maintainer comes with new rights and new responsibilities; please be sure to read the <a href=\"https://wiki.winehq.org/AppDB_Maintainer_Guidelines\" target=\"_blank\">maintainer's guidelines</a> before to proceed.</p> ";
         echo "<p>We ask that all maintainers explain why they want to be an application maintainer,\n";
         echo "why they think they will do a good job and a little about their experience\n";
         echo "with Wine.  This is both to give you time to\n";
