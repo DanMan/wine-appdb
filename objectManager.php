@@ -31,16 +31,13 @@ require_once(BASE.'include/tag_CommonReply.php');
 require_once(BASE.'include/commonReply.php');
 
 /* if we have no valid class name we should abort */
-if(!isset($aClean['sClass']))
+if(empty($aClean['sClass']) or !class_exists($aClean['sClass']))
 {
-    echo "No class defined.\n";
-    exit;
-}
-
-/* make sure the class is defined */
-if(!class_exists($aClean['sClass']))
-{
-    echo "Class ".$aClean['sClass']." doesn't exist";
+    header("HTTP/1.1 404 Not Found");
+    apidb_header("404 - Not Found!");
+    echo "<h1 class=\"whq-app-title\"><i class=\"fa fa-exclamation-circle\"></i> 404 - Not Found!</h1>\n";
+    echo "<p>We were unable to load this page due to a missing or invalid class parameter.</p>\n";
+    apidb_footer();
     exit;
 }
 

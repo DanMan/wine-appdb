@@ -181,9 +181,22 @@ class ObjectManager
         return $bAllowed;
     }
 
-    public static function error_exit($shMessage)
+    public static function error_exit($shMessage, $b404 = false)
     {
-        echo '<div align="center"><p><font color="red"><b>'.$shMessage.'</b></font></p></div';
+        if ($b404)
+        {
+            header("HTTP/1.1 404 Not Found");
+            echo "<h1 class=\"whq-app-title\"><i class=\"fa fa-exclamation-circle\"></i> 404 - Not Found!</h1>\n";
+            echo "<p>We are unable to find the page your are trying to access. Please check your URL and try again.</p>\n";
+        }
+        else
+        {
+            echo "<h1 class=\"whq-app-title\"><i class=\"fa fa-exclamation-circle\"></i> Error!</h1>\n";
+            echo "<p>We have encountered an error. More details in message below.</p>\n";
+        }
+        echo "<p>If you feel this is an error on our end, please report it to our <a href=\"https://forum.winehq.org/viewforum.php?f=11\">forums</a>.\n";
+        echo "<hr>\n";
+        echo "<p><b>Error Message:</b> {$shMessage}</p>\n";
         echo apidb_footer();
         exit;
     }
@@ -1287,11 +1300,11 @@ class ObjectManager
 
         /* Check that the entry exists */
         if(!$oObject->objectGetId() && !$this->isNullIdAllowed('view'))
-            $this->error_exit("Entry not found (class: {$this->sClass}, id: {$this->iId})");
+            $this->error_exit("Entry not found (class: {$this->sClass}, id: {$this->iId})", true);
 
         /* Check if the entry has been deleted */
         if($oObject->objectGetState() == 'deleted')
-            $this->error_exit("This entry has been deleted (class: {$this->sClass}, id: {$this->iId})<br>\nIts content may have been moved to another entry");
+            $this->error_exit("This entry has been deleted (class: {$this->sClass}, id: {$this->iId})<br>\nIts content may have been moved to another entry", true);
 
         /* Show a note if the entry is queued or rejected */
         if($oObject->objectGetState() != 'accepted')
