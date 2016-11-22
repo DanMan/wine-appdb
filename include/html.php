@@ -111,17 +111,17 @@ function html_frame_end($text = "")
 
 function html_select($name, $values, $default = null, $descs = null)
 {
-    $str = "<select name='$name'>\n";
+    $str = "<select name=\"{$name}\" class=\"form-control form-control-inline\">\n";
     while(list($idx, $value) = each($values))
     {
         $desc = $value;
         if($descs)
-        $desc = $descs[$idx];
+            $desc = $descs[$idx];
 
         if($value == $default)
-        $str .= "  <option selected value='$value'>$desc\n";
+            $str .= "  <option selected value=\"{$value}\">{$desc}</option>\n";
         else
-        $str .= "  <option value='$value'>$desc\n";
+            $str .= "  <option value=\"{$value}\">{$desc}</option>\n";
     }
     $str .= "</select>\n";
 
