@@ -585,7 +585,7 @@ class screenshot
         if (!$sImgHeight)
             $sImgHeight = '100';
         $this->sDescription = preg_replace('/\n/', '', $this->sDescription);
-        return "<div class=\"whq-shot\"><img src=\"{$sImgUrl}&amp;bThumbnail=true\" style=\"width:{$sImgWidth}px;height{$sImgHeight}:px;\" ".
+        return "<div class=\"whq-shot\"><img src=\"{$sImgUrl}&amp;bThumbnail=true\" style=\"width:{$sImgWidth}px;height:{$sImgHeight}px;\" ".
                "alt=\"{$this->sDescription}\" data-shot=\"{$sImgUrl}\"><i class=\"fa fa-search-plus\"></i></div>\n";
     }
 
