@@ -187,7 +187,7 @@ class ObjectManager
         {
             header("HTTP/1.1 404 Not Found");
             echo "<h1 class=\"whq-app-title\"><i class=\"fa fa-exclamation-circle\"></i> 404 - Not Found!</h1>\n";
-            echo "<p>We are unable to find the page your are trying to access. Please check your URL and try again.</p>\n";
+            echo "<p>We are unable to find the page you are trying to access. Please check your URL and try again.</p>\n";
         }
         else
         {
