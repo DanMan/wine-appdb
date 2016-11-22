@@ -20,6 +20,10 @@ define("APPDB_OWNER_EMAIL","appdb@winehq.org"); // e-mail of this product/compan
 define("APPDB_SENDER_EMAIL","appdb-noreply@winehq.org"); // The e-mail address which appears as the sender in mails sent by the AppDB
 define("BUGZILLA_ROOT","https://bugs.winehq.org/"); // path to bugzilla
 
+// Google reCaptcha Secret Key - required on account creations
+define("RECAPTCHA_KEY","");
+define("RECAPTCHA_SECRET","");
+
 // AppDB developers: Use this define to disable email from being sent from the appdb during testing
 //if(!defined("DISABLE_EMAIL"))
 // define("DISABLE_EMAIL", true); // disable email, see mail_appdb() in include/mail.php

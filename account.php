@@ -38,7 +38,7 @@ function do_account($sCmd = null)
     switch($sCmd)
     {
         case "new":
-            apidb_header("New Account");
+            apidb_header("New Account", "<script src='https://www.google.com/recaptcha/api.js'></script>");
             include(BASE."include/"."form_login_new.php");
             apidb_footer();
             exit;
@@ -99,6 +99,24 @@ function cmd_do_new()
     if(empty($aClean['sUserRealname']))
     {
         retry("new", "You don't have a Real name?");
+        return;
+    }
+
+    if (!empty($aClean['g-recaptcha-response']))
+    {
+        // validate captcha
+        require(BASE."include/reCaptcha.php");
+        $reCaptcha = new reCaptcha(RECAPTCHA_SECRET);
+        if (!$reCaptcha->validate($aClean['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']))
+        {
+            // reCAPTCHA failed
+            retry("new", "reCAPTCHA check failed!");
+            return;
+        }
+    }
+    else
+    {
+        retry("new", "reCAPTCHA check failed!");
         return;
     }
 

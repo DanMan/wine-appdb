@@ -34,6 +34,12 @@ $sReturnTo = (!empty($aClean['sReturnTo']) ? $aClean['sReturnTo'] : '');
     </div>
 </div>
 <div class="form-group">
+    <label class="col-sm-2 control-label"></label>
+    <div class="col-sm-10">
+        <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_KEY; ?>"></div>
+    </div>
+</div>
+<div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
         <button type="submit" name="sCreate" class="btn btn-default"><i class="fa fa-sign-in"></i> Create Account</button>
     </div>

@@ -40,8 +40,8 @@ function filter_gpc()
            (strpos($aKeys[$i], "XinhaColorPicker") === 0) || // Xinha variables
            ($aKeys[$i] == "cx")  ||  // google custom search variable
            ($aKeys[$i] == "cof") ||  // google custom search variable
-           ($aKeys[$i] == "q"))      // google custom search variable
-
+           ($aKeys[$i] == "q")   ||  // google custom search variable
+           ($aKeys[$i] == "g-recaptcha-response")) // google reCaptcha variable
         {
             // copy the key over to the clean array
             // NOTE: we do not strip html tags or trim any Xinha variables
