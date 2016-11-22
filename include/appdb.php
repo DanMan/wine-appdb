@@ -233,8 +233,10 @@ function appdb_fullpath($path)
 
 /**
  * output the common apidb header
+ *  title => sets the page title
+ *  sHeaderCode => add additional code to <head> block
  */
-function apidb_header($title = 0)
+function apidb_header($title = 0, $sHeaderCode = "")
 {
     $realname = $_SESSION['current']->sRealname;
 
