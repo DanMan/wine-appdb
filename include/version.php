@@ -1124,7 +1124,7 @@ EOT;
 
         // show the test results table
         if($oTest)
-       {
+        {
             if($oTest->iTestingId)
             {
                 echo $oTest->ShowVersionsTestingTable($this->objectMakeUrl()."&amp;iTestingId=", 5);
@@ -1173,7 +1173,7 @@ EOT;
         else
         {
             echo html_note('<i class="fa fa-exclamation-circle"></i> <b>Comments Disabled</b><br><br> '.
-                           'Comments for this application have be disabled becuase there are no maintainers.',
+                           'Comments for this application have been disabled because there are no maintainers.',
                            "","","warning");
         }
     }
