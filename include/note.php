@@ -296,7 +296,7 @@ class Note {
             $shOutput .= '</form>';
         }
 
-        echo html_note("<span class=\"note-{$sClass}\">{$sTitle}</span>", $this->shDescription, $shOutput, 'default panel-scroll');
+        echo html_note("<span class=\"note-{$sClass}\">{$sTitle}</span>", $this->shDescription, $shOutput, 'default');
     }
 
     public static function displayNotesForEntry($iVersionId, $iAppId = null)
