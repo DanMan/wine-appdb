@@ -749,7 +749,7 @@ function view_version_bugs($iVersionId = null, $aBuglinkIds)
             echo "<td>".$oBuglink->sShort_desc."</td>\n";
             echo "<td class=\"text-center\">".$oBuglink->sBug_status."</td>","\n";
             echo "<td class=\"text-center\">".$oBuglink->sResolution."</td>","\n";
-            echo "<td class=\"text-center\"><a href=\"viewbugs.php?bug_id={$oBuglink->iBug_id}\" class=\"btn btn-default\">View</a></td>\n";
+            echo "<td class=\"text-center\"><a href=\"viewbugs.php?iBugId={$oBuglink->iBug_id}\" class=\"btn btn-default\">View</a></td>\n";
 
             if($bCanEdit == true)
             {
