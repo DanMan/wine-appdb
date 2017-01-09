@@ -58,7 +58,7 @@ create table appVersion (
   ratingRelease 	 text,
   submitTime            datetime NOT NULL,
   submitterId           int(11) NOT NULL default '0',
-  license		enum('Retail','Open Source','Demo','Shareware','Free to use','Free to use and share'),
+  license		enum('Retail','Open Source','Demo','Shareware','Free to use','Free to use and share','Steam'),
   obsoleteBy            int(11) NOT NULL default '0',
   state                 enum('accepted','queued','rejected','pending','deleted') NOT NULL default 'accepted',
   hasMaintainer enum('true','false') NOT NULL default 'false',

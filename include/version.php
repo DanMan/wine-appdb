@@ -20,6 +20,7 @@ define("LICENSE_DEMO", "Demo");
 define("LICENSE_RETAIL", "Retail");
 define('LICENSE_FREETOUSE', 'Free to use');
 define('LICENSE_FREETOSHARE', 'Free to use and share');
+define('LICENSE_STEAM', 'Steam');
 
 /**
  * Version class for handling versions.
@@ -1370,7 +1371,7 @@ EOT;
     public static function getLicenses()
     {
         return array(LICENSE_RETAIL, LICENSE_OPENSOURCE, LICENSE_FREETOUSE,
-                     LICENSE_FREETOSHARE, LICENSE_DEMO, LICENSE_SHAREWARE);
+                     LICENSE_FREETOSHARE, LICENSE_DEMO, LICENSE_SHAREWARE, LICENSE_STEAM);
     }
 
     // returns a string containing the html for a selection list
@@ -1404,7 +1405,7 @@ EOT;
     public static function checkLicense($sLicense)
     {
         $aLicense = array(LICENSE_RETAIL, LICENSE_OPENSOURCE, LICENSE_FREETOUSE,
-                          LICENSE_FREETOSHARE, LICENSE_DEMO, LICENSE_SHAREWARE);
+                          LICENSE_FREETOSHARE, LICENSE_DEMO, LICENSE_SHAREWARE, LICENSE_STEAM);
 
         foreach($aLicense as $sElement)
         {
