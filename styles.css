@@ -792,5 +792,6 @@ table.historyTable { border: 1px;
 /* note/howto colors */
 .note-howto            { font-weight: bold; color: green;   }
 .note-defaultnote      { font-weight: bold; color: #0066CC; } /* mid-light blue */
+.note-warning          { font-weight: bold; color: red; }
 
 /* done */
