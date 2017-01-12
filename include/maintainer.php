@@ -316,7 +316,7 @@ class maintainer
             $oApp = new Application($oRow->appId);
             $oVersion = new Version($oRow->versionId);
             $sSubject =  "Application Maintainer Request Report";
-            $sMsg  = "Your application to be the maintainer of ".$oApp->sName." ".$oVersion->sName." was rejected. ";
+            $sMsg  = "Your application to be the maintainer of $oApp->sName $oVersion->sName was rejected. ";
             $sMsg .= $this->sReplyText;
             $sMsg .= "";
             $sMsg .= "-The AppDB admins\n";
