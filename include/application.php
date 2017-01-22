@@ -443,9 +443,9 @@ class Application {
             break;
             case "reject":
                 $sSubject =  "Submitted application rejected";
-                $sMsg  = "The application you submitted (".$this->sName.") has been rejected by ".$_SESSION['current']->sRealname.".";
-                $sMsg .= "Clicking on the link in this email will allow you to modify and resubmit the application. ";
-                $sMsg .= "A link to your queue of applications and versions will also show up on the left hand side of the Appdb site once you have logged in. ";
+                $sMsg  = "The application you submitted (".$this->sName.") has been rejected by ".$_SESSION['current']->sRealname.". ";
+                $sMsg .= "A link to your queue of applications and versions will show up on the left hand side of the Appdb site once you have logged in. ";
+                $sMsg .= "Clicking on that link will allow you to modify and resubmit the application. ";                
                 $sMsg .= APPDB_ROOT."objectManager.php?sClass=application_queue".
                         "&amp;bIsQueue=true&amp;bIsRejected=true&amp;iId=".$this->iAppId."&amp;sTitle=".
                         "Edit+Application\n";
