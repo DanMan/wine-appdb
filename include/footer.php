@@ -6,7 +6,7 @@
 <div id="footer">
     <a href="https://wiki.winehq.org/WineHQ_Wiki:Privacy_policy">Privacy Policy</a><br><br>
     Hosted By
-    <a href="http://www.codeweavers.com/"><img src="https://www.winehq.org/images/cw_logo_sm.png" alt="CodeWeavers"
+    <a href="http://www.codeweavers.com/"><img src="https://dl.winehq.org/share/images/cw_logo_sm.png" alt="CodeWeavers"
     title="CodeWeavers - Run Windows applications and games on Mac and Linux"></a>
 </div>
 

@@ -34,7 +34,7 @@ $iJStime = filemtime(BASE."utils.js");
 if (!empty($sHeaderCode))
     echo "    {$sHeaderCode}\n";
 ?>
-    <link rel="shortcut icon" type="image/png" href="<?php echo BASE; ?>images/winehq_logo_16.png">
+    <link rel="shortcut icon" type="image/png" href="https://dl.winehq.org/share/images/winehq_logo_16.png">
     <link title="AppDB" type="application/opensearchdescription+xml" rel="search" href="<?php echo BASE; ?>opensearch.xml">
 </head>
 <body>
@@ -53,8 +53,8 @@ if (!empty($sHeaderCode))
     <div class="clear"></div>
 </nav>
 
-<div id="whq-logo-glass"><a href="https://www.winehq.org/"><img src="https://www.winehq.org/images/winehq_logo_glass.png" alt=""></a></div>
-<div id="whq-logo-text"><a href="https://www.winehq.org/"><img src="https://www.winehq.org/images/winehq_logo_text.png" alt="WineHQ" title="WineHQ"></a></div>
+<div id="whq-logo-glass"><a href="https://www.winehq.org/"><img src="https://dl.winehq.org/share/images/winehq_logo_glass.png" alt=""></a></div>
+<div id="whq-logo-text"><a href="https://www.winehq.org/"><img src="https://dl.winehq.org/share/images/winehq_logo_text.png" alt="WineHQ" title="WineHQ"></a></div>
 
 <div id="whq-search_box">
     <form action="https://www.winehq.org/search" id="cse-search-box">
