@@ -653,7 +653,7 @@ class Application {
                 "I would like to be a maintainer of the new version only<br>\n".
                 "<input type=\"radio\" name=\"iMaintainerRequest\" ". 
                 "value=\"".SUPERMAINTAINER_REQUEST."\">".
-                "I would like to be a maintainer of the entire application<br>\n";
+                "I would like to be a super maintainer for all versions of this application<br>\n";
 
             $sMaintainerOptionsSelected = str_replace(
                 "value=\"$this->iMaintainerRequest\"",
