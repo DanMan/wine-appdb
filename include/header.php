@@ -4,8 +4,8 @@
 /*********************************/
 
 // get file modification time for local CSS/JS to fix caching issues
-$iCSStime = filemtime(BASE."styles.css");
-$iJStime = filemtime(BASE."utils.js");
+$iCSStime = filemtime(BASE."css/styles.css");
+$iJStime = filemtime(BASE."js/utils.js");
 
 ?><!doctype html>
 <html lang="en">
@@ -23,12 +23,12 @@ $iJStime = filemtime(BASE."utils.js");
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css" type="text/css" media="all">
-    <link rel="stylesheet" href="<?php echo BASE; ?>styles.css?f=<?php echo $iCSStime; ?>" type="text/css" media="all">
+    <link rel="stylesheet" href="<?php echo BASE; ?>css/styles.css?f=<?php echo $iCSStime; ?>" type="text/css" media="all">
 
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="<?php echo BASE; ?>utils.js?f=<?php echo $iJStime; ?>"></script>
+    <script src="<?php echo BASE; ?>js/utils.js?f=<?php echo $iJStime; ?>"></script>
 <?php
 // additional header code
 if (!empty($sHeaderCode))
