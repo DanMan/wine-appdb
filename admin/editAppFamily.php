@@ -31,13 +31,16 @@ else
 
 
     $oApp = new Application($aClean['iAppId']);
-    
+
     if(!$oApp)
     {
         util_show_error_page_and_exit('Application does not exist');
     }
-    
-    if($_SESSION['current']->showDebuggingInfos()) { echo "<p align=center><b>appName:</b> $oApp->sName </p>"; }
+
+    if($_SESSION['current']->showDebuggingInfos())
+    {
+        appdb_debug("appName: {$oApp->sName}");
+    }
 
      apidb_header("Edit Application Family");
 
