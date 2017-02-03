@@ -834,8 +834,6 @@ class testData{
         if(!$this->sTestedDate)
             $this->sTestedDate = date('Y-m-d H:i:s');
 
-        HtmlAreaLoaderScript(array("Test1", "Test2", "Test3"));
-
         $sName = version::fullName($this->iVersionId);
 
         echo html_frame_start("Test Form - $sName", "90%", "", 0);
@@ -843,15 +841,15 @@ class testData{
 
         // What works
         echo '<tr valign=top><td class="color0"><b>What works</b></td>',"\n";
-        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test1" name="shWhatWorks">';
+        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test1" name="shWhatWorks" class="wysiwyg">';
         echo $this->shWhatWorks.'</textarea></p></td></tr>',"\n";
         // What Does not work
         echo '<tr valign=top><td class=color1><b>What does not work</b></td>',"\n";
-        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test2" name="shWhatDoesnt">';
+        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test2" name="shWhatDoesnt" class="wysiwyg">';
         echo $this->shWhatDoesnt.'</textarea></p></td></tr>',"\n";
         // What was not tested
         echo '<tr valign=top><td class=color0><b>What was not tested</b></td>',"\n";
-        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test3" name="shWhatNotTested">';
+        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test3" name="shWhatNotTested" class="wysiwyg">';
         echo $this->shWhatNotTested.'</textarea></p></td></tr>',"\n";
         // Date Tested
         echo '<tr valign=top><td class="color1"><b>Date tested </b></td>',"\n";

@@ -31,14 +31,11 @@ function filter_gpc()
 
         // Special cases for variables that don't fit our filtering scheme
         // don't filter the AppDB session cookie and MAX_FILE_SIZE
-        // and the DialogX values that xinha uses
 
         // NOTE: we must use === when comparing the return value of strpos
         //       against a value, otherwise if strpos() returns false indicating that
         //       the value wasn't found strpos(something) == 0 will still be true
-        if((strpos($aKeys[$i], "Dialog") === 0) ||
-           (strpos($aKeys[$i], "XinhaColorPicker") === 0) || // Xinha variables
-           ($aKeys[$i] == "cx")  ||  // google custom search variable
+        if(($aKeys[$i] == "cx")  ||  // google custom search variable
            ($aKeys[$i] == "cof") ||  // google custom search variable
            ($aKeys[$i] == "q")   ||  // google custom search variable
            ($aKeys[$i] == "g-recaptcha-response")) // google reCaptcha variable

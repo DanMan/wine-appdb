@@ -565,8 +565,6 @@ class Application {
     /* output a html table and this applications values to the fields for editing */
     public function outputEditor($sVendorName = "")
     {
-        HtmlAreaLoaderScript(array("app_editor"));
-
         echo '<input type="hidden" name="iAppId" value="'.$this->iAppId.'">';
 
         /* Used to distinguish between the first step of entering an application
@@ -638,7 +636,7 @@ class Application {
         echo '<td><input size="75%" type="text" name="sAppKeywords" value="'.$this->sKeywords.'"></td></tr>',"\n";
 
         echo '<tr valign=top><td class="color0"><b>Application description (In your own words)</b></td>',"\n";
-        echo '<td><p><textarea cols="80" rows="20" id="app_editor" name="shAppDescription">';
+        echo '<td><p><textarea cols="80" rows="20" id="app_editor" name="shAppDescription" class="wysiwyg">';
 
         echo $this->sDescription.'</textarea></p></td></tr>',"\n";
 

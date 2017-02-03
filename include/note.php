@@ -382,8 +382,6 @@ class Note {
             $this->iAppId = $oVersion->iAppId;
         }
 
-        HtmlAreaLoaderScript(array("editor"));
-
         echo html_frame_start("Edit Application Note", "90%","",0);
         echo html_table_begin("width='100%' border=0 align=left cellpadding=6 cellspacing=0 class='box-body'");
 
@@ -401,7 +399,7 @@ class Note {
         echo '</td></tr>';
         echo '<tr><td class=color1>Description</td><td class=color0>', "\n";
         echo '<p style="width:700px">', "\n";
-        echo '<textarea cols="80" rows="20" id="editor" name="shNoteDesc">'.$this->shDescription.'</textarea>',"\n";
+        echo '<textarea cols="80" rows="20" id="editor" name="shNoteDesc" class="wysiwyg">'.$this->shDescription.'</textarea>',"\n";
         echo '</p>';
         echo '</td></tr>'."\n";
 

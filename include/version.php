@@ -595,7 +595,6 @@ class version {
     /* otherwise, if $editParentAppliation is false, we leave them out */
     public function outputEditor()
     {
-        HtmlAreaLoaderScript(array("version_editor"));
         echo html_frame_start("Version Form", "90%", "", 0);
 
         echo '<input type="hidden" name="iVersionId" value="'.$this->iVersionId.'">';
@@ -669,7 +668,7 @@ class version {
         $oTableCell->SetClass("color0");
         $oTableRow->AddCell($oTableCell);
 
-        $oTableRow->AddTextCell('<p><textarea cols="80" rows="20" id="version_editor" name="shVersionDescription">'.
+        $oTableRow->AddTextCell('<p><textarea cols="80" rows="20" id="version_editor" name="shVersionDescription" class="wysiwyg">'.
                                 $this->sDescription.'</textarea></p>');
 
         $oTable->AddRow($oTableRow);
