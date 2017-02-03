@@ -28,12 +28,15 @@ $iJStime = filemtime(BASE."js/utils.js");
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+
+    <script>var sWebRoot = '<?php echo BASE; ?>';</script>
     <script src="<?php echo BASE; ?>js/utils.js?f=<?php echo $iJStime; ?>"></script>
 <?php
 // additional header code
 if (!empty($sHeaderCode))
     echo "    {$sHeaderCode}\n";
 ?>
+
     <link rel="shortcut icon" type="image/png" href="https://dl.winehq.org/share/images/winehq_logo_16.png">
     <link title="AppDB" type="application/opensearchdescription+xml" rel="search" href="<?php echo BASE; ?>opensearch.xml">
 </head>
