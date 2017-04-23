@@ -153,14 +153,10 @@ function get_bugzilla_versions($bReturnIds = false)
     // The empty string will fetch the most recent versions
     $aBranches = array('');
 
-    // Get a list of stable branches
-    if(STABLE_BRANCHES)
-        $aBranches = array_merge($aBranches, explode(',', STABLE_BRANCHES));
-
     foreach($aBranches as $sBranch)
     {
         $sWhere = "WHERE product_id =".BUGZILLA_PRODUCT_ID." AND value LIKE '$sBranch%'";
-        $sQuery = "SELECT $sFetchColumn FROM $sTable $sWhere ORDER BY id desc limit 6";
+        $sQuery = "SELECT $sFetchColumn FROM $sTable $sWhere ORDER BY id desc limit 8";
         $hResult = query_bugzilladb($sQuery);
         if($hResult)
         {
