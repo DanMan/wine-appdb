@@ -1749,10 +1749,10 @@ class ObjectManager
                 $iRows = $oObject->objectGetEntriesCount($sState);
             } else
             {
-                $iRows = query_real_escape_string($iRows);
+                $iRows = query_escape_string($iRows);
             }
 
-            $iStart = query_real_escape_string($iStart);
+            $iStart = query_escape_string($iStart);
 
             $sLimit = " LIMIT $iStart,$iRows";
         }

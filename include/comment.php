@@ -327,13 +327,13 @@ class Comment {
 
         if($iNumRows)
         {
-            $iStart = query_real_escape_string($iStart);
-            $iNumRows = query_real_escape_string($iNumRows);
+            $iStart = query_escape_string($iStart);
+            $iNumRows = query_escape_string($iNumRows);
             $sLimit = " LIMIT $iStart,$iNumRows";
         }
 
         if($sOrderBy)
-            $sOrderBy = " ORDER BY ".query_real_escape_string($sOrderBy);
+            $sOrderBy = " ORDER BY ".query_escape_string($sOrderBy);
 
         $hResult = query_parameters("SELECT * FROM appComments$sExtraTables$sWhereFilter$sOrderBy$sLimit");
 
