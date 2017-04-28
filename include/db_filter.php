@@ -210,7 +210,7 @@ class FilterSet
         $sWhere = $this->getFilterCount() ? 'WHERE '.$this->getWhereClause() : '';
         $sQuery = "SELECT * FROM $sTable $sWhere";
 
-        $iLimit = query_real_escape_string($iLimit);
+        $iLimit = query_escape_string($iLimit);
 
         if($iLimit)
             $sQuery .= " LIMIT 0,$iLimit";
