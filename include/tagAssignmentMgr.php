@@ -62,7 +62,6 @@ abstract class TagAssignmentMgr extends ObjectManagerBase
         
         $iSize = min(sizeof($this->aTaggedEntries), 10);
 
-        echo '<div style="float: left;">';
         $i = 0;
         $shOptions = '';
 
@@ -74,8 +73,8 @@ abstract class TagAssignmentMgr extends ObjectManagerBase
         }
         echo "<select size=\"$iSize\" name=\"iTagAssocList\">\n";
         echo $shOptions;
-        echo '</select></div>';
-        echo '<div style="margin-left: 10px; float: left;">';
+        echo '</select>';
+        echo '<div style="padding-bottom: 10px;">';
         echo "<script type=\"text/JavaScript\">\n";
         echo "function swap(index1, index2) {\n";
         echo "var selector = document.forms['sQform']['iTagAssocList'];\n";
@@ -104,8 +103,10 @@ abstract class TagAssignmentMgr extends ObjectManagerBase
         echo "swap(index, index + 1);\n";
         echo "}\n";
         echo "</script>\n";
-        echo '<button onclick="moveUp()" type="button">Move up</button><br />';
-        echo '<button onclick="moveDown()" type="button">Move down</button>';
+        echo '</div>';
+        echo '<div class="btn-toolbar";>';
+        echo '<button onclick="moveUp()" type="button" class="btn btn-default">Move up</button>';
+        echo '<button onclick="moveDown()" type="button" class="btn btn-default">Move down</button>';
         echo '</div>';
     }
     
