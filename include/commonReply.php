@@ -42,7 +42,7 @@ class CommonReply extends ObjectManagerBase
         if(!$hResult)
             return false;
 
-        $this->iId = query_insert_id();
+        $this->iId = query_appdb_insert_id();
         
         foreach($this->aTags as $iTag)
         {
