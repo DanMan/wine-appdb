@@ -48,6 +48,7 @@ create table appFamily (
 
 /*
  * a version of an application
+ * TODO: remove Steam and GOG from the list of licenses after entries using them have been corrected in the live database
  */
 create table appVersion (
   versionId             int not null auto_increment,
