@@ -145,6 +145,7 @@ if($aClean['iVersionId'] && $_SESSION['current']->isLoggedIn())
     echo "<tr><td><ul>";
     echo "<li>Do not upload screenshots of error messages, installers, game menus etc.</li>";
     echo "<li>Crop the image so that only the application is shown and not your desktop.</li>";
+    echo "<li>Files must be smaller than 600KB.</li>";
     echo "</ul></td></tr></table></p>";
 
     echo '<form enctype="multipart/form-data" action="screenshots.php" name="sImageForm" method="post">',"\n";
