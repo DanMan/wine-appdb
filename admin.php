@@ -199,7 +199,7 @@ function fixNoteLinks()
     
     echo "<br />Deleting note links<br />";
     $hResult = query_parameters("DELETE FROM appNotes WHERE linkedWith != '0'");
-    echo "Deleted ".query_affected_rows()." links<br />";
+    echo "Deleted ".query_num_rows()." links<br />";
     
 }
 
