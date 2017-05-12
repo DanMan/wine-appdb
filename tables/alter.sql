@@ -1,1 +1,2 @@
-ALTER TABLE `appVersion` CHANGE `license` `license` ENUM('Retail','Open Source','Demo','Shareware','Free to use','Free to use and share') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+/* append to this file when changes are required to the live db */
+/* it will be cleared when the changes go live */
