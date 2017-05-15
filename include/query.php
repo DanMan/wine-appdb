@@ -176,6 +176,12 @@ function query_num_rows($hResult)
     return $hResult->num_rows;
 }
 
+function query_affected_rows()
+{
+    global $hAppdbLink;
+    return $hAppdbLink->affected_rows;
+}
+
 function query_escape_string($sString)
 {
     global $hAppdbLink;
