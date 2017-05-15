@@ -173,7 +173,7 @@ function fixNoteLinks()
     echo "<br />$iCount in total<br />";
 
     // Create links for ordinary notes
-    echo "<br /><br />Creating tags for ordinar notes<br />";
+    echo "<br /><br />Creating tags for ordinary notes<br />";
     $hResult = query_parameters("SELECT * FROM appNotes WHERE versionId > '0' AND linkedWith = '0'");
     
     $iTagsCreated = 0;
@@ -199,7 +199,7 @@ function fixNoteLinks()
     
     echo "<br />Deleting note links<br />";
     $hResult = query_parameters("DELETE FROM appNotes WHERE linkedWith != '0'");
-    echo "Deleted ".query_num_rows()." links<br />";
+    echo "Deleted ".query_affected_rows()." links<br />";
     
 }
 
