@@ -42,14 +42,12 @@ class maintainerView
     public function objectGetHeader()
     {
         $oTableRow = new TableRow();
-        $oTableRow->AddTextCell('Maintainer');
-        $oTableRow->AddTextCell('Login');
         $oTableRow->AddTextCell('Submission date');
-        $oTableRow->AddTextCell('Last connected');
+        $oTableRow->AddTextCell('Maintainer');
         $oTableRow->AddTextCell('Application');
         $oTableRow->AddTextCell('Version');
         $oTableRow->AddTextCell('Action');
-        $oTableRow->SetClass('color3');
+        $oTableRow->SetClass('color4');
         $oTableRow->SetStyle('color: white;');
 
         return $oTableRow;
@@ -89,7 +87,6 @@ class maintainerView
 
         $oTable->SetCellPadding(3);
         $oTable->SetCellSpacing(0);
-        $oTable->SetWidth('100%');
 
         $oHeader = $this->objectGetHeader();
         $oTable->AddRow($oHeader);
@@ -109,16 +106,8 @@ class maintainerView
             $oCell->SetStyle($sStyle.' border-left: thin solid;');
             $oTableRow->AddCell($oCell);
 
-            $oCell = new TableCell('');
-            $oCell->SetStyle($sStyle.' border-left: thin solid;');
-            $oTableRow->AddCell($oCell);
-                        
-            $oCell = new TableCell('');
-            $oCell->SetStyle($sStyle.' border-left: thin solid;');
-            $oTableRow->AddCell($oCell);
-                          
-            $oCell = new TableCell('');
-            $oCell->SetStyle($sStyle.' border-left: thin solid;');
+            $oCell = new TableCell($oUser->objectMakeLink());
+            $oCell->SetStyle($sStyle);
             $oTableRow->AddCell($oCell);
             
             $iMaintainedApps = maintainer::GetMaintainerCountForUserId($iUserId, true);    
@@ -139,8 +128,8 @@ class maintainerView
 
             $oTableRow->SetClass('color4');
             $oTable->AddRow($oTableRow);
-            
-            /* Show all apps/versions that the user maintains */
+
+            /* Show all apps/versions that the user maintainers */
             $hAppResult = query_parameters("SELECT * FROM appMaintainers WHERE userId = '?'", $oMaintainerView->iUserId);
             for($i = 0; $oAppRow = query_fetch_object($hAppResult); $i++)
             {
@@ -160,22 +149,19 @@ class maintainerView
                     $sVersionText = $oVersion->sName;
                 }
 
-                $oTableRow->AddTextCell($oUser->objectMakeLink());
-                $oTableRow->AddTextCell($oUser->sEmail);
                 $oTableRow->AddTextCell(print_date(mysqldatetime_to_unixtimestamp($oMaintainer->aSubmitTime)));
-                $oTableRow->AddTextCell(print_date(mysqldatetime_to_unixtimestamp($oUser->sStamp)));
+                $oTableRow->AddTextCell($oUser->objectMakeLink());
                 $oTableRow->AddTextCell($oApp->objectMakeLink());
                 $oTableRow->AddTextCelL($sVersionText);
 
-                $oTableRow->AddTextCell('<a href="'.$oNewOM->makeUrl('delete', $oMaintainer->objectGetId()).'
-                    "class="btn btn-default btn-sm"><i class="fa fa-trash"></i> delete</a>');
+                $oTableRow->AddTextCell('[<a href="'.$oNewOM->makeUrl('delete', $oMaintainer->objectGetId()).'">delete</a>]');
 
                 $oTable->AddRow($oTableRow);
             }
         }
 
-        echo $oTable->GetString();    
-     }
+        echo $oTable->GetString();
+    }
 
     function objectGetItemsPerPage($sState = 'accepted')
     {
@@ -191,10 +177,8 @@ class maintainerView
 
         $sLimit = objectManager::getSqlLimitClause($iRows, $iStart, 'maintainerView');
 
-       // get available maintainers
-        $sQuery = "SELECT * FROM appMaintainers, user_list WHERE appMaintainers.userId = user_list.userid";
-        $sQuery.= " AND state='accepted' GROUP BY appMaintainers.userid ORDER BY realname, email;";
-        $hResult = query_parameters($sQuery);
+        $sQuery = "SELECT DISTINCT(userId) FROM appMaintainers WHERE state = '?'$sLimit";
+        $hResult = query_parameters($sQuery, $sState);
 
         return $hResult;
     }
