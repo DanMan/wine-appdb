@@ -249,14 +249,15 @@ class Comment {
     private function output_comment($bShowAppName = false, $bShowForm = true)
     {
         // by line
-        $sBy = " by <i>".forum_lookup_user($this->oOwner->iUserId)."</i> on <i>".$this->sDateCreated."</i>\n";
+        $sBy = " by <i>".forum_lookup_user($this->oOwner->iUserId)."</i> on <i>".$this->sDateCreated."</i><br>\n";
+       
         if ($bShowAppName)
         {
             $oVersion = new version($this->iVersionId);
-            $sBy .= " Application: ".version::fullNameLink($this->iVersionId).
-                    " (".$oVersion->bHasMaintainer ? 'has maintainer' : 'no maintainers'.")\n";
-        }
-
+            $sBy .= "Application: ".version::fullNameLink($this->iVersionId);
+            $sBy .= ($oVersion->bHasMaintainer ? ' (has maintainer)' : ' (no maintainers)');   
+        }          
+ 
         $sFooter = "";
         if ($bShowForm)
         {
