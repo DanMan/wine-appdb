@@ -1164,7 +1164,7 @@ EOT;
 
         // Comments Section
         echo "<h2 id=\"viewComments\" class=\"whq-app-title\">Comments</h2>\n";
-        if(sizeof($aMaintainers)>0)
+        if((sizeof($aMaintainers)>0) || ($_SESSION['current']->hasPriv("admin")))
         {
             if($this->iVersionId)
                 Comment::view_app_comments($this->iVersionId);
