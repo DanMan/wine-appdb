@@ -203,11 +203,30 @@ function fixNoteLinks()
     
 }
 
+function deleteOrphanComments()
+{
+    $sQuery = "DELETE FROM appComments WHERE NOT EXISTS( SELECT appVersion.versionId FROM appVersion"; 
+    $sQuery.= " WHERE appVersion.versionId = appComments.versionId )";
+    $hResult = query_parameters($sQuery);
+    
+    echo "Deleted ".query_affected_rows()." orphan comments.<br>";
+}
+
+function deleteOrphanVersions()
+{
+    $sQuery = "DELETE FROM appVersion WHERE appId = 0 and state != 'deleted'"; 
+    $hResult = query_parameters($sQuery);
+    
+    echo "Deleted ".query_affected_rows()." orphan versions.<br>";
+}
+
 function showChoices()
 {
     echo '<a href="admin.php?sAction=fixNoteLinks">Fix/Show note links</a><br />';
     echo '<a href="admin.php?sAction=updateAppMaintainerStates">Update application maintainer states</a><br />';
     echo '<a href="admin.php?sAction=updateVersionMaintainerStates">Update version maintainer states</a><br />';
+    echo '<a href="admin.php?sAction=deleteOrphanComments">Delete Orphan Comments</a><br>';
+    echo '<a href="admin.php?sAction=deleteOrphanVersions">Delete Orphan Versions</a><br>';   
 }
 
 switch(getInput('sAction', $aClean))
@@ -223,7 +242,15 @@ switch(getInput('sAction', $aClean))
     case 'fixNoteLinks':
         fixNoteLinks();
         break;
-
+        
+    case 'deleteOrphanComments':
+        deleteOrphanComments();
+        break;
+        
+    case 'deleteOrphanVersions':
+        deleteOrphanVersions();
+        break;   
+     
     default:
         showChoices();
         break;
