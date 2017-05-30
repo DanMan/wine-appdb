@@ -524,7 +524,7 @@ class testData{
         return "<p><b>What works</b></p>\n<p>{$this->shWhatWorks}</p>\n".
                "<p><b>What does not</b></p>\n<p>{$this->shWhatDoesnt}</p>\n".
                "<p><b>What was not tested</b></p>\n<p>{$this->shWhatNotTested}</p>\n".
-               "<p><b>Additional Comments</b></p>\n<pre>{$this->sComments}</pre>\n";
+               "<p><b>Additional Comments</b></p>\n<pre style='white-space: pre-wrap;'>{$this->sComments}</pre>\n";
     }
 
     function CreateTestTable()
