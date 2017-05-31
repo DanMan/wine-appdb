@@ -179,7 +179,7 @@ function appdb_error_handler($errno, $errstr, $errfile, $errline, $errcontext = 
     // display error page and exit
     appdb_clear_buffer();
     header("HTTP/1.1 500 Internal Server Error");
-    include(BASE."include/header.php");
+    include_once(BASE."include/header.php");
     echo "<h1>Ooops! Something has gone terribly wrong!</h1>\n";
     echo "<p>Our monkey train has derailed! Worry not, a webmaster gopher help army has been dispatched and is on the way.</p>";
     echo "<p>If this error continues to be a problem, please report it to us on our ";
