@@ -59,7 +59,10 @@ $ItemsPerPage = isset($aClean['iItemsPerPage']) ? $aClean['iItemsPerPage'] : 6;
 $currentPage = isset($aClean['iPage']) ? $aClean['iPage'] : 1;
 
 $ItemsPerPage = min($ItemsPerPage,100);
-$totalPages = ceil(screenshot::objectGetEntriesCount('accepted')/$ItemsPerPage);
+$realTotalPages = screenshot::objectGetEntriesCount('accepted');
+$totalPages = 1;
+if($realTotalPages >= $ItemsPerPage)
+   $totalPages = ceil($realTotalPages/$ItemsPerPage);
 $currentPage = min($currentPage,$totalPages);
 $offset = (($currentPage-1) * $ItemsPerPage);
 
