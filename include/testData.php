@@ -13,6 +13,7 @@ class testData{
     var $shWhatDoesnt;
     var $shWhatNotTested;
     var $sTestedRelease;
+    var $iStaging;
     var $iDistributionId;
     var $sTestedDate;
     var $sInstalls;
@@ -50,6 +51,7 @@ class testData{
             $this->sTestedDate = $oRow->testedDate;
             $this->iDistributionId = $oRow->distributionId;
             $this->sTestedRelease = $oRow->testedRelease;
+            $this->iStaging = $oRow->staging;
             $this->sInstalls = $oRow->installs;
             $this->sRuns = $oRow->runs;
             $this->sTestedRating = $oRow->testedRating;
@@ -71,16 +73,17 @@ class testData{
 
         $hResult = query_parameters("INSERT INTO testResults (versionId, whatWorks, whatDoesnt,".
                                     "whatNotTested, testedDate, distributionId, testedRelease,".
-                                    "installs, runs, testedRating, comments,".
+                                    "staging, installs, runs, testedRating, comments,".
                                     "submitTime, submitterId, state)".
                                     "VALUES('?', '?', '?', '?', '?', '?', '?',".
-                                    "'?', '?', '?', '?',".
+                                    "'?', '?', '?', '?', '?',".
                                     "?, '?', '?')",
                                     $this->iVersionId, $this->shWhatWorks,
                                     $this->shWhatDoesnt,
                                     $this->shWhatNotTested, $this->sTestedDate,
                                     $this->iDistributionId,
-                                    $this->sTestedRelease, $this->sInstalls,
+                                    $this->sTestedRelease, $this->iStaging, 
+                                    $this->sInstalls,
                                     $this->sRuns,
                                     $this->sTestedRating, $this->sComments,
                                     "NOW()",
@@ -201,6 +204,7 @@ class testData{
                                         testedDate      = '?',
                                         distributionId  = '?',
                                         testedRelease   = '?',
+                                        staging         = '?',
                                         installs        = '?',
                                         runs            = '?',
                                         testedRating    = '?',
@@ -214,6 +218,7 @@ class testData{
                             $this->sTestedDate,
                             $this->iDistributionId,
                             $this->sTestedRelease,
+                            $this->iStaging,
                             $this->sInstalls,
                             $this->sRuns,
                             $this->sTestedRating,
@@ -588,7 +593,7 @@ class testData{
         $oTableRow->AddCell($oTableCell);
         $oTableRow->AddTextCell($oDistribution->objectMakeLink());
         $oTableRow->AddTextCell(date("M d Y", mysqldatetime_to_unixtimestamp($this->sTestedDate)));
-        $oTableRow->AddTextCell($this->sTestedRelease.'&nbsp;');
+        $oTableRow->AddTextCell(($this->sTestedRelease).($this->iStaging != 0 ? '-staging':''));
         $oTableRow->AddTextCell($this->sInstalls.'&nbsp;');
         $oTableRow->AddTextCell($this->sRuns.'&nbsp;');
         $oTableCell = new TableCell($this->sTestedRating);
@@ -728,7 +733,7 @@ class testData{
        The $sDate parameter can be used to calculate the rating at a given point in time */
     public static function getRatingInfoForVersionId($iVersionId, $sDate = 'NOW()')
     {
-        $sQuery = "SELECT testedRating,testedDate,testedRelease,versions.id as versionId
+        $sQuery = "SELECT testedRating,testedDate,testedRelease,staging,versions.id as versionId
                 FROM testResults, ?.versions WHERE
                 versions.value = testResults.testedRelease
                 AND
@@ -885,7 +890,15 @@ class testData{
         echo '<tr><td class=color1><b>Tested release</b></td><td class=color0>',"\n";
         echo make_bugzilla_version_list("sTestedRelease", $this->sTestedRelease);
         // Give the user some information about our available versions
-        echo "<span>Version not listed?  Your Wine is too old, <a href=\"//winehq.org/download\">upgrade!</a></span>";
+        echo "<span>Version not listed?  Your Wine is too old, <a href=\"//winehq.org/download\">upgrade!</a></span><br>";
+        // Checkbox for Wine-staging
+        echo '<label class="btn btn-secondary">';
+        if($this->iStaging != 0)
+            echo '<input type="checkbox" name="iStaging" value="1" checked>';  
+        else
+           echo '<input type="checkbox" name="iStaging" value="1">';
+        echo '  Wine-staging';
+        echo '</label>';
         echo '</td></tr>',"\n";
 
         // Installs
@@ -911,7 +924,8 @@ class testData{
 
         // Display confirmation box for changing the Wine version
         $oOldTest = new testData($this->iTestingId);
-        if($this->iTestingId && $oOldTest->sTestedRelease != $this->sTestedRelease)
+        if($this->iTestingId && $oOldTest->sTestedRelease != $this->sTestedRelease
+            || $this-iTestingId && $oOldTest->iStaging != $this->iStaging)
         {
             if(getInput('bConfirmTestedVersionChange', $aClean) != 'true')
             {
@@ -957,7 +971,9 @@ class testData{
         // to submit new reports instead of updating existing ones when testing new Wines
         $oOldTest = new testData($this->iTestingId);
         if($this->iTestingId && $oOldTest->sTestedRelease != getInput('sTestedRelease', $aValues) &&
-           getInput('bConfirmTestedVersionChange', $aValues) != 'true')
+             getInput('bConfirmTestedVersionChange', $aValues) != 'true'
+             || $this->iTestingId && $oOldTest->iStaging != getInput('iStaging', $aValues) &&
+             getInput('bConfirmTestedVersionChange', $aValues) != 'true')          
         {
             $errors .= '<li>Are you sure you want to change the Wine version of the report? Please submit a new '.
                         'test report for every Wine version you test; this is useful for tracking Wine\'s progress. '.
@@ -1013,6 +1029,7 @@ class testData{
         $this->sTestedDate = $aValues['sTestedDate'];
         $this->iDistributionId = $aValues['iDistributionId'];
         $this->sTestedRelease = $aValues['sTestedRelease'];
+        $this->iStaging = $aValues['iStaging'];
         $this->sInstalls = $aValues['sInstalls'];
         $this->sRuns = $aValues['sRuns'];
         $this->sTestedRating = $aValues['sTestedRating'];
@@ -1079,7 +1096,7 @@ class testData{
     /* List test data submitted by a given user.  Ignore test results for queued applications/versions */
     public static function listSubmittedBy($iUserId, $bQueued = true)
     {
-        $hResult = query_parameters("SELECT testResults.versionId, testResults.testedDate, testResults.testedRelease, testResults.testedRating, testResults.submitTime, testResults.testingId, appFamily.appName, appVersion.versionName from testResults, appFamily, appVersion WHERE testResults.versionId = appVersion.versionId AND appVersion.appId = appFamily.appId  AND testResults.submitterId = '?' AND testResults.state = '?' ORDER BY testResults.testingId", $iUserId, $bQueued ? 'queued' : 'accepted');
+        $hResult = query_parameters("SELECT testResults.versionId, testResults.testedDate, testResults.testedRelease, testResults.testedRating, testResults.staging, testResults.submitTime, testResults.testingId, appFamily.appName, appVersion.versionName from testResults, appFamily, appVersion WHERE testResults.versionId = appVersion.versionId AND appVersion.appId = appFamily.appId  AND testResults.submitterId = '?' AND testResults.state = '?' ORDER BY testResults.testingId", $iUserId, $bQueued ? 'queued' : 'accepted');
 
         if(!$hResult || !query_num_rows($hResult))
             return false;
@@ -1371,7 +1388,7 @@ class testData{
         $oTableRow->AddCell(new TableCell($oUser->objectMakeLink()));
         $oTableRow->AddCell(new TableCell($oApp->objectMakeLink()));
         $oTableRow->AddCell(new TableCell($oVersion->objectMakeLink()));
-        $oTableRow->AddCell(new TableCell($this->sTestedRelease));
+        $oTableRow->AddCell(new TableCell(($this->sTestedRelease) . ($this->iStaging != 0 ? '-staging':'')));
         $oTableRow->AddCell(new TableCell($bHasMaintainer ? "YES" : "no"));
         $oTableRow->AddCell(new TableCell($this->sTestedRating));
 
