@@ -970,10 +970,14 @@ class testData{
         // Ask for confirmation if changing the tested Wine versions, becase we want users
         // to submit new reports instead of updating existing ones when testing new Wines
         $oOldTest = new testData($this->iTestingId);
-        if($this->iTestingId && $oOldTest->sTestedRelease != getInput('sTestedRelease', $aValues) &&
-             getInput('bConfirmTestedVersionChange', $aValues) != 'true'
-             || $this->iTestingId && $oOldTest->iStaging != getInput('iStaging', $aValues) &&
-             getInput('bConfirmTestedVersionChange', $aValues) != 'true')          
+        if (
+            $this->iTestingId
+            && (getInput('bConfirmTestedVersionChange', $aValues) != 'true')
+            && (
+                $oOldTest->sTestedRelease != getInput('sTestedRelease', $aValues)
+                || $oOldTest->iStaging != intval(getInput('iStaging', $aValues))
+               )
+           )
         {
             $errors .= '<li>Are you sure you want to change the Wine version of the report? Please submit a new '.
                         'test report for every Wine version you test; this is useful for tracking Wine\'s progress. '.
@@ -1029,7 +1033,7 @@ class testData{
         $this->sTestedDate = $aValues['sTestedDate'];
         $this->iDistributionId = $aValues['iDistributionId'];
         $this->sTestedRelease = $aValues['sTestedRelease'];
-        $this->iStaging = $aValues['iStaging'];
+        $this->iStaging = intval($aValues['iStaging']);
         $this->sInstalls = $aValues['sInstalls'];
         $this->sRuns = $aValues['sRuns'];
         $this->sTestedRating = $aValues['sTestedRating'];
