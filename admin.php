@@ -220,13 +220,29 @@ function deleteOrphanVersions()
     echo "Deleted ".query_affected_rows()." orphan versions.<br>";
 }
 
+function updateVersionRatings()
+{ 
+    $hResult = version::objectGetEntries('accepted');
+
+    $i = 0;
+    while($oRow = query_fetch_object($hResult))
+    {
+        $oVersion = new version(null, $oRow);
+        $oVersion->updateRatingInfo();
+        $i++;
+    }
+
+    echo "Updated $i entries";
+}
+
 function showChoices()
 {
     echo '<a href="admin.php?sAction=fixNoteLinks">Fix/Show note links</a><br />';
     echo '<a href="admin.php?sAction=updateAppMaintainerStates">Update application maintainer states</a><br />';
     echo '<a href="admin.php?sAction=updateVersionMaintainerStates">Update version maintainer states</a><br />';
     echo '<a href="admin.php?sAction=deleteOrphanComments">Delete Orphan Comments</a><br>';
-    echo '<a href="admin.php?sAction=deleteOrphanVersions">Delete Orphan Versions</a><br>';   
+    echo '<a href="admin.php?sAction=deleteOrphanVersions">Delete Orphan Versions</a><br>';
+    echo '<a href="admin.php?sAction=updateVersionRatings">Update Version Ratings</a><br>';
 }
 
 switch(getInput('sAction', $aClean))
@@ -249,7 +265,11 @@ switch(getInput('sAction', $aClean))
         
     case 'deleteOrphanVersions':
         deleteOrphanVersions();
-        break;   
+        break;  
+        
+    case 'updateVersionRatings':
+        updateVersionRatings();
+        break;
      
     default:
         showChoices();
