@@ -185,6 +185,13 @@ class testData{
             $sWhatChanged .= "Tested release was changed from ".
                     $oOldTest->sTestedRelease." to $this->sTestedRelease.\n";
         }
+        
+        if($this->iStaging != $oOldTest->iStaging)
+        {
+            $bUpdateRatingInfo = true;
+            $sWhatChanged .= "Staging checkbox was changed from ".
+                    $oOldTest->iStaging." to $this->iStaging.\n";
+        }
 
         if($this->iVersionId != $oOldTest->iVersionId)
         {
@@ -729,79 +736,12 @@ class testData{
 
     /* Gets rating info for the selected version: an array with the elements
        0 - Rating
-       1 - Wine version
-       The $sDate parameter can be used to calculate the rating at a given point in time */
-    public static function getRatingInfoForVersionId($iVersionId, $sDate = 'NOW()')
+       1 - Wine version (including staging info)*/
+    public static function getRatingInfoForVersionId($iVersionId)
     {
-        $sQuery = "SELECT testedRating,testedDate,testedRelease,staging,versions.id as versionId
-                FROM testResults, ?.versions WHERE
-                versions.value = testResults.testedRelease
-                AND
-                versions.product_id = '?'
-                AND versionId = '?'
-                AND
-                state = '?'
-                AND
-                TO_DAYS(testedDate) > (TO_DAYS(?) - ?)
-                    ORDER BY versions.id DESC,testedDate DESC";
-
-        $hResult = query_parameters($sQuery, BUGZILLA_DB, BUGZILLA_PRODUCT_ID, $iVersionId, 'accepted', $sDate, TESTDATA_AGED_THRESHOLD);
-
-        $aEntries = array();
-
-        if($hResult)
-        {
-            $iPrevRelease = 0;
-            $iIndex = -1;
-            for($i = 0; $oRow = query_fetch_object($hResult); $i++)
-            {
-                if($iPrevRelease != $oRow->versionId)
-                {
-                    $iIndex++;
-                    $iPrevRelease = $oRow->versionId;
-                }
-
-                if(!$aEntries[$iIndex])
-                {
-                    $aEntries[$iIndex] = array();
-                    $aEntries[$iIndex][0] = 0;
-                    $aEntries[$iIndex][1] = 0;
-                    $aEntries[$iIndex][2] = $oRow->testedRelease;
-                }
-
-                $aEntries[$iIndex][0] += testData::RatingToNumber($oRow->testedRating);
-                $aEntries[$iIndex][1]++;
-            }
-        }
-
-        $sRelease = '';
-
-        if(sizeof($aEntries))
-        {
-            $fRating = 0.0;
-
-            for($i = 0; $i < sizeof($aEntries); $i++)
-            {
-                /* Discard the rating if it's the only one for that Wine version
-                   and its score is lower than previous averages */
-                if(($aEntries[$i][1] < 2) && sizeof($aEntries) > ($i+1) && ($aEntries[$i][0] < ($aEntries[$i+1][0] / $aEntries[$i+1][1])))
-                    continue;
-
-                $fRating = $aEntries[$i][0] / $aEntries[$i][1];
-                $sRelease = $aEntries[$i][2];
-                break;
-            }
-
-            $sRating = testData::NumberToRating(round($fRating, 0));
-        }
-
-        if(!$sRelease)
-        {
-            $iNewestId = testData::getNewestTestIdFromVersionId($iVersionId);
-            $oTestData = new testData($iNewestId);
-            return array($oTestData->sTestedRating, $oTestData->sTestedRelease);
-        }
-        return array($sRating,$sRelease);
+        $iNewestId = testData::getNewestTestIdFromVersionId($iVersionId);
+        $oTestData = new testData($iNewestId);
+        return array($oTestData->sTestedRating, ($oTestData->sTestedRelease) . ($oTestData->iStaging != 0 ? '-staging':''));
     }
 
     /* retrieve the latest test result for a given version id */

@@ -1021,11 +1021,11 @@ class version {
                             <td>{$shVoteText}</td>
                         </tr>
                         <tr>
-                            <td><b>Rating:</b></td>
+                            <td><b>Latest Rating:</b></td>
                             <td>{$this->sTestedRating}</td>
                         </tr>
                         <tr>
-                            <td><b>Wine Version:</b></td>
+                            <td><b>Latest Wine Version Tested:</b></td>
                             <td>{$this->sTestedRelease}</td>
                         </tr>
                     </tbody>
@@ -1230,11 +1230,11 @@ EOT;
 
             $oTableRow->AddTextCell("Description");
 
-            $oTableCell = new TableCell("Rating");
+            $oTableCell = new TableCell("Latest Rating");
             $oTableCell->SetWidth("80");
             $oTableRow->AddCell($oTableCell);
 
-            $oTableCell = new TableCell("Wine version");
+            $oTableCell = new TableCell("Latest Wine version tested");
             $oTableCell->SetWidth("80");
             $oTableRow->AddCell($oTableCell);
 
