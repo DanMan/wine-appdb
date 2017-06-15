@@ -761,11 +761,6 @@ class screenshot
         return TRUE;
     }
 
-    function getDefaultReply()
-    {
-        return appData::getDefaultReply();
-    }
-
     function display()
     {
         /* STUB */
