@@ -13,7 +13,10 @@ drop table if exists appData;
 drop table if exists appBundle;
 drop table if exists appVotes;
 drop table if exists appNotes;
-drop table if exists tags;
+drop table if exists tags_NoteVersion_assignments;
+drop table if exists commonReplies;
+drop table if exists tags_CommonReply;
+drop table if exists tags_CommonReply_assignments;
 
 
 /*
@@ -217,6 +220,13 @@ create table tags_CommonReply (
     key(id)
 );
 
+INSERT INTO `tags_CommonReply` (`id`, `state`, `textId`, `name`, `description`, `multipleAssignments`) VALUES
+(1, 'accepted', '_show_for_version_queue', 'Show when processing versions', '', 1),
+(2, 'accepted', '_show_for_application_queue', 'Show when processing applications', '', 1),
+(3, 'accepted', '_show_for_screenshot', 'Show when processing screenshots', '', 1),
+(4, 'accepted', '_show_for_testData_queue', 'Show when processing test results', '', 1),
+(5, 'accepted', '_show_for_bug', 'Show when processing bug links', '', 1),
+(6, 'accepted', '_show_for_maintainer', 'Show when processing maintainer entries', '', 1);
 
 /*
  * Tags for CommonReply - assignments
