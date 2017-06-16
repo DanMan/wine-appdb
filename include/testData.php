@@ -239,6 +239,8 @@ class testData{
                 {
                     $oNewVersion = new version($this->iVersionId);
                     $oNewVersion->updateRatingInfo();
+                    $oOldVersion = new version($oOldTest->iVersionId);
+                    $oOldVersion->updateRatingInfo();
                 }
                 $oVersion->updateRatingInfo();
             }
