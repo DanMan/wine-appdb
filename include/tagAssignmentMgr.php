@@ -52,6 +52,16 @@ abstract class TagAssignmentMgr extends ObjectManagerBase
         return null;
     }
     
+    function objectHideDelete()
+    {
+        return true;
+    }
+    
+    function objectHideReplyField()
+    {
+        return true;
+    }
+    
     public function outputEditor()
     {
         if(sizeof($this->aTaggedEntries) == 0)

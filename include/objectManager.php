@@ -409,17 +409,19 @@ class ObjectManager
         /* If it isn't implemented, that means there is no default text */
         $sDefaultReply = $this->getOptionalSetting("getDefaultReply", "");
 
-        if($this->getIsQueue())
-            $sReplyFieldHeader = 'Reply Text';
-        else
-            $sReplyFieldHeader = 'Comment';
+        if(!$this->getOptionalSetting("objectHideReplyField", FALSE))
+        {
+            if($this->getIsQueue())
+                $sReplyFieldHeader = 'Reply Text';
+            else
+                $sReplyFieldHeader = 'Comment';
 
-        echo html_frame_start($sReplyFieldHeader, "90%", "", 0);
-        echo "<table width='100%' border=0 cellpadding=2 cellspacing=0>\n";
-        echo '<tr valign=top><td class="color0"><b>E-mail Text</b></td>',"\n";
-        echo '<td><textarea name="sReplyText" style="width: 100%" cols="80" '. 
+            echo html_frame_start($sReplyFieldHeader, "90%", "", 0);
+            echo "<table width='100%' border=0 cellpadding=2 cellspacing=0>\n";
+            echo '<tr valign=top><td class="color0"><b>E-mail Text</b></td>',"\n";
+            echo '<td><textarea name="sReplyText" style="width: 100%" cols="80" '. 
                 'rows="10">'.$sDefaultReply.'</textarea></td></tr>',"\n";
-
+        }
         if($this->getIsQueue())
         {
             /////////////////////////////////////////////////
