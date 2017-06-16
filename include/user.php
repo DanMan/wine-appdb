@@ -620,7 +620,8 @@ class User {
          if(!$oScreenshot->bQueued ||
             ($oScreenshot->bQueued && ($this->hasPriv("admin") ||
                                        $this->isMaintainer($oScreenshot->iVersionId) ||
-                                       $this->isSuperMaintainer($oScreenshot->iAppId))))
+                                       $this->isSuperMaintainer($oScreenshot->iAppId) ||
+                                       $this->iUserId == $oScreenshot->iSubmitterId)))
              return true;
 
          return false;
