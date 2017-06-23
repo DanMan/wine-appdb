@@ -134,7 +134,7 @@ if(isset($aClean['sSubmit']))
             if($oUser->hasPriv("admin")) echo "A";
             if($oUser->isMaintainer()) echo "M";
             echo "    </td>\n";
-            echo "    <td align=\"center\">[<a href=\"../preferences.php?iUserId=".$oRow->userid."&sSearch=".$sSearch."&iLimit=".$aClean['iLimit']."&sOrderBy=".$aClean['sOrderBy']."\">edit</a>]&nbsp;[<a onclick=\"if(!confirm('".$sAreYouSure."'))return false;\" \"href=\"".$_SERVER['PHP_SELF']."?sAction=delete&iUserId=".$oRow->userid."&sSearch=".$sSearch."&iLimit=".$aClean['iLimit']."&sOrderBy=".$aClean['sOrderBy']."&sSubmit=true\">delete</a>]</td>\n";
+            echo "    <td align=\"center\">[<a href=\"../preferences.php?iUserId=".$oRow->userid."&sSearch=".$sSearch."&iLimit=".$aClean['iLimit']."&sOrderBy=".$aClean['sOrderBy']."\">edit</a>]&nbsp;[<a onclick=\"if(!confirm('".$sAreYouSure."'))return false;\" \"<a href=\"".$_SERVER['PHP_SELF']."?sAction=delete&iUserId=".$oRow->userid."&sSearch=".$sSearch."&iLimit=".$aClean['iLimit']."&sOrderBy=".$aClean['sOrderBy']."&sSubmit=true\">delete</a>]</td>\n";
             echo "</tr>\n\n";
         }
     }
