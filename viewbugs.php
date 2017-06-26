@@ -26,7 +26,7 @@ $hResult = query_parameters("SELECT appFamily.description as appDescription,
                        WHERE appFamily.appId = appVersion.appId 
                        and buglinks.versionId = appVersion.versionId
                        AND buglinks.bug_id = '?'
-                       ORDER BY versionName", $aClean['iBugId']);
+                       ORDER BY appName, versionName", $aClean['iBugId']);
 
 if(query_num_rows($hResult))
 {
