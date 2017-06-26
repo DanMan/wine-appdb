@@ -220,6 +220,22 @@ function deleteOrphanVersions()
     echo "Deleted ".query_affected_rows()." orphan versions.<br>";
 }
 
+function purgeRejectedDistributions()
+{
+    $sQuery = "DELETE FROM distributions WHERE state = 'deleted'";
+    $hResult = query_parameters($sQuery);
+    
+    echo "Removed " .query_affected_rows()." rejected distributions from database.<br>";
+}
+
+function purgeRejectedVendors()
+{
+    $sQuery = "DELETE FROM vendor WHERE state = 'deleted'";
+    $hResult = query_parameters($sQuery);
+    
+    echo "Removed " .query_affected_rows()." rejected vendors from database.<br>";
+}
+
 function updateVersionRatings()
 { 
     $hResult = version::objectGetEntries('accepted');
@@ -235,6 +251,36 @@ function updateVersionRatings()
     echo "Updated $i entries";
 }
 
+function viewAppdbAdmins()
+{
+    echo html_frame_start("AppDB Admins","90%","",0);
+    echo "<table width='100%' border=0 cellpadding=3 cellspacing=0>\n\n";
+    echo "<tr class=color1>\n";
+    echo "<td>Real name</td>\n";
+    echo "<td>Email</td>\n";
+    echo "<td>Last connected</td>\n";
+    echo "</tr>\n\n";
+    
+    $sQuery = "SELECT user_list.userid, realname, email, stamp FROM user_list, user_privs WHERE user_list.userid = user_privs.userid AND user_privs.priv = 'admin' ORDER BY realname";
+
+    $hResult = query_parameters($sQuery);
+
+    $i = 0;
+    while($oRow = query_fetch_object($hResult))
+    {
+        $oUser = new User($oRow->userid);
+        echo "<tr class=color0>";
+        echo "<td>".$oUser->objectMakeLink()."</td>\n";
+        echo "<td>".$oUser->sEmail."</td>\n";
+        echo "<td>".$oUser->sStamp."</td>\n";
+        $i++;
+    }  
+    echo "</table>";
+    echo html_frame_end();   
+        
+    echo "Found $i entries. <br>";
+}
+
 function showChoices()
 {
     echo '<a href="admin.php?sAction=fixNoteLinks">Fix/Show note links</a><br />';
@@ -242,7 +288,10 @@ function showChoices()
     echo '<a href="admin.php?sAction=updateVersionMaintainerStates">Update version maintainer states</a><br />';
     echo '<a href="admin.php?sAction=deleteOrphanComments">Delete Orphan Comments</a><br>';
     echo '<a href="admin.php?sAction=deleteOrphanVersions">Delete Orphan Versions</a><br>';
+    echo '<a href="admin.php?sAction=purgeRejectedDistributions">Purge Rejected Distributions</a><br>';
+    echo '<a href="admin.php?sAction=purgeRejectedVendors">Purge Rejected Vendors</a><br>';
     echo '<a href="admin.php?sAction=updateVersionRatings">Update Version Ratings</a><br>';
+    echo '<a href="admin.php?sAction=viewAppdbAdmins">View AppDB Admins</a><br>';
 }
 
 switch(getInput('sAction', $aClean))
@@ -267,9 +316,23 @@ switch(getInput('sAction', $aClean))
         deleteOrphanVersions();
         break;  
         
+    case 'purgeRejectedDistributions':
+        purgeRejectedDistributions();
+        break;
+        
+    case 'purgeRejectedVendors':
+        purgeRejectedVendors();
+        break; 
+        
     case 'updateVersionRatings':
         updateVersionRatings();
         break;
+        
+    case 'viewAppdbAdmins':
+        viewAppdbAdmins();
+        break;
+        
+        
      
     default:
         showChoices();
