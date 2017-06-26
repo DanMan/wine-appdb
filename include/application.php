@@ -1122,7 +1122,9 @@ EOT;
         $oFilter->AddFilterInfo('appCategory', 'Category', array(FILTER_OPTION_ENUM), FILTER_VALUES_OPTION_ENUM, $aCatIds, $aCatNames);
         $oFilter->AddFilterInfo('appVersion.license', 'License', array(FILTER_EQUALS), FILTER_VALUES_ENUM, $aLicenses);
         $oFilter->AddFilterInfo('appFamily.appName', 'Name', array(FILTER_CONTAINS, FILTER_STARTS_WITH, FILTER_ENDS_WITH), FILTER_VALUES_NORMAL);
+        $oFilter->AddFilterInfo('appFamily.keywords', 'Keywords', array(FILTER_CONTAINS, FILTER_STARTS_WITH, FILTER_ENDS_WITH), FILTER_VALUES_NORMAL);
         $oFilter->AddFilterInfo('onlyDownloadable', 'Only show downloadable apps', array(FILTER_OPTION_BOOL), FILTER_VALUES_OPTION_BOOL, array('false','true'));
+
         return $oFilter;
     }
 
