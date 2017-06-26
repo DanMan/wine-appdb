@@ -271,7 +271,7 @@ class Bug
             {
                 $sSubject = "Link between Bug ".$this->iBug_id." and ".$sAppName." submitted by ".$_SESSION['current']->sRealname;
                 $sMsg .= "This Bug Link has been queued.\n";
-                addmsg("The Bug Link you submitted will be added to the database after being reviewed.", "green");
+                addmsg("The Bug Link you submitted has been added to the database and queued for review by the maintainer or an administrator.", "green");
             }
         } else // Bug Link deleted.
         {
