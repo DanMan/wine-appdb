@@ -203,6 +203,24 @@ $(document).ready(function()
         $('div#dlogp').slideUp();
     });
 
+    /* Collapsible panel tweaks. Toggles the plus/minus icon 
+     and enables open panels to stay open on page refresh. */
+    $('.collapse').on('shown.bs.collapse', function() {
+        if (this.id) {
+          localStorage[this.id] = 'true';          
+    }
+      $(this).parent().find(".fa-plus-square-o").removeClass("fa-plus-square-o").addClass("fa-minus-square-o");
+      }).on('hidden.bs.collapse', function() {
+        if (this.id) {
+          localStorage.removeItem(this.id);
+      }
+      $(this).parent().find(".fa-minus-square-o").removeClass("fa-minus-square-o").addClass("fa-plus-square-o")
+      }).each(function() {
+        if (this.id && localStorage[this.id] === 'true' ) {
+          $(this).collapse('show');
+      }
+    });
+        
     // HTML editor (redactor loader)
 
 

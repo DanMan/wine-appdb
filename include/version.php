@@ -1057,7 +1057,12 @@ EOT;
 
 
         // Show test data
-        echo "<h2 class=\"whq-app-title\">Test Results</h2>\n";
+        echo '<div id="collapse-tests">';
+        echo '<a data-toggle="collapse" data-parent="collapse-tests" class="no-text-decoration" href="#testdata">';
+        echo '<h2 class="whq-app-title">Test Results <span class = "fa fa-plus-square-o"></span></h2>';
+        echo '</a>';
+        echo '<div id="testdata" class="panel-collapse collapse">';
+        echo '<div class="panel-body">';
         $iNewestId = 0;
         $oTest = null;
 
@@ -1153,17 +1158,35 @@ EOT;
             echo '<button type="submit" value="" class="btn btn-default">Log in to add test data</button>'."\n";
             echo '</form>'."\n";
         }
-
-        // bugs table
-        echo "<h2 id=\"viewBugs\" class=\"whq-app-title\">Known Bugs</h2>\n";
+        echo '</div></div></div>';
+      
+        // bugs table 
+        echo '<div id="collapse-bugs">';
+        echo '<a data-toggle="collapse" data-parent="collapse-bugs" class="no-text-decoration" href="#knownbugs">';
+        echo '<h2 id="viewBugs" class="whq-app-title">Known Bugs <span class = "fa fa-plus-square-o"></span></h2>';
+        echo '</a>';
+        echo '<div id="knownbugs" class="panel-collapse collapse">';
+        echo '<div class="panel-body">';
         view_version_bugs($this->iVersionId, $this->get_buglink_ids());
-
+        echo '</div></div></div>';
+  
         // notes / how-to
-        echo "<h2 id=\"viewHowTo\" class=\"whq-app-title\">HowTo / Notes</h2>\n";
+        echo '<div id="collapse-notes">';
+        echo '<a data-toggle="collapse" data-parent="collapse-notes" class="no-text-decoration" href="#notes">';
+        echo '<h2 id="viewHowTo" class="whq-app-title">HowTo / Notes <span class = "fa fa-plus-square-o"></span></h2>';
+        echo '</a>';
+        echo '<div id="notes" class="panel-collapse collapse">';
+        echo '<div class="panel-body">';
         echo note::displayNotesForEntry($this->iVersionId);
-
+        echo '</div></div></div>';
+     
         // Comments Section
-        echo "<h2 id=\"viewComments\" class=\"whq-app-title\">Comments</h2>\n";
+        echo '<div id="collapse-comments">';
+        echo '<a data-toggle="collapse" data-parent="collapse-comments" class="no-text-decoration" href="#comments">';
+        echo '<h2 id="viewComments" class="whq-app-title">Comments <span class = "fa fa-plus-square-o"></span></h2>';
+        echo '</a>';
+        echo '<div id="comments" class="panel-collapse collapse">';
+        echo '<div class="panel-body">';
         if((sizeof($aMaintainers)>0) || ($_SESSION['current']->hasPriv("admin")))
         {
             if($this->iVersionId)
@@ -1175,6 +1198,7 @@ EOT;
                            'Comments for this application have been disabled because there are no maintainers.',
                            "","","warning");
         }
+        echo '</div></div></div>'; 
     }
 
     public static function lookup_name($versionId)
