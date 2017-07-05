@@ -413,38 +413,6 @@ class User {
          return false;
      }
 
-     /* warn the user that their account has been marked as inactive */
-     function warnForInactivity()
-     {
-         /* we don't want to warn users that have data associated with them */
-         if($this->hasDataAssociated())
-         {
-             return false;
-         }
-
-         if($this->isMaintainer())
-         {
-             $sSubject  = "Warning: inactivity detected";
-             $sMsg  = "You didn't log in in the past six months to the AppDB.\r\n";
-             $sMsg .= "As a maintainer we would be pleased to see you once in a while.\r\n";
-             $sMsg .= "Please log in or you will lose your maintainer's abilities in one month.\r\n";
-         } else
-         {
-             $sSubject  = "Warning: inactivity detected";
-             $sMsg  = "You didn't log in in the past six months to the AppDB.\r\n";
-             $sMsg .= "Please log in or your account will automatically be deleted in one month.\r\n";
-         }
-         $sMsg .= APPDB_ROOT."account.php?sCmd=login\r\n";
-
-         mail_appdb($this->sEmail, $sSubject, $sMsg);
-
-         /* mark this user as being inactive and set the appropriate timestamp */
-         $sQuery = "update user_list set inactivity_warned='true', inactivity_warn_stamp=NOW() where userid='?'";
-         query_parameters($sQuery, $this->iUserId);
-
-         return true;
-     }
-
 
      /**
       * Creates a new random password.
@@ -499,18 +467,6 @@ class User {
                                      $days);
          $oRow = query_fetch_object($hResult);
          return $oRow->num_users;
-     }
-
-     /**
-      * Get the count of users who have been warned for inactivity and are
-      * pending deletion after the X month grace period
-      */
-     public static function get_inactive_users_pending_deletion()
-     {
-         /* retrieve the number of users that have been warned and are pending deletion */
-         $hResult = query_parameters("select count(*) as count from user_list where inactivity_warned = 'true'");
-         $oRow = query_fetch_object($hResult);
-         return $oRow->count;
      }
 
      /**
