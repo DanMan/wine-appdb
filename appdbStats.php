@@ -51,12 +51,6 @@ echo "    <td>".(User::objectGetEntriesCount()-
         User::active_users_within_days(183))."</td>\n";
 echo "</tr>\n\n";
 
-/* Display the users who were warned and pending deletion */
-echo "<tr>\n";
-echo "    <td>Inactive users pending deletion:</td>\n";
-echo "    <td>".User::get_inactive_users_pending_deletion()."</td>\n";
-echo "</tr>\n\n";
-
 /* Display the number of comments */
 echo "<tr>\n";
 echo "    <td>Comments:</td>\n";
