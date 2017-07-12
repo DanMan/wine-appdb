@@ -155,7 +155,7 @@ class testData{
         {
             $oNewDist = new distribution($this->iDistributionId);
             $oOldDist = new distribution($oOldTest->iDistributionId);
-            $sWhatChanged .= "Distribution was changed from $oOldDist->sName ".
+            $sWhatChanged .= "Operating system was changed from $oOldDist->sName ".
                     "to $oNewDist->sName.\n";
         }
 
@@ -551,7 +551,7 @@ class testData{
         $oTableRowHeader = new TableRow();
         $oTableRowHeader->SetClass("historyHeader");
         $oTableRowHeader->AddTextCell("");
-        $oTableRowHeader->AddTextCell("Distribution");
+        $oTableRowHeader->AddTextCell("Operating system");
         $oTableRowHeader->AddTextCell("Test date");
         $oTableRowHeader->AddTextCell("Wine version");
         $oTableRowHeader->AddTextCell("Installs?");
@@ -814,14 +814,14 @@ class testData{
                                      "please add it using the form below.";
             } else
             {
-                $sDistributionHelp = "The user added a new distribution; ".
+                $sDistributionHelp = "The user added a new operating system; ".
                                      "review it in the form below or replace ".
                                      "it with one from the list.";
             }
             $sDistributionHelp .= "<br>\n";
         }
 
-        echo '<tr valign=top><td class="color0"><b>Distribution</b></td class="color0">',"\n";
+        echo '<tr valign=top><td class="color0"><b>Operating system</b></td class="color0">',"\n";
 
         echo '<td class=color0>',"\n";
         echo $sDistributionHelp;

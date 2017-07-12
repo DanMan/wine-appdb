@@ -99,7 +99,7 @@ class distribution {
         {
             if(query_num_rows($hResult))
             {
-                addmsg("There was an existing distribution called ".$this->sName.".", "red");
+                addmsg("There was an existing operating system called ".$this->sName.".", "red");
                 $this->distribution($oRow->distributionId);
 
                 /* Even though we did not create a new distribution, the caller is provided
@@ -125,7 +125,7 @@ class distribution {
         }
         else
         {
-            addmsg("Error while creating Distribution.", "red");
+            addmsg("Error while creating operating system.", "red");
             return false;
         }
     }
@@ -146,7 +146,7 @@ class distribution {
             return true;
         } else
         {
-            addmsg("Error while updating Distribution", "red");
+            addmsg("Error while updating operating system", "red");
             return false;
         }
     }
@@ -237,7 +237,7 @@ class distribution {
             return true;
         } else
         {
-            addmsg("Error while unqueueing Distribution", "red");
+            addmsg("Error while unqueueing operating system", "red");
             return false;
         }
     }
@@ -307,14 +307,14 @@ class distribution {
                 $this->SendNotificationMail();
 
                 // the test data has been resubmitted
-                addmsg("The Distribution has been resubmitted", "green");
+                addmsg("The operating system has been resubmitted", "green");
                 return true;
             }
         }
 
         /* something has failed if we fell through to this point without */
         /* returning */
-        addmsg("Error requeueing Distribution", "red");
+        addmsg("Error requeueing operating system", "red");
         return false;
     }
 
@@ -337,8 +337,8 @@ class distribution {
             switch($sAction)
             {
                 case "delete":
-                    $sSubject = "Submitted distribution deleted";
-                    $sMsg = "The distribution you submitted (".$this->sName.") has been ".
+                    $sSubject = "Submitted operating system deleted";
+                    $sMsg = "The operating system you submitted (".$this->sName.") has been ".
                             "deleted.\n";
                 break;
             }
@@ -348,7 +348,7 @@ class distribution {
             switch($sAction)
             {
                 case "delete":
-                    $sSubject = "Distribution ".$this->sName." deleted";
+                    $sSubject = "Operating system ".$this->sName." deleted";
                     $sMsg = "";
                 break;
             }
@@ -369,14 +369,14 @@ class distribution {
             {
             case "add":
                {
-                   $sSubject =  "Submitted Distribution accepted";
-                   $sMsg  = "The Distribution you submitted (".$this->sName.") has been accepted.\n";
+                   $sSubject =  "Submitted operating system accepted";
+                   $sMsg  = "The operating system you submitted (".$this->sName.") has been accepted.\n";
                }
             break;
             case "delete":
                 {
-                    $sSubject =  "Submitted Distribution deleted";
-                    $sMsg  = "The Distribution you submitted (".$this->sName.") has been deleted.";
+                    $sSubject =  "Submitted operating system deleted";
+                    $sMsg  = "The operating system you submitted (".$this->sName.") has been deleted.";
                     $sMsg .= "Reason given:\n";
                     $sMsg .= $aClean['sReplyText']."\n"; // append the reply text, if there is any 
                 }
@@ -398,33 +398,33 @@ class distribution {
             case "add":
                 if($this->sState == 'accepted')
                 {
-                    $sSubject = "Distribution ".$this->sName." added by ".
+                    $sSubject = "Operating system ".$this->sName." added by ".
                             $_SESSION['current']->sRealname;
                     $sMsg  = $this->objectMakeUrl()."\n";
                     if($this->iSubmitterId)
                     {
                         $oSubmitter = new User($this->iSubmitterId);
-                        $sMsg .= "This Distribution has been submitted by ".$oSubmitter->sRealname.".";
+                        $sMsg .= "This operating system has been submitted by ".$oSubmitter->sRealname.".";
                         $sMsg .= "\n";
                         $sMsg .= "Appdb admin reply text:\n";
                         $sMsg .= $aClean['sReplyText']."\n"; // append the reply text, if there is any 
                     }
-                    addmsg("The Distribution was successfully added into the database.", "green");
+                    addmsg("The operating system was successfully added into the database.", "green");
                 } else // test data queued.
                 {
-                    $sSubject = "Distribution ".$this->sName." submitted by ".$_SESSION['current']->sRealname;
+                    $sSubject = "Operating system ".$this->sName." submitted by ".$_SESSION['current']->sRealname;
                     $sMsg .= "This test data has been queued.";
                     $sMsg .= "\n";
-                    addmsg("The Distribution you submitted will be added to the database after being reviewed.", "green");
+                    addmsg("The operating system you submitted will be added to the database after being reviewed.", "green");
                 }
             break;
             case "edit":
-                $sSubject =  "Distribution ".$this->sName." has been modified by ".$_SESSION['current']->sRealname;
+                $sSubject =  "Operating system ".$this->sName." has been modified by ".$_SESSION['current']->sRealname;
                 $sMsg  = $this->objectMakeUrl()."\n";
-                addmsg("Distribution modified.", "green");
+                addmsg("Operating system modified.", "green");
             break;
             case "delete":
-                $sSubject = "Distribution ".$this->sName." has been deleted by ".$_SESSION['current']->sRealname;
+                $sSubject = "Operating system ".$this->sName." has been deleted by ".$_SESSION['current']->sRealname;
 
                 // if sReplyText is set we should report the reason the data was deleted 
                 if($aClean['sReplyText'])
@@ -433,10 +433,10 @@ class distribution {
                     $sMsg .= $aClean['sReplyText']."\n"; // append the reply text, if there is any 
                 }
 
-                addmsg("Distribution deleted.", "green");
+                addmsg("Operating system deleted.", "green");
             break;
             case "reject":
-                $sSubject = "Distribution '".$this->sName." has been rejected by ".
+                $sSubject = "Operating system '".$this->sName." has been rejected by ".
                         $_SESSION['current']->sRealname;
                 $sMsg  = $this->objectMakeUrl()."\n";
 
@@ -447,7 +447,7 @@ class distribution {
                     $sMsg .= $aClean['sReplyText']."\n"; // append the reply text, if there is any 
                 }
 
-                addmsg("Distribution rejected.", "green");
+                addmsg("Operating system rejected.", "green");
             break;
         }
         $sEmail = User::get_notify_email_address_list(null, null);
@@ -462,14 +462,14 @@ class distribution {
         $this->sName = str_replace('"', '&quot;', $this->sName);
         // Name
         echo html_tr(array(
-                array("<b>Distribution Name:</b>", 'align=right class="color0"'),
+                array("<b>Operating system name:</b>", 'align=right class="color0"'),
                 array('<input type=text name="sDistribution" value="'.$this->sName.
                         '" size="60" />', 'class="color0"')
                     ));
 
         // URL
         echo html_tr(array(
-                array("<b>Distribution URL:</b>", 'align=right class="color0"'),
+                array("<b>Operating system URL:</b>", 'align=right class="color0"'),
                 array('<input type=text name="sUrl" value="'.$this->sUrl.
                         '" size="60" />', 'class="color0"')
                     ));
@@ -537,7 +537,7 @@ class distribution {
         if(!$hResult) return;
 
         echo "<select name='$varname'>\n";
-        echo "<option value=\"\">Choose ...</option>\n";
+        echo "<option value=\"\">Choose your operating system</option>\n";
         while(list($name, $value) = query_fetch_row($hResult))
         {
             if($value == $cvalue)
@@ -552,12 +552,12 @@ class distribution {
     {
         $oTableRow = new TableRowSortable();
 
-        $oTableRow->AddSortableTextCell("Distribution name", "name");
+        $oTableRow->AddSortableTextCell("Operating system name", "name");
 
         $oTableCell = new TableCell("Test reports");
         $oTableRow->AddCell($oTableCell);
 
-        $oTableRow->AddTextCell("Distribution url");
+        $oTableRow->AddTextCell("Operating system URL");
 
         return $oTableRow;
     }
@@ -659,7 +659,7 @@ class distribution {
 
     function display()
     {
-        echo "Distribution Name:";
+        echo "Operating system name: ";
 
         if($this->sUrl)
             echo "<a href='".$this->sUrl."'>";

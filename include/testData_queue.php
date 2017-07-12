@@ -94,7 +94,7 @@ class testData_queue
         if($this->oDistribution->iDistributionId &&
                 $this->oDistribution->objectGetState() != 'accepted' && $this->canEdit())
         {
-            echo "The user submitted a new distribution, which will be un-queued ".
+            echo "The user submitted a new operating system, which will be un-queued ".
                 "together with the test data unless you select an existing one ".
                 "from the list above.";
         }
@@ -105,7 +105,7 @@ class testData_queue
         if(!$this->oTestData->iDistributionId or 
                 $this->oDistribution->objectGetState() != 'accepted')
         {
-            echo html_frame_start("New Distribution", "90%");
+            echo html_frame_start("New operating system", "90%");
             $this->oDistribution->outputEditor();
             echo html_frame_end();
         }
