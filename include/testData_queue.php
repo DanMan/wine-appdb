@@ -180,7 +180,10 @@ class testData_queue
 
     function objectShowPreview()
     {
-        return $this->oTestData->objectShowPreview();
+        if(!$this->oTestData->iTestingId)
+            return FALSE;
+        else
+            return $this->oTestData->objectShowPreview();
     }
 
     function display()
