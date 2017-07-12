@@ -814,7 +814,7 @@ class testData{
                                      "please add it using the form below.";
             } else
             {
-                $sDistributionHelp = "The user added a new distribution; ";
+                $sDistributionHelp = "The user added a new distribution; ".
                                      "review it in the form below or replace ".
                                      "it with one from the list.";
             }
@@ -825,7 +825,7 @@ class testData{
 
         echo '<td class=color0>',"\n";
         echo $sDistributionHelp;
-        distribution::make_distribution_list("iDistributionId", $this->iDistributionId);
+        distribution::make_distribution_list("iTestDistributionId", $this->iDistributionId);
         echo '</td></tr>',"\n";
 
         // Version List
@@ -927,7 +927,7 @@ class testData{
         }
 
         // No Distribution entered, and nothing in the list is selected
-        if (empty($aValues['sDistribution']) && !$aValues['iDistributionId'])
+        if (empty($aValues['sDistribution']) && !$aValues['iTestDistributionId'])
             $errors .= "<li>Please enter a distribution.</li>\n";
 
         if (empty($aValues['sInstalls']))
@@ -973,7 +973,13 @@ class testData{
         $this->shWhatDoesnt = $aValues['shWhatDoesnt'];
         $this->shWhatNotTested = $aValues['shWhatNotTested'];
         $this->sTestedDate = $aValues['sTestedDate'];
-        $this->iDistributionId = $aValues['iDistributionId'];
+        
+        //Favor distribution dropdown list selections over textboxes.
+        if($aValues['iTestDistributionId'])
+            $this->iDistributionId = $aValues['iTestDistributionId'];
+        else
+            $this->iDistributionId = $aValues['iDistributionId'];
+            
         $this->sTestedRelease = $aValues['sTestedRelease'];
         $this->iStaging = intval($aValues['iStaging']);
         $this->sInstalls = $aValues['sInstalls'];
