@@ -811,14 +811,11 @@ class testData{
             if(!$this->iDistributionId)
             {
                 $sDistributionHelp = "If yours is not on the list, ".
-                                     "please add it using the form below.";
+                                     "please add it using the form below.<br>";
             } else
             {
-                $sDistributionHelp = "The user added a new operating system; ".
-                                     "review it in the form below or replace ".
-                                     "it with one from the list.";
+                $sDistributionHelp = '<p class="bg-danger"><span class = "text-danger fa fa-exclamation-triangle" style="font-size:125%"></span> The user submitted a new operating system; please review it in the form below.</p>';
             }
-            $sDistributionHelp .= "<br>\n";
         }
 
         echo '<tr valign=top><td class="color0"><b>Operating system</b></td class="color0">',"\n";
@@ -928,7 +925,7 @@ class testData{
 
         // No Distribution entered, and nothing in the list is selected
         if (empty($aValues['sDistribution']) && !$aValues['iTestDistributionId'])
-            $errors .= "<li>Please enter a distribution.</li>\n";
+            $errors .= "<li>Please enter an operating system.</li>\n";
 
         if (empty($aValues['sInstalls']))
             $errors .= "<li>Please enter whether this application installs or not.</li>\n";
