@@ -88,27 +88,36 @@ class testData_queue
     function outputEditor()
     {
         $this->oTestData->outputEditor();
+        
+        echo "<table width='90%' border=0 cellpadding=2 cellspacing=0>\n";
+        echo '<tr><td>';
 
-        /* If we are processing queued test results with a queued distribution,
-           we display some additional help here */
-        if($this->oDistribution->iDistributionId &&
-                $this->oDistribution->objectGetState() != 'accepted' && $this->canEdit())
+        //a new test report, not yet queued
+        if(!$this->oTestData->iTestingId)
         {
-            echo "The user submitted a new operating system, which will be un-queued ".
-                "together with the test data unless you select an existing one ".
-                "from the list above.";
+            echo '<b>Add new operating system:</b> use this form to add your operating system if it ';
+            echo 'is not in the dropdown list above.';    
         }
 
+        //queued test results with a queued distribution
+        if($this->oDistribution->iDistributionId &&
+            $this->oDistribution->objectGetState() != 'accepted' 
+            && $this->canEdit()) 
+        {
+            echo '<div class="alert alert-danger" role="alert">';
+            echo '<b>New operating system added:</b> You may correct this submission ';
+            echo 'by selecting an operating system from the list above ';
+            echo 'or editing the information in the textboxes below. ';
+            echo '</div>';
+        }  
         /* If the testData is already associated with a distribution and the
            distribution is un-queued, there is no need to display the
-           distribution form here */
-        if(!$this->oTestData->iDistributionId or 
-                $this->oDistribution->objectGetState() != 'accepted')
-        {
-            echo html_frame_start("New operating system", "90%");
-            $this->oDistribution->outputEditor();
-            echo html_frame_end();
-        }
+           distribution form. */
+        if(!$this->oTestData->iDistributionId || 
+            $this->oDistribution->objectGetState() != 'accepted')
+            echo $this->oDistribution->outputEditor();
+        
+        echo '</tr></td></table>';     
     }
 
     function getOutputEditorValues($aClean)
