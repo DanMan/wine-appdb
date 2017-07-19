@@ -99,7 +99,6 @@ class distribution {
         {
             if(query_num_rows($hResult))
             {
-                addmsg("There was an existing operating system called ".$this->sName.".", "red");
                 $this->distribution($oRow->distributionId);
 
                 /* Even though we did not create a new distribution, the caller is provided
@@ -120,7 +119,6 @@ class distribution {
         {
             $this->iDistributionId = query_appdb_insert_id();
             $this->distribution($this->iDistributionId);
-            $this->SendNotificationMail();
             return true;
         }
         else
@@ -135,14 +133,14 @@ class distribution {
     {
         // is the current user allowed to update this Distribution? 
         if(!$_SESSION['current']->hasPriv("admin") &&
-           !($_SESSION['current']->iUserId == $this->iSubmitterId))
+            !maintainer::isUserMaintainer($_SESSION['current']) &&
+            !($_SESSION['current']->iUserId == $this->iSubmitterId))
         {
             return;
         }
         if(query_parameters("UPDATE distributions SET name = '?', url = '?' WHERE distributionId = '?'",
                             $this->sName, $this->sUrl, $this->iDistributionId))
         {
-            $this->SendNotificationMail("edit");
             return true;
         } else
         {
@@ -151,6 +149,7 @@ class distribution {
         }
     }
 
+    // Removes the distribution from the database.
     function purge()
     {
         /* Is the current user allowed to delete this distribution?  We allow
@@ -183,21 +182,16 @@ class distribution {
         return $bSuccess;
     }
 
-    // Delete Distributution.
+    // Marks distribution as deleted in the database.
     function delete()
     {
-        /* Is the current user allowed to delete this distribution?  We allow
-           everyone to delete a queued, empty distribution, because it should be
-           deleted along with the last testData associated with it */
-        if(!($this->canEdit() || (!sizeof($this->aTestingIds) &&
-                $this->sState != 'accepted')))
+        /* admins and maintainers can delete any distribution;
+            users can only delete distributions they submitted that are still in their queue */
+        if(!$_SESSION['current']->hasPriv("admin") && 
+            !maintainer::isUserMaintainer($_SESSION['current']) &&
+            !(($_SESSION['current']->iUserId == $this->iSubmitterId) && $this->sState != 'accepted'))
             return false;
-
-        // if the distribution has test results only enable an admin to delete
-        // the distribution
-        if(sizeof($this->aTestingIds) && !$_SESSION['current']->hasPriv("admin"))
-          return FALSE;
-
+            
         $bSuccess = TRUE;
 
         foreach($this->objectGetChildren() as $oChild)
@@ -231,9 +225,6 @@ class distribution {
                             'accepted', $this->iDistributionId))
         {
             $this->sState = 'accepted';
-            // we send an e-mail to interested people
-            $this->mailSubmitter("add");
-            $this->SendNotificationMail();
             return true;
         } else
         {
@@ -303,8 +294,6 @@ class distribution {
                                 'queued', $this->iDistributionId))
             {
                 $this->sState = 'queued';
-                // we send an e-mail to interested people
-                $this->SendNotificationMail();
 
                 // the test data has been resubmitted
                 addmsg("The operating system has been resubmitted", "green");
@@ -386,73 +375,6 @@ class distribution {
 
             mail_appdb($oSubmitter->sEmail, $sSubject ,$sMsg);
         }
-    }
-
- 
-    function SendNotificationMail($sAction="add",$sMsg=null)
-    {
-        global $aClean;
-
-        switch($sAction)
-        {
-            case "add":
-                if($this->sState == 'accepted')
-                {
-                    $sSubject = "Operating system ".$this->sName." added by ".
-                            $_SESSION['current']->sRealname;
-                    $sMsg  = $this->objectMakeUrl()."\n";
-                    if($this->iSubmitterId)
-                    {
-                        $oSubmitter = new User($this->iSubmitterId);
-                        $sMsg .= "This operating system has been submitted by ".$oSubmitter->sRealname.".";
-                        $sMsg .= "\n";
-                        $sMsg .= "Appdb admin reply text:\n";
-                        $sMsg .= $aClean['sReplyText']."\n"; // append the reply text, if there is any 
-                    }
-                    addmsg("The operating system was successfully added into the database.", "green");
-                } else // test data queued.
-                {
-                    $sSubject = "Operating system ".$this->sName." submitted by ".$_SESSION['current']->sRealname;
-                    $sMsg .= "This test data has been queued.";
-                    $sMsg .= "\n";
-                    addmsg("The operating system you submitted will be added to the database after being reviewed.", "green");
-                }
-            break;
-            case "edit":
-                $sSubject =  "Operating system ".$this->sName." has been modified by ".$_SESSION['current']->sRealname;
-                $sMsg  = $this->objectMakeUrl()."\n";
-                addmsg("Operating system modified.", "green");
-            break;
-            case "delete":
-                $sSubject = "Operating system ".$this->sName." has been deleted by ".$_SESSION['current']->sRealname;
-
-                // if sReplyText is set we should report the reason the data was deleted 
-                if($aClean['sReplyText'])
-                {
-                    $sMsg .= "Reason given:\n";
-                    $sMsg .= $aClean['sReplyText']."\n"; // append the reply text, if there is any 
-                }
-
-                addmsg("Operating system deleted.", "green");
-            break;
-            case "reject":
-                $sSubject = "Operating system '".$this->sName." has been rejected by ".
-                        $_SESSION['current']->sRealname;
-                $sMsg  = $this->objectMakeUrl()."\n";
-
-                 // if sReplyText is set we should report the reason the data was rejected 
-                if($aClean['sReplyText'])
-                {
-                    $sMsg .= "Reason given:\n";
-                    $sMsg .= $aClean['sReplyText']."\n"; // append the reply text, if there is any 
-                }
-
-                addmsg("Operating system rejected.", "green");
-            break;
-        }
-        $sEmail = User::get_notify_email_address_list(null, null);
-        if($sEmail)
-            mail_appdb($sEmail, $sSubject ,$sMsg);
     }
 
     function outputEditor()

@@ -157,6 +157,11 @@ class testData{
             $oOldDist = new distribution($oOldTest->iDistributionId);
             $sWhatChanged .= "Operating system was changed from $oOldDist->sName ".
                     "to $oNewDist->sName.\n";
+            if($oOldTest->iDistributionId != "accepted")
+            {
+                $oOldDist->delete();
+                addmsg("Rejected operating system has been deleted.", "red");
+            }
         }
 
         if($this->sInstalls != $oOldTest->sInstalls)
