@@ -194,12 +194,6 @@ class distribution {
             
         $bSuccess = TRUE;
 
-        foreach($this->objectGetChildren() as $oChild)
-        {
-            if(!$oChild->delete())
-                $bSuccess = FALSE;
-        }
-
         // now delete the Distribution 
         $sQuery = "UPDATE distributions SET state = 'deleted'
                    WHERE distributionId = '?' 
