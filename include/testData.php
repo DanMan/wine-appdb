@@ -808,28 +808,6 @@ class testData{
         echo '<td class="color0"><input type=text name="sTestedDate" value="'.$this->sTestedDate.'" size="20"></td></tr>',"\n";
         echo '<tr valign=top><td class="color1"></td><td class="color0"><p/>YYYY-MM-DD HH:MM:SS</td></tr>',"\n";
 
-        // Distribution
-        $oDistribution = new distribution($this->iDistributionId);
-        $sDistributionHelp = "";
-        if(!$this->iDistributionId || $oDistribution->objectGetState() != 'accepted')
-        {
-            if(!$this->iDistributionId)
-            {
-                $sDistributionHelp = "If yours is not on the list, ".
-                                     "please add it using the form below.<br>";
-            } else
-            {
-                $sDistributionHelp = '<p class="bg-danger"><span class = "text-danger fa fa-exclamation-triangle" style="font-size:125%"></span> The user submitted a new operating system; please review it in the form below.</p>';
-            }
-        }
-
-        echo '<tr valign=top><td class="color0"><b>Operating system</b></td class="color0">',"\n";
-
-        echo '<td class=color0>',"\n";
-        echo $sDistributionHelp;
-        distribution::make_distribution_list("iTestDistributionId", $this->iDistributionId);
-        echo '</td></tr>',"\n";
-
         // Version List
         echo '<tr><td class=color1><b>Tested release</b></td><td class=color0>',"\n";
         echo make_bugzilla_version_list("sTestedRelease", $this->sTestedRelease);
@@ -865,6 +843,28 @@ class testData{
         echo '<input type="hidden" name="iVersionId" value="'.$this->iVersionId.'" >';
         echo '<input type="hidden" name="iTestingId" value="'.$this->iTestingId.'" >';
         echo '<input type="hidden" name="iTestDataId" value="'.$this->iTestingId.'" >';
+
+        // Distribution
+        $oDistribution = new distribution($this->iDistributionId);
+        $sDistributionHelp = "";
+        if(!$this->iDistributionId || $oDistribution->objectGetState() != 'accepted')
+        {
+            if(!$this->iDistributionId)
+            {
+                $sDistributionHelp = "If yours is not on the list, ".
+                                     "please add it using the form below.<br>";
+            } else
+            {
+                $sDistributionHelp = '<p class="bg-danger"><span class = "text-danger fa fa-exclamation-triangle" style="font-size:125%"></span> The user submitted a new operating system; please review it in the form below.</p>';
+            }
+        }
+
+        echo '<tr valign=top><td class="color0"><b>Operating system</b></td class="color0">',"\n";
+
+        echo '<td class=color0>',"\n";
+        echo $sDistributionHelp;
+        distribution::make_distribution_list("iTestDistributionId", $this->iDistributionId);
+        echo '</td></tr>',"\n";
 
         // Display confirmation box for changing the Wine version
         $oOldTest = new testData($this->iTestingId);
