@@ -25,6 +25,7 @@ class distribution {
             return;
 
         // We fetch the data related to this distribution.
+        $this->sName = "Unknown";
         if(!$oRow)
         {
             $sQuery = "SELECT *
@@ -92,7 +93,8 @@ class distribution {
         //Let's not create a duplicate 
         $sQuery = "SELECT *
                    FROM distributions
-                   WHERE name = '?'";
+                   WHERE name = '?'
+                   AND state != 'deleted'";
         $hResult = query_parameters($sQuery, $this->sName);
 
         if($hResult && $oRow = query_fetch_object($hResult))
