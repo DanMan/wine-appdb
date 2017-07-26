@@ -673,16 +673,23 @@ class Comment {
     /**
      * display flat comments
      */
-    public static function display_comments_flat($versionId)
+    public static function do_display_comments_flat($hResult)
     {
-        $hResult = Comment::grab_comments($versionId);
-        if ($hResult)
+        while($oRow = query_fetch_object($hResult))
         {
-            while($oRow = query_fetch_object($hResult))
+            Comment::view_app_comment($oRow);
+            $hResult2 = Comment::grab_comments($oRow->versionId, $oRow->commentId);
+            if($hResult && query_num_rows($hResult2))
             {
-                Comment::view_app_comment($oRow);
+                Comment::do_display_comments_flat($hResult2);
             }
         }
+    }
+    
+    public static function display_comments_flat($versionId, $threadId)
+    {
+        $hResult = Comment::grab_comments($versionId, $threadId);
+        Comment::do_display_comments_flat($hResult);
     }
 
     public static function view_app_comments($versionId, $threadId = 0)
@@ -731,9 +738,9 @@ class Comment {
 
         //hide or display depending on pref
         if ($_SESSION['current']->isLoggedIn())
-            $mode = $_SESSION['current']->getPref("comments:mode", "threaded");
+            $mode = $_SESSION['current']->getPref("comments:mode", "flat");
         else
-            $mode = "threaded"; /* default non-logged in users to threaded comment display mode */
+            $mode = "flat"; /* default non-logged in users to flat comment display mode */
 
         if ( isset($aClean['sMode']) && $aClean['sMode']=="nested")
             $mode = "nested";
@@ -741,7 +748,7 @@ class Comment {
         switch ($mode)
         {
         case "flat":
-            Comment::display_comments_flat($versionId);
+            Comment::display_comments_flat($versionId, $threadId);
             break;
         case "nested":
             Comment::display_comments_nested($versionId, $threadId);
