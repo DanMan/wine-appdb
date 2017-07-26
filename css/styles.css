@@ -357,6 +357,10 @@ A:hover             { color: #FF6666; text-decoration: underline; }
 A:active            { color: #FF0000; }
 A.hidden            { text-decoration: none; color: #000000; }
 
+/* Format a span to look like a hyperlink */
+.pseudolink { color: #A50D0D; cursor: pointer; }
+.pseudolink:hover { text-decoration: underline; }
+
 /* Padding and Margin Removal */
 .nomargin        { margin: 0px !important; }
 .nomargin-top    { margin-top: 0px !important; }

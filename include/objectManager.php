@@ -425,7 +425,7 @@ class ObjectManager
         if($this->getIsQueue())
         {
             /////////////////////////////////////////////////
-            // output radio buttons for some common responses
+            // output some common responses
 
             $oTag = new TagCommonReply(null, null, "_show_for_{$this->sClass}");
             $aReplies = $oTag->getTaggedEntries();
@@ -444,10 +444,11 @@ class ObjectManager
             {
                 $sReply = $oReply->getReply();
                 echo '<tr valign=top><td class="color0"></td>',"\n";
-                echo '<td class="color0"><a onClick="document.forms[\'sQform\'][\'sReplyText\'].value += \''.$sReply.' \';">'.$sReply.'</a></td>',"\n";
-                echo '</tr>',"\n";
+                echo '<td class="color0">';
+                echo '<span class="pseudolink" onClick="document.forms[\'sQform\'][\'sReplyText\'].value += \''.addcslashes(htmlspecialchars($sReply),"'\r\n").'&nbsp;\';">'.nl2br($sReply).'</span>';
+                echo '</td>',"\n";    
             }
-            // end output radio buttons for common responses
+            // end output for common responses
             /////////////////////////////////////////////////
         }
 
