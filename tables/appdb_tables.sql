@@ -6,8 +6,6 @@ drop table if exists vendor;
 drop table if exists appFamily;
 drop table if exists appVersion;
 drop table if exists appCategory;
-drop table if exists appHitStats;
-drop table if exists catHitStats;
 drop table if exists appComments;
 drop table if exists appData;
 drop table if exists appBundle;
@@ -90,28 +88,6 @@ create table appBundle (
   appId           int not null,
   key(bundleId),
   index(appId)
-);
-
-
-/*
- * appHitStats and catHitStats are to record statistics
- */
-create table appHitStats (
-  appHitId  int not null auto_increment,
-  time      datetime,
-  ip        varchar(16),
-  appId     int not null,	
-  count     int,
-  key(appHitId)
-);
-
-create table catHitStats (
-  catHitId  int not null auto_increment,
-  time      datetime,
-  ip        varchar(16),
-  catId     int not null,
-  count     int,
-  key(catHitId)
 );
 
 
