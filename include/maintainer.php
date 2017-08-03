@@ -545,6 +545,14 @@ class maintainer
     {
         return self::getMaintainerCountForUserId($oUser->iUserId, $bSuperMaintainer);
     }
+    
+    // gets maintainers who have not logged in in the specified number of months 
+    public static function getInactiveMaintainers($iMonths)
+    {
+       $sQuery = "SELECT * FROM appMaintainers, user_list WHERE appMaintainers.userId = user_list.userid 
+           AND stamp <= DATE_SUB(CURDATE(), INTERVAL $iMonths MONTH)";       
+        return query_parameters($sQuery);
+    }
 
     /**
      * get the applications and versions that this user maintains 
