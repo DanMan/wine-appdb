@@ -39,6 +39,24 @@ function updateVersionMaintainerStates()
     echo "Updated $i entries";
 }
 
+function deleteInactiveMaintainers()
+{
+    $hResult = maintainer::getInactiveMaintainers(24);
+    $i = 0;
+    while($oRow = query_fetch_object($hResult))
+    {
+        $oMaintainer = new maintainer(null, $oRow);
+        $oMaintainer->delete();
+        $oUser = new User($oRow->userid);
+        $sEmail = $oUser->sEmail;
+        $sSubject  = "Maintainer status removed";
+        $sMsg  = "Your maintainer status has been removed because you have not logged into the AppDB in over 24 months.";
+        mail_appdb($sEmail, $sSubject, $sMsg);
+        $i++;
+    }     
+        echo "Removed $i inactive maintainers.";
+}
+
 function fixNoteLinks()
 {
     // Notes shown for app and all versions
@@ -236,6 +254,14 @@ function purgeRejectedVendors()
     echo "Removed " .query_affected_rows()." rejected vendors from database.<br>";
 }
 
+function deleteOldErrorLogs()
+{
+    $sQuery = "DELETE FROM error_log WHERE submitTime <= DATE_SUB(CURDATE(), INTERVAL '12' MONTH)";
+    $hResult = query_parameters($sQuery);
+    
+    echo "Deleted " .query_affected_rows()." error log entries over 12 months old from database.<br>";
+}
+
 function updateVersionRatings()
 { 
     $hResult = version::objectGetEntries('accepted');
@@ -283,25 +309,44 @@ function viewAppdbAdmins()
 
 function showChoices()
 {
-    echo '<a href="admin.php?sAction=fixNoteLinks">Fix/Show note links</a><br />';
-    echo '<a href="admin.php?sAction=updateAppMaintainerStates">Update application maintainer states</a><br />';
-    echo '<a href="admin.php?sAction=updateVersionMaintainerStates">Update version maintainer states</a><br />';
-    echo '<a href="admin.php?sAction=deleteOrphanComments">Delete Orphan Comments</a><br>';
-    echo '<a href="admin.php?sAction=deleteOrphanVersions">Delete Orphan Versions</a><br>';
-    echo '<a href="admin.php?sAction=purgeRejectedDistributions">Purge Rejected Distributions</a><br>';
-    echo '<a href="admin.php?sAction=purgeRejectedVendors">Purge Rejected Vendors</a><br>';
-    echo '<a href="admin.php?sAction=updateVersionRatings">Update Version Ratings</a><br>';
-    echo '<a href="admin.php?sAction=viewAppdbAdmins">View AppDB Admins</a><br>';
+    echo '<div class="list-group">';
+  
+    echo '<a href="admin.php?sAction=fixNoteLinks" class="list-group-item"><h4>Fix/Show note links</h4></a>';
+
+    echo '<a href="admin.php?sAction=updateAppMaintainerStates" class="list-group-item"><h4>Update application maintainer states</h4></a>';
+ 
+    echo '<a href="admin.php?sAction=updateVersionMaintainerStates" class="list-group-item"><h4>Update version maintainer states</h4></a>';
+
+    echo '<a href="admin.php? sAction=deleteInactiveMaintainers" class="list-group-item"><h4>Delete inactive maintainers</h4></a>';
+ 
+    echo '<a href="admin.php?sAction=deleteOrphanComments" class="list-group-item"><h4>Delete orphan comments</h4></a>';
+ 
+    echo '<a href="admin.php?sAction=deleteOrphanVersions" class="list-group-item"><h4>Delete orphan versions</h4></a>';
+ 
+    echo '<a href="admin.php?sAction=purgeRejectedDistributions" class="list-group-item"><h4>Purge rejected distributions</h4></a>';
+ 
+    echo '<a href="admin.php?sAction=purgeRejectedVendors" class="list-group-item"><h4>Purge rejected vendors</h4></a>';
+    
+    echo '<a href="admin.php?sAction=deleteOldErrorLogs" class="list-group-item"><h4>Delete Old Error Logs</h4></a>';
+ 
+    echo '<a href="admin.php?sAction=updateVersionRatings" class="list-group-item"><h4>Update version ratings</h4></a>';
+
+    echo '<a href="admin.php?sAction=viewAppdbAdmins" class="list-group-item"><h4>View AppDB admins</h4></a>';
+    echo '</div>';   
 }
 
 switch(getInput('sAction', $aClean))
-{
+{   
     case 'updateAppMaintainerStates':
         updateAppMaintainerStates();
         break;
 
     case 'updateVersionMaintainerStates':
         updateVersionMaintainerStates();
+        break;
+        
+    case 'deleteInactiveMaintainers';
+        deleteInactiveMaintainers();
         break;
 
     case 'fixNoteLinks':
@@ -324,6 +369,10 @@ switch(getInput('sAction', $aClean))
         purgeRejectedVendors();
         break; 
         
+    case 'deleteOldErrorLogs':
+        deleteOldErrorLogs();
+        break;
+    
     case 'updateVersionRatings':
         updateVersionRatings();
         break;
