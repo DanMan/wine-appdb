@@ -37,6 +37,13 @@ if($sRecipientGroup)
             if($sRecipients === FALSE)
             util_show_error_page_and_exit("Failed to get list of maintainers");
             break;
+            
+        case 'admins';
+            $sRecipientText = 'all AppDB admins';
+            $sRecipients = user::getAdminEmails();
+            if($sRecipients === FALSE)
+            util_show_error_page_and_exit("Failed to get list of admins");
+            break;
 
         default:
             util_show_error_page_and_exit("Invalid recipient group");
