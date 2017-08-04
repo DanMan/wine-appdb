@@ -41,7 +41,7 @@ function notifyAdminsOfCleanupStart()
 
     $sSubject  = $sEmailSubject."Cleanup script starting\r\n";
     $sMsg  = "Appdb cleanup cron script started.\r\n";
-    $sEmail = User::get_notify_email_address_list(null, null); /* get list admins */
+    $sEmail = user::getAdminEmails(); /* get list admins */
     if($sEmail)
         mail_appdb($sEmail, $sSubject, $sMsg);
 }
@@ -71,7 +71,7 @@ function orphanVersionCheck()
 
     $sSubject = $sEmailSubject."Orphan version cleanup\r\n";
 
-    $sEmail = User::get_notify_email_address_list(null, null); /* get list admins */
+    $sEmail = user::getAdminEmails(); /* get list admins */
     if($sEmail)
         mail_appdb($sEmail, $sSubject, $sMsg);
 }
@@ -148,7 +148,7 @@ function removeScreenshotsWithMissingFiles()
 
     $sSubject = $sEmailSubject."Missing screenshot cleanup\r\n";
 
-    $sEmail = User::get_notify_email_address_list(null, null); /* get list admins */
+    $sEmail = user::getAdminEmails(); /* get list admins */
     if($sEmail)
         mail_appdb($sEmail, $sSubject, $sMsg);
 
@@ -200,7 +200,7 @@ function cleanupVotes()
             $iFailed++;
     }
 
-    $sEmails = user::get_notify_email_address_list(null, null); // only admins
+    $sEmails = user::getAdminEmails(); // only admins
 
     if($sEmails)
     {

@@ -537,11 +537,8 @@ class User {
                  // if we didn't find this entry in the $aUserId
                  // array then we should add it if the admin has
                  // enabled global emails.
-                 // If both appId and versionId are null we are especially
-                 // requesting to email admins, so the mail should be sent
-                 // regardless of global emails setting
                  $oAdmin = new user($oRow->userid);
-                 if($i === false && ($oAdmin->getPref('disable_global_emails','no') == 'no' || (!$iAppId && !$iVersionId)))
+                 if($i === false && $oAdmin->getPref('disable_global_emails','no') == 'no')                   
                      $aUserId[] = $oRow->userid;
              }
          }
@@ -560,6 +557,25 @@ class User {
 
          return $sRetval;
      }
+     
+    public static function getAdminEmails()
+    {
+        $sRecipients = '';
+        $sQuery = "SELECT DISTINCT(user_list.email) FROM user_privs, user_list WHERE
+                user_privs.userid = user_list.userId
+                AND
+                user_privs.priv= 'admin'";
+        $hResult = query_parameters($sQuery);
+        if(!$hResult)
+            return FALSE;
+        for($i = 0; $oRow = query_fetch_object($hResult); $i++)
+        {
+            if($i)
+                $sRecipients .= ' ';
+            $sRecipients .= $oRow->email;
+        }
+        return $sRecipients;
+    }
 
 
      /************************/
