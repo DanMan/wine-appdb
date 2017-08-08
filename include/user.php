@@ -561,10 +561,12 @@ class User {
     public static function getAdminEmails()
     {
         $sRecipients = '';
-        $sQuery = "SELECT DISTINCT(user_list.email) FROM user_privs, user_list WHERE
-                user_privs.userid = user_list.userId
-                AND
-                user_privs.priv= 'admin'";
+        $sQuery = "SELECT user_list.email FROM user_privs, user_list, user_prefs 
+            WHERE user_privs.userid = user_list.userId 
+            AND user_privs.userId = user_prefs.userId 
+            AND user_privs.priv = 'admin' 
+            AND user_prefs.name = 'send_email' 
+            AND user_prefs.value = 'yes'";
         $hResult = query_parameters($sQuery);
         if(!$hResult)
             return FALSE;
