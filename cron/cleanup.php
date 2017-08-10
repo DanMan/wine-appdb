@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 /**************************************************/
-/* this script has to be run once a month by cron */
+/* this script has to be run daily by cron        */
 /* it's purpose is to clean the user's table.     */
 /**************************************************/
 
@@ -16,9 +16,8 @@ notifyAdminsOfCleanupStart();
 /* check to see if there are orphaned versions in the database */
 orphanVersionCheck();
 
-/* report error log entries to admins and flush the error log after doing so */
-// temporarily disabled - it apperas we have too many errors
-// reportErrorLogEntries();
+// delete error logs over 12 months old
+deleteOldErrorLogs();
 
 /* remove screenshots that are missing their screenshot and thumbnail files */
 removeScreenshotsWithMissingFiles();
@@ -28,11 +27,11 @@ removeScreenshotsWithMissingFiles();
 /* status since they aren't really maintaining the application/version */
 maintainerCheck();
 
+// remove maintainers who have not logged in in over 24 months
+deleteInactiveMaintainers();
+
 /* remove votes for versions that have been deleted */
 cleanupVotes();
-
-/* Updates the rating info for all versions based on test results */
-//updateRatings();
 
 
 function notifyAdminsOfCleanupStart()
@@ -54,34 +53,12 @@ function orphanVersionCheck()
 
     $sQuery = "select versionId, versionName from appVersion where appId = 0 and state != 'deleted'";
     $hResult = query_appdb($sQuery);
-    $found_orphans = false;
-
-    $sMsg = "Found these orphaned versions in the database with\r\n";
-    $sMsg.= "this sql command '".$sQuery."'\r\n";
-
-    /* don't report anything if no orphans are found */
-    if(query_num_rows($hResult) == 0)
-        return;
-
-    $sMsg .= "versionId/name\r\n";
-    while($oRow = query_fetch_object($hResult))
-    {
-        $sMsg .= $oRow->versionId."/".$oRow->versionName."\r\n";
-    }
-
-    $sSubject = $sEmailSubject."Orphan version cleanup\r\n";
-
-    $sEmail = user::getAdminEmails(); /* get list admins */
-    if($sEmail)
-        mail_appdb($sEmail, $sSubject, $sMsg);
 }
 
-// report the database error log entries to the mailing list
-function reportErrorLogEntries()
+function deleteOldErrorLogs()
 {
-    global $sEmailSubject;
-    error_log::mail_admins_error_log($sEmailSubject);
-    error_log::flush();
+    $sQuery = "DELETE FROM error_log WHERE submitTime <= DATE_SUB(CURDATE(), INTERVAL '12' MONTH)";
+    $hResult = query_parameters($sQuery);
 }
 
 // returns an array of iScreenshotIds of screenshots that are
@@ -118,39 +95,7 @@ function getMissingScreenshotArray()
 
 function removeScreenshotsWithMissingFiles()
 {
-    global $sEmailSubject;
-
-    $aMissingScreenshotIds = getMissingScreenshotArray();
-
-    if(sizeof($aMissingScreenshotIds))
-    {
-        $sPlural = (sizeof($aMissingScreenshotIds) == 1) ? "" : "s";
-        // build the email to admins about what we are doing
-        $sMsg = "Found ".count($aMissingScreenshotIds)." screenshot$sPlural with missing files.\r\n";
-
-        if($sPlural)
-            $sMsg.= "Deleting these screenshots.\r\n";
-        else
-            $sMsgm.= "Deleting it.\r\n";
-
-        // add the screenshot ids to the email so we can see which screenshots are
-        // going to be deleted
-        $sMsg.="\r\n";
-        $sMsg.="Screenshot ID$sPlural:\r\n";
-        foreach($aMissingScreenshotIds as $iScreenshotId)
-        {
-            $sMsg.=$iScreenshotId."\r\n";
-        }
-    } else
-    {
-        $sMsg = "No screenshot entries with missing files were found.\r\n";
-    }
-
-    $sSubject = $sEmailSubject."Missing screenshot cleanup\r\n";
-
-    $sEmail = user::getAdminEmails(); /* get list admins */
-    if($sEmail)
-        mail_appdb($sEmail, $sSubject, $sMsg);
+   $aMissingScreenshotIds = getMissingScreenshotArray();
 
     // log in as admin user with user id 1000
     // NOTE: this is a bit of a hack but we need admin
@@ -178,6 +123,24 @@ function maintainerCheck()
   maintainer::notifyMaintainersOfQueuedData();
 }
 
+// removes maintainers who have not logged in in over 24 months
+function deleteInactiveMaintainers()
+{
+    $hResult = maintainer::getInactiveMaintainers(24);
+    $i = 0;
+    while($oRow = query_fetch_object($hResult))
+    {
+        $oMaintainer = new maintainer(null, $oRow);
+        $oMaintainer->delete();
+        $oUser = new User($oRow->userid);
+        $sEmail = $oUser->sEmail;
+        $sSubject  = "Maintainer status removed";
+        $sMsg  = "Your maintainer status has been removed because you have not logged into the AppDB in over 24 months.";
+        mail_appdb($sEmail, $sSubject, $sMsg);
+        $i++;
+    }     
+}
+
 /* remove votes for versions that have been deleted */
 function cleanupVotes()
 {
@@ -198,36 +161,6 @@ function cleanupVotes()
             $iDeleted++;
         else
             $iFailed++;
-    }
-
-    $sEmails = user::getAdminEmails(); // only admins
-
-    if($sEmails)
-    {
-        global $sEmailSubject;
-        $sSubject = $sEmailSubject . 'Vote Cleanup';
-        $sPlural = ($iDeleted == 1) ? '' : 's';
-        $sMsg = "Removed $iDeleted vote$sPlural cast for deleted versions\n";
-        if($iFailed)
-        {
-            $sPlural = ($iFailed == 1) ? '' : 's';
-            $sMsg .= "WARNING: Failed to delete $iFailed vote$sPlural\n";
-        }
-        mail_appdb($sEmails, $sSubject, $sMsg);
-    }
-}
-
-function updateRatings()
-{
-    $hResult = query_parameters("SELECT * FROM appVersion");
-
-    if(!$hResult)
-        return;
-
-    while($oRow = query_fetch_object($hResult))
-    {
-        $oVersion = new version(0, $oRow);
-        $oVersion->updateRatingInfo();
     }
 }
 
