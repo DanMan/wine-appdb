@@ -166,7 +166,9 @@ $(document).ready(function()
         $(this).addClass('cursor-pointer');
         $(this).click(function(e)
         {
-            document.location = sURL;
+            if (!e.ctrlKey) {
+                document.location = sURL;
+            }
         });
     });
 
