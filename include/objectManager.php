@@ -1456,12 +1456,15 @@ class ObjectManager
                 break;
 
             case "Delete":
-                /* Heere we call an objectManager function instead
+                /* Here we call an objectManager function instead
                    of a function of the object's class.  Thus we
                    need to store the object so changes in
                    getOutputEditorValues() are caught. */
                 $this->oObject = $oObject;
                 $this->delete_entry($aClean['sReplyText']);
+                break;
+                
+            case "Cancel":
                 break;
 
             default:
