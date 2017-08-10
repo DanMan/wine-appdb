@@ -41,17 +41,9 @@ class error_log
         ob_end_clean();
 
         error_log::log_error("general_error", $sDescription.' '.$sDebugOutput);
-    }
-
-    function getEntryCount()
-    {
-        $sQuery = "SELECT count(*) as cnt FROM error_log WHERE deleted = '0'";
-        $hResult = query_parameters($sQuery);
-        $oRow = query_fetch_object($hResult);
-        return $oRow->cnt;
-    }
-
-    /* purge all of the current entries from the error log */
+    }   
+    
+    /* mark all of the current entries as deleted */
     function flush()
     {
         $sQuery = "UPDATE error_log SET deleted='1'";
@@ -61,43 +53,98 @@ class error_log
         else return false;
     }
     
-    function mail_admins_error_log($sSubject = "")
+    function objectGetId()
     {
-        $sSubject .= "Database Error log\r\n";
-        $sEmail = user::getAdminEmails(); /* get list admins */
+        return $this->iId;
+    }
+    
+    function objectGetState()
+    {
+        return 'accepted';
+    }
+    
+    public function objectGetHeader()
+    {
+        return $oRow;
+    }
+    
+    public function canEdit()
+    {
+        return $_SESSION['current']->hasPriv('admin');
+    }
+    
+    function objectWantCustomDraw()
+    {
+       return true;
+    }
 
-        $sQuery = "SELECT * from error_log WHERE deleted='0' ORDER BY submitTime";
-        $hResult = query_parameters($sQuery);
+    public function objectGetTableRow()
+    {        
+        return $oRow;
+    }
 
-        $bEmpty = false;
-        if(query_num_rows($hResult) == 0)
-            $bEmpty = true;
-
-        $sMsg = "Log entries:\r\n";
-        $sMsg.= "\r\n";
-
-        $sMsg.= "Submit time            userid  type\r\n";
-        $sMsg.= "log_text\r\n";
-        $sMsg.= "request_text\r\n";
-        $sMsg.="----------------------------------\r\n\r\n";
-
-        /* append each log entry to $sMsg */
+    public function objectDrawCustomTable($hResult)
+    {       
+        echo html_frame_start("Error Log Entries","100%","",0);
+        echo '<table width="100%" border=0 cellpadding=3 cellspacing=0>';
+        echo '<tr class=color1>';
+        echo '<td>Id</td>';
+        echo '<td>Submit time</td>';
+        echo '<td>UserId</td>';
+        echo '<td>Type</td>';
+        echo '<td>Log text</td>';
+        echo '<td>Request text</td>';
+        echo '</tr>';
+        
+        $i = 0;
         while($oRow = query_fetch_object($hResult))
         {
-            $sMsg.=$oRow->submitTime."    ".$oRow->userid."   ".$oRow->type."\r\n";
-            $sMsg.= "---------------------\r\n";
-            $sMsg.=$oRow->log_text."\r\n";
-            $sMsg.= "---------------------\r\n";
-            $sMsg.=$oRow->request_text."\r\n\r\n";
-        }
-
-        /* if we had no entries we should indicate */
-        /* that the error log is empty */
-        if($bEmpty)
-            $sMsg = "The error log is empty.\r\n";
-
-        if($sEmail)
-            mail_appdb($sEmail, $sSubject, $sMsg);
+            echo '<tr class=color0>';
+            echo '<td>'.$oRow->id.'</td>';
+            echo '<td>'.$oRow->submitTime.'</td>';
+            echo '<td>'.$oRow->userid.'</td>';
+            echo '<td>'.$oRow->type.'</td>';
+            echo '<td>'.$oRow->log_text.'</td>';
+            echo '<td>'.$oRow->request_text.'</td>';
+            $i++;
+        } 
+        echo '</table>';
+        echo html_frame_end();   
+        
+        echo "Found $i entries. <br>";
+    }
+    
+    function objectGetItemsPerPage($sState = 'accepted')
+    {
+        $aItemsPerPage = array(25, 50, 100, 200);
+        $iDefaultPerPage = 25;
+        return array($aItemsPerPage, $iDefaultPerPage);
+    }
+    
+    public function objectGetEntries($sState, $iRows = null, $iStart = 0)
+    {
+        if(!$_SESSION['current']->hasPriv('admin'))
+            return false;
+        
+        $sLimit = objectManager::getSqlLimitClause($iRows, $iStart, 'error_log');
+        
+        $sQuery = "SELECT * FROM error_log ORDER BY id DESC $sLimit";
+        $hResult = query_parameters($sQuery);
+        
+        return $hResult;
+    }
+    
+    function objectGetEntriesCount()
+    {
+        $sQuery = "SELECT COUNT(DISTINCT id) as count FROM error_log";
+        $hResult = query_parameters($sQuery);
+        
+        if(!$hResult)
+            return $hResult;
+        
+        $oRow = query_fetch_object($hResult);
+        
+        return $oRow->count;
     }
 }
 

@@ -327,7 +327,9 @@ function showChoices()
  
     echo '<a href="admin.php?sAction=purgeRejectedVendors" class="list-group-item"><h4>Purge rejected vendors</h4></a>';
     
-    echo '<a href="admin.php?sAction=deleteOldErrorLogs" class="list-group-item"><h4>Delete Old Error Logs</h4></a>';
+    echo '<a href="admin.php?sAction=deleteOldErrorLogs" class="list-group-item"><h4>Delete old error logs</h4></a>';
+
+    echo '<a href ="'.BASE.'objectManager.php?sClass=error_log&sTitle=View+Error_log" class="list-group-item"><h4>View Error log entries</h4></a>';
  
     echo '<a href="admin.php?sAction=updateVersionRatings" class="list-group-item"><h4>Update version ratings</h4></a>';
 
@@ -371,6 +373,10 @@ switch(getInput('sAction', $aClean))
         
     case 'deleteOldErrorLogs':
         deleteOldErrorLogs();
+        break;
+        
+    case 'viewErrorLogEntries';
+        viewErrorLogEntries();
         break;
     
     case 'updateVersionRatings':
