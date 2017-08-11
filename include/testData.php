@@ -789,27 +789,41 @@ class testData{
         $sName = version::fullName($this->iVersionId);
 
         echo html_frame_start("Test Form - $sName", "90%", "", 0);
-        echo "<table width='100%' border=0 cellpadding=2 cellspacing=0>\n";
+        
+        echo '<table class="whq-table whq-table-striped table-bordered" width="100%" border=0 cellpadding=2 cellspacing=0>';
+        
+        // Installs
+        echo '<tr><td><b>Installs?</b></td><td>',"\n";
+        testData::make_Installs_list("sInstalls", $this->sInstalls);
+        echo '&nbsp; Installing is an important part of testing under Wine. Select N/A if there is no installer.</td></tr>',"\n";
+       
+        // Runs
+        echo '<tr><td><b>Runs?</b></td><td>',"\n";
+        testData::make_Runs_list("sRuns", $this->sRuns);
+        echo '</td></tr>',"\n";
 
         // What works
-        echo '<tr valign=top><td class="color0"><b>What works</b></td>',"\n";
-        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test1" name="shWhatWorks" class="wysiwyg">';
+        echo '<tr valign=top><td><b>What works</b></td>',"\n";
+        echo '<td><p><textarea cols="80" rows="20" id="Test1" name="shWhatWorks" class="wysiwyg">';
         echo $this->shWhatWorks.'</textarea></p></td></tr>',"\n";
+        
         // What Does not work
-        echo '<tr valign=top><td class=color1><b>What does not work</b></td>',"\n";
-        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test2" name="shWhatDoesnt" class="wysiwyg">';
+        echo '<tr valign=top><td><b>What does not work</b></td>',"\n";
+        echo '<td><p><textarea cols="80" rows="20" id="Test2" name="shWhatDoesnt" class="wysiwyg">';
         echo $this->shWhatDoesnt.'</textarea></p></td></tr>',"\n";
+        
         // What was not tested
-        echo '<tr valign=top><td class=color0><b>What was not tested</b></td>',"\n";
-        echo '<td class="color0"><p><textarea cols="80" rows="20" id="Test3" name="shWhatNotTested" class="wysiwyg">';
+        echo '<tr valign=top><td><b>What was not tested</b></td>',"\n";
+        echo '<td><p><textarea cols="80" rows="20" id="Test3" name="shWhatNotTested" class="wysiwyg">';
         echo $this->shWhatNotTested.'</textarea></p></td></tr>',"\n";
+        
         // Date Tested
-        echo '<tr valign=top><td class="color1"><b>Date tested </b></td>',"\n";
-        echo '<td class="color0"><input type=text name="sTestedDate" value="'.$this->sTestedDate.'" size="20"></td></tr>',"\n";
-        echo '<tr valign=top><td class="color1"></td><td class="color0"><p/>YYYY-MM-DD HH:MM:SS</td></tr>',"\n";
+        echo '<tr valign=top><td><b>Date tested </b></td>',"\n";
+        echo '<td><input type=text name="sTestedDate" value="'.$this->sTestedDate.'" size="20"><br>';
+        echo 'YYYY-MM-DD HH:MM:SS</td></tr>',"\n";
 
         // Version List
-        echo '<tr><td class=color1><b>Tested release</b></td><td class=color0>',"\n";
+        echo '<tr><td><b>Tested release</b></td><td>',"\n";
         echo make_bugzilla_version_list("sTestedRelease", $this->sTestedRelease);
         // Give the user some information about our available versions
         echo "<span>Version not listed?  Your Wine is too old, <a href=\"//winehq.org/download\">upgrade!</a></span><br>";
@@ -822,27 +836,15 @@ class testData{
         echo '  Wine-staging';
         echo '</label>';
         echo '</td></tr>',"\n";
-
-        // Installs
-        echo '<tr><td class=color0><b>Installs?</b></td><td class=color0>',"\n";
-        testData::make_Installs_list("sInstalls", $this->sInstalls);
-        echo '&nbsp; Installing is an important part of testing under Wine. Select N/A if there is no installer.</td></tr>',"\n";
-        // Runs
-        echo '<tr><td class=color1><b>Runs?</b></td><td class=color0>',"\n";
-        testData::make_Runs_list("sRuns", $this->sRuns);
-        echo '</td></tr>',"\n";
+       
         // Rating
-        echo '<tr><td class="color0"><b>Rating</b></td><td class="color0">',"\n";
+        echo '<tr><td><b>Rating</b></td><td>',"\n";
         echo make_maintainer_rating_list("sTestedRating", $this->sTestedRating);
         echo '<a href="https://wiki.winehq.org/AppDB_Maintainer_Rating_Definitions" target="_blank">Rating definitions</a></td></tr>',"\n";
         // extra comments
-        echo '<tr valign=top><td class="color1"><b>Extra comments</b></td>',"\n";
-        echo '<td class="color0"><textarea name="sComments" id="extra_comments" rows=10 cols=65>';
+        echo '<tr valign=top><td><b>Extra comments</b></td>',"\n";
+        echo '<td><textarea name="sComments" id="extra_comments" rows=10 cols=65>';
         echo $this->sComments.'</textarea></td></tr>',"\n";
-
-        echo '<input type="hidden" name="iVersionId" value="'.$this->iVersionId.'" >';
-        echo '<input type="hidden" name="iTestingId" value="'.$this->iTestingId.'" >';
-        echo '<input type="hidden" name="iTestDataId" value="'.$this->iTestingId.'" >';
 
         // Distribution
         $oDistribution = new distribution($this->iDistributionId);
@@ -859,9 +861,9 @@ class testData{
             }
         }
 
-        echo '<tr valign=top><td class="color0"><b>Operating system</b></td class="color0">',"\n";
+        echo '<tr valign=top><td><b>Operating system</b></td>',"\n";
 
-        echo '<td class=color0>',"\n";
+        echo '<td>',"\n";
         echo $sDistributionHelp;
         distribution::make_distribution_list("iTestDistributionId", $this->iDistributionId);
         echo '</td></tr>',"\n";
@@ -873,7 +875,7 @@ class testData{
         {
             if(getInput('bConfirmTestedVersionChange', $aClean) != 'true')
             {
-                echo '<tr><td class="color1">&nbsp;</td><td class="color0">';
+                echo '<tr><td>&nbsp;</td><td>';
                 echo 'You have changed the Wine version of the report.  Are you sure you want to do this?  Please submit a new test report for every Wine version you test; this is useful for tracking Wine\'s progress.<br>';
                 echo '<input type="checkbox" name="bConfirmTestedVersionChange" value="true"> ';
                 echo 'Yes, I want to change the Wine version';
@@ -884,6 +886,10 @@ class testData{
             }
         }
 
+        echo '<input type="hidden" name="iVersionId" value="'.$this->iVersionId.'" >';
+        echo '<input type="hidden" name="iTestingId" value="'.$this->iTestingId.'" >';
+        echo '<input type="hidden" name="iTestDataId" value="'.$this->iTestingId.'" >';
+        
         echo "</table>\n";
 
         echo html_frame_end();

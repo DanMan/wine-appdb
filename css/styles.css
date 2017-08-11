@@ -663,6 +663,13 @@ table.whq-table tbody tr td {
 table.whq-table tbody tr:nth-child(odd) td {
     background-color: #ddd;
 }
+/* used for the test report form */
+table.whq-table-striped tbody tr:nth-child(odd) td {
+   background-color: #E0E0E0; 
+}
+table.whq-table-striped tbody tr:nth-child(even) td {
+   background-color: #C0C0C0; 
+}
 
 /* box */
 .box-title {
