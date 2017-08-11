@@ -1795,10 +1795,11 @@ class ObjectManager
             if($sErrors == PREVIEW_ENTRY)
                 return TRUE;
 
+            echo "<div class='alert alert-danger' role='alert'>";
             echo "<p class=\"error\">\n";
-            echo "The following errors were found:\n";
+            echo "<b>The following errors were found:</b>\n";
             echo "<ul>$sErrors</ul>\n";
-            echo "</p>";
+            echo "</p></div>";
             return TRUE;
         } else
         {
