@@ -18,6 +18,8 @@ class testData{
     var $sTestedDate;
     var $sInstalls;
     var $sRuns;
+    var $sUsedWorkaround;
+    var $shWorkarounds;
     var $sTestedRating;
     var $sComments;
     var $sSubmitTime;
@@ -54,6 +56,8 @@ class testData{
             $this->iStaging = $oRow->staging;
             $this->sInstalls = $oRow->installs;
             $this->sRuns = $oRow->runs;
+            $this->sUsedWorkaround = $oRow->usedWorkaround;
+            $this->shWorkarounds = $oRow->workarounds;
             $this->sTestedRating = $oRow->testedRating;
             $this->sComments = $oRow->comments;
             $this->sSubmitTime = $oRow->submitTime;
@@ -72,20 +76,28 @@ class testData{
             $this->sState = $this->mustBeQueued() ? 'queued' : 'accepted';
 
         $hResult = query_parameters("INSERT INTO testResults (versionId, whatWorks, whatDoesnt,".
-                                    "whatNotTested, testedDate, distributionId, testedRelease,".
-                                    "staging, installs, runs, testedRating, comments,".
-                                    "submitTime, submitterId, state)".
-                                    "VALUES('?', '?', '?', '?', '?', '?', '?',".
-                                    "'?', '?', '?', '?', '?',".
-                                    "?, '?', '?')",
-                                    $this->iVersionId, $this->shWhatWorks,
+                                        "whatNotTested, testedDate, distributionId,".
+                                        "testedRelease, staging, installs, runs,".
+                                        "usedWorkaround, workarounds,".
+                                        "testedRating, comments,".
+                                        "submitTime, submitterId, state)".
+                                        "VALUES('?', '?', '?', '?', '?', '?', '?',".
+                                        "'?', '?', '?', '?', '?',".
+                                        "'?', '?', '?', '?', '?')",
+                                    $this->iVersionId, 
+                                    $this->shWhatWorks,
                                     $this->shWhatDoesnt,
-                                    $this->shWhatNotTested, $this->sTestedDate,
+                                    $this->shWhatNotTested, 
+                                    $this->sTestedDate,
                                     $this->iDistributionId,
-                                    $this->sTestedRelease, $this->iStaging, 
+                                    $this->sTestedRelease, 
+                                    $this->iStaging, 
                                     $this->sInstalls,
                                     $this->sRuns,
-                                    $this->sTestedRating, $this->sComments,
+                                    $this->sUsedWorkaround,
+                                    $this->shWorkarounds,
+                                    $this->sTestedRating, 
+                                    $this->sComments,
                                     "NOW()",
                                     $_SESSION['current']->iUserId,
                                     $this->sState);
@@ -137,6 +149,18 @@ class testData{
         {
             $sWhatChanged .= "What does not work was changed from\n'"
                     .$oOldTest->shWhatDoesnt."'\n to\n'$this->shWhatDoesnt'.\n";
+        }
+        
+        if($this->sUsedWorkaround != $oOldTest->sUsedWorkaround)
+        {
+            $sWhatChanged .= "Workarounds was changed from\n'"
+                    .$oOldTest->sUsedWorkaround."'\n to\n'$this->sUsedWorkaround'.\n";
+        }
+        
+        if($this->shWorkarounds != $oOldTest->shWorkarounds)
+        {
+            $sWhatChanged .= "Workarounds detail was changed from\n'"
+                    .$oOldTest->shWorkarounds."'\n to\n'$this->shWorkarounds'.\n";
         }
 
         if($this->shWhatNotTested != $oOldTest->shWhatNotTested)
@@ -219,6 +243,8 @@ class testData{
                                         staging         = '?',
                                         installs        = '?',
                                         runs            = '?',
+                                        usedWorkaround  = '?',
+                                        workarounds     = '?',
                                         testedRating    = '?',
                                         comments        = '?',
                                         state           = '?'
@@ -233,6 +259,8 @@ class testData{
                             $this->iStaging,
                             $this->sInstalls,
                             $this->sRuns,
+                            $this->sUsedWorkaround,
+                            $this->shWorkarounds,
                             $this->sTestedRating,
                             $this->sComments,
                             $this->sState,
@@ -542,6 +570,7 @@ class testData{
     {
         return "<p><b>What works</b></p>\n<p>{$this->shWhatWorks}</p>\n".
                "<p><b>What does not</b></p>\n<p>{$this->shWhatDoesnt}</p>\n".
+               "<p><b>Workarounds</b></p>\n<p>{$this->shWorkarounds}</p>\n".               
                "<p><b>What was not tested</b></p>\n<p>{$this->shWhatNotTested}</p>\n".
                "<p><b>Additional Comments</b></p>\n<pre style='white-space: pre-wrap;'>{$this->sComments}</pre>\n";
     }
@@ -561,6 +590,7 @@ class testData{
         $oTableRowHeader->AddTextCell("Wine version");
         $oTableRowHeader->AddTextCell("Installs?");
         $oTableRowHeader->AddTextCell("Runs?");
+        $oTableRowHeader->AddTextCell("Used<br>Workaround?");
         $oTableRowHeader->AddTextCell("Rating");
         $oTableRowHeader->AddTextCell("Submitter");
         $oTableRowHeader->AddTextCell("");
@@ -610,6 +640,7 @@ class testData{
         $oTableRow->AddTextCell(($this->sTestedRelease).($this->iStaging != 0 ? '-staging':''));
         $oTableRow->AddTextCell($this->sInstalls.'&nbsp;');
         $oTableRow->AddTextCell($this->sRuns.'&nbsp;');
+        $oTableRow->AddTextCell($this->sUsedWorkaround);
         $oTableCell = new TableCell($this->sTestedRating);
         $oTableCell->SetClass($bgcolor);
         $oTableRow->AddCell($oTableCell);
@@ -812,6 +843,27 @@ class testData{
         echo '<td><p><textarea cols="80" rows="20" id="Test2" name="shWhatDoesnt" class="wysiwyg">';
         echo $this->shWhatDoesnt.'</textarea></p></td></tr>',"\n";
         
+        // Workarounds
+        echo '<tr valign=top><td><b>Workarounds</b></td>',"\n";
+        echo '<td>';
+        echo 'Were any workarounds used for problems that do not exist in Windows? <i>If yes, describe the workaround(s) in the box below.</i><br>';
+        if(isset($this->sUsedWorkaround))        
+        {
+            if($this->sUsedWorkaround == "Yes")
+            {
+                echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="Yes" checked>Yes</label>';
+                echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="No">No</label>';
+            }else{
+                echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="Yes">Yes</label>';
+                echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="No" checked>No</label>';
+            } 
+        } else {
+             echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="Yes">Yes</label>';
+             echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="No">No</label><br>';
+        };
+        echo '<textarea cols="80" rows="20" id="Test4" name="shWorkarounds" class="wysiwyg">';
+        echo $this->shWorkarounds.'</textarea></p></td></tr>',"\n";
+        
         // What was not tested
         echo '<tr valign=top><td><b>What was not tested</b></td>',"\n";
         echo '<td><p><textarea cols="80" rows="20" id="Test3" name="shWhatNotTested" class="wysiwyg">';
@@ -910,6 +962,9 @@ class testData{
 
         if (empty($aValues['shWhatNotTested']))
             $errors .= "<li>Please enter what was not tested.</li>\n";
+            
+        if (empty($aValues['sUsedWorkaround']))
+            $errors .= "<li>Please enter whether workarounds were used or not.</li>\n";
 
         if (empty($aValues['sTestedDate']))
             $errors .= "<li>Please enter the date and time when you tested.</li>\n";
@@ -943,7 +998,13 @@ class testData{
 
         if (empty($aValues['sRuns']))
             $errors .= "<li>Please enter whether this application runs or not.</li>\n";
-
+            
+        if ($aValues['sUsedWorkaround'] == "Yes" && empty($aValues['shWorkarounds']))
+            $errors .= "<li>Please describe the workaround(s) used for this application.</li>\n";
+            
+        if (empty($aValues['shWorkarounds']) && $aValues['sInstalls'] == 'No, but has workaround')
+            $errors .= "<li>Please describe the workaround needed to install the application.</li>\n";
+            
         if (empty($aValues['sTestedRating']))
             $errors .= "<li>Please enter a rating based on how well this application runs.</li>\n";
 
@@ -954,14 +1015,30 @@ class testData{
 
         if (($aValues['sInstalls'] == "No" || $aValues['sInstalls'] == 'No, but has workaround') && ($aValues['sTestedRating'] == PLATINUM_RATING))
             $errors .= "<li>An application can only get a Platinum rating if it installs and runs &#8216;out of the box&#8217;.</li>\n";
+            
+        if ($aValues['sUsedWorkaround'] == "Yes" &&  $aValues['sTestedRating'] == PLATINUM_RATING)
+            $errors .= "<li>An application cannot be rated Platinum if workarounds were used. Either adjust your rating or your answer to the Workarounds question.</li>\n";
+            
+        if ($aValues['sUsedWorkaround'] == "No" && $aValues['sTestedRating'] == GOLD_RATING)
+            $errors .= "<li>If the rating is Gold you must answer &#8217Yes&#8217 to the Workarounds question. Either adjust your rating or your answer to the Workarounds question.</li>\n";
+            
+        if (empty($aValues['shWorkarounds']) && $aValues['sTestedRating'] == GOLD_RATING)
+            $errors .= "<li>If the rating is Gold you must describe the workarounds used.</li>\n";
+            
 
         // Basic checking of logic.  Runs? can obviously only be 'Not Installable'
         // if the application does not install
         if (($aValues['sInstalls'] != "No") && ($aValues['sRuns'] == "Not installable"))
             $errors .= "<li>You can only set Runs? to &#8216;Not installable&#8217; if Installs? is set &#8216;No&#8217;</li>\n";
 	    
-	if (($aValues['sInstalls'] == "No") && ($aValues['sRuns'] != "Not installable"))
+        if (($aValues['sInstalls'] == "No") && ($aValues['sRuns'] != "Not installable"))
             $errors .= "<li>Runs? must be set to &#8216;Not installable&#8217; if there is no way to install the app</li>\n";
+            
+        if ($aValues['sInstalls'] == "No, but has workaround" && $aValues['sUsedWorkaround'] == "No")
+            $errors .= "<li>If Installs? is set to &#8216;No, but has workaround&#8216;, Workarounds must be set to &#8216;Yes&#8216; and details provided in the text area.</li>\n"; 
+            
+        if ($aValues['sUsedWorkaround'] == "No" && !empty($aValues[shWorkarounds]))
+            $errors .="<li>Leave the Workarounds text field blank if no workarounds were used.</li>";
 
         return $errors;
 
@@ -979,6 +1056,7 @@ class testData{
 
         $this->shWhatWorks = $aValues['shWhatWorks'];
         $this->shWhatDoesnt = $aValues['shWhatDoesnt'];
+        $this->shWorkarounds = $aValues['shWorkarounds'];
         $this->shWhatNotTested = $aValues['shWhatNotTested'];
         $this->sTestedDate = $aValues['sTestedDate'];
         
@@ -992,6 +1070,7 @@ class testData{
         $this->iStaging = intval($aValues['iStaging']);
         $this->sInstalls = $aValues['sInstalls'];
         $this->sRuns = $aValues['sRuns'];
+        $this->sUsedWorkaround = $aValues['sUsedWorkaround'];
         $this->sTestedRating = $aValues['sTestedRating'];
         $this->sComments = $aValues['sComments'];
     }
