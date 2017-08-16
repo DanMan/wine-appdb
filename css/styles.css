@@ -483,8 +483,11 @@ hr
 .committed          { font-style: italic; color: gray; }
 
 /* App Support status */
+.platinum           { background-color: whitesmoke; }
 .gold               { background-color: wheat; }
 .silver             { background-color: silver; }
+.bronze             { background-color: goldenrod; }
+.garbage            { background-color: darkkhaki; }
 
 /* Rating Number */
 .rating { font-family: Helvetica, Arial; font-size: 6pt; color: #333333; }
