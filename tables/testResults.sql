@@ -17,6 +17,8 @@ create table testResults (
 	staging tinyint(1) not null default '0',
 	installs	enum('Yes','No','No, but has workaround','N/A') NOT NULL default 'Yes',
 	runs		enum('Yes','No','Not Installable') NOT NULL default 'Yes',
+	usedWorkaround    enum('Yes','No') default NULL,
+	workarounds text default NULL,
 	testedRating  	enum('Platinum','Gold','Silver','Bronze','Garbage') NOT NULL,
         comments        text,
 	submitTime	datetime NOT NULL,
