@@ -119,11 +119,11 @@ $(document).ready(function()
     {
         var ratingdesc=[
                 "",
-                " Works flawlessly out of the box - no problems ",
-                " Works flawlessly with DLL overrides, third party software or other settings ",
-                " Works excellently for normal use;works fine in singleplayer but not multi ",
-                " Works but has issues for normal use ",
-                " Does not run or cannot be installed with Wine "
+                " Works as well as (or better than) on Windows out of the box ",
+                " Works as well as (or better than) on Windows with  workarounds ",
+                " Works excellently for normal use, but has some problems ",
+                " Works, but has problems for normal use ",
+                " Problems are severe enough that the application cannot be used for the purpose it was designed for "
                 ];
         var ratingstyle =[
                   "",
