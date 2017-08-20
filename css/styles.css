@@ -588,8 +588,7 @@ div.topx_style {
     border: 2px solid #999999;
     border-radius: 5px;
 }
-div.topx_style.platinum { background-color: #333333; }
-div.topx_style.platinum div.rating_header { color: #ffffff; }
+div.topx_style.platinum { background-color: #E5E4E2; }
 div.topx_style.gold     { background-color: #FFF600; }
 div.topx_style.silver   { background-color: #C0C0C0; }
 div.rating_header { padding: 8px; }
