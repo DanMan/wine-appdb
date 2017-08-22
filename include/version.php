@@ -20,6 +20,7 @@ define("LICENSE_DEMO", "Demo");
 define("LICENSE_RETAIL", "Retail");
 define('LICENSE_FREETOUSE', 'Free to use');
 define('LICENSE_FREETOSHARE', 'Free to use and share');
+define('LICENSE_SUBSCRIPTION', 'Subscription');
 
 /**
  * Version class for handling versions.
@@ -1392,7 +1393,7 @@ EOT;
     /* Returns an array containing the different software licences */
     public static function getLicenses()
     {
-        return array(LICENSE_RETAIL, LICENSE_OPENSOURCE, LICENSE_FREETOUSE,
+        return array(LICENSE_RETAIL, LICENSE_SUBSCRIPTION,  LICENSE_FREETOUSE,
                      LICENSE_FREETOSHARE, LICENSE_DEMO, LICENSE_SHAREWARE);
     }
 
@@ -1426,7 +1427,7 @@ EOT;
     /* In order to prevent MySQL injections.  Returns matched license */
     public static function checkLicense($sLicense)
     {
-        $aLicense = array(LICENSE_RETAIL, LICENSE_OPENSOURCE, LICENSE_FREETOUSE,
+        $aLicense = array(LICENSE_RETAIL, LICENSE_SUBSCRIPTION,  LICENSE_FREETOUSE,
                           LICENSE_FREETOSHARE, LICENSE_DEMO, LICENSE_SHAREWARE);
 
         foreach($aLicense as $sElement)
