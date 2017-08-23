@@ -24,5 +24,7 @@ create table testResults (
 	submitTime	datetime NOT NULL,
 	submitterId	int(11) NOT NULL default '0',
 	state		enum('accepted','queued','rejected','pending','deleted') NOT NULL default 'accepted',
+    gpuMfr  enum('AMD', 'Intel', 'Nvidia', 'Other', 'Unknown') default NULL,
+    graphicsDriver enum('open source', 'proprietary', 'unknown') default NULL, 
         key(testingId)
 );
