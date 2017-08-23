@@ -454,7 +454,7 @@ class distribution {
         $hResult = query_parameters($sQuery);
         if(!$hResult) return;
 
-        echo "<select name='$varname'>\n";
+        echo "<select name='$varname' class='form-control form-control-inline'>\n";
         echo "<option value=\"\">Choose your operating system</option>\n";
         while(list($name, $value) = query_fetch_row($hResult))
         {
