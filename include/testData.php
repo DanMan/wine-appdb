@@ -24,6 +24,8 @@ class testData{
     var $sComments;
     var $sSubmitTime;
     var $iSubmitterId;
+    var $sGpuMfr;
+    var $sGraphicsDriver;
     private $sState;
 
      // constructor, fetches the data.
@@ -63,6 +65,8 @@ class testData{
             $this->sSubmitTime = $oRow->submitTime;
             $this->iSubmitterId = $oRow->submitterId;
             $this->sState = $oRow->state;
+            $this->sGpuMfr = $oRow->gpuMfr;
+            $this->sGraphicsDriver = $oRow->graphicsDriver;
         }
     }
 
@@ -80,10 +84,11 @@ class testData{
                                         "testedRelease, staging, installs, runs,".
                                         "usedWorkaround, workarounds,".
                                         "testedRating, comments,".
-                                        "submitTime, submitterId, state)".
+                                        "submitTime, submitterId, state,".
+                                        "gpuMfr, graphicsDriver)".
                                         "VALUES('?', '?', '?', '?', '?', '?', '?',".
                                         "'?', '?', '?', '?', '?',".
-                                        "'?', '?', '?', '?', '?')",
+                                        "'?', '?', '?', '?', '?', '?', '?')",
                                     $this->iVersionId, 
                                     $this->shWhatWorks,
                                     $this->shWhatDoesnt,
@@ -100,7 +105,9 @@ class testData{
                                     $this->sComments,
                                     "NOW()",
                                     $_SESSION['current']->iUserId,
-                                    $this->sState);
+                                    $this->sState,
+                                    $this->sGpuMfr,
+                                    $this->sGraphicsDriver);
 
         if($hResult)
         {
@@ -247,7 +254,9 @@ class testData{
                                         workarounds     = '?',
                                         testedRating    = '?',
                                         comments        = '?',
-                                        state           = '?'
+                                        state           = '?', 
+                                        gpuMfr          = '?', 
+                                        graphicsDriver  = '?' 
                                     WHERE testingId = '?'",
                             $this->iVersionId,
                             $this->shWhatWorks,
@@ -264,6 +273,8 @@ class testData{
                             $this->sTestedRating,
                             $this->sComments,
                             $this->sState,
+                            $this->sGpuMfr,
+                            $this->sGraphicsDriver,
                             $this->iTestingId))
         {
             if($bUpdateRatingInfo && $this->sState == 'accepted')
@@ -572,6 +583,7 @@ class testData{
                "<p><b>What does not</b></p>\n<p>{$this->shWhatDoesnt}</p>\n".
                "<p><b>Workarounds</b></p>\n<p>{$this->shWorkarounds}</p>\n".               
                "<p><b>What was not tested</b></p>\n<p>{$this->shWhatNotTested}</p>\n".
+               "<p><b>Hardware tested</b></p>\n<p><i>Graphics: </i></ul><li>GPU: {$this->sGpuMfr}</li><li>Driver: {$this->sGraphicsDriver}</li></ul></p>".
                "<p><b>Additional Comments</b></p>\n<pre style='white-space: pre-wrap;'>{$this->sComments}</pre>\n";
     }
 
@@ -898,6 +910,16 @@ class testData{
         echo '<td><textarea name="sComments" id="extra_comments" rows=10 cols=65>';
         echo $this->sComments.'</textarea></td></tr>',"\n";
 
+        /* Graphics hardware/driver
+            this section could be expanded to include info on other hardware (e.g., CPU, audio) */
+        echo '<tr><td><b>Hardware</b></td>',"\n";
+        echo '<td>';
+        echo 'Graphics: ';
+        echo  testData::make_gpuMfr_list("sGpuMfr", $this->sGpuMfr);
+     //   echo '<br>';
+        echo testData::make_graphicsDriver_list('sGraphicsDriver', $this->sGraphicsDriver); 
+        echo '</td></tr>';
+        
         // Distribution
         $oDistribution = new distribution($this->iDistributionId);
         $sDistributionHelp = "";
@@ -971,6 +993,12 @@ class testData{
 
         if (empty($aValues['sTestedRelease']))
             $errors .= "<li>Please enter the version of Wine that you tested with.</li>\n";
+            
+        if (empty($aValues['sGpuMfr']))
+            $errors .= "<li>Please select your GPU manufacturer from the list. If you don't know, select Unknown.</li>\n";
+            
+         if (empty($aValues['sGraphicsDriver']))
+            $errors .= "<li>Please indicate whether your graphics driver is open source or proprietary. If you don't know, select unknown.</li>\n";   
 
         // Ask for confirmation if changing the tested Wine versions, becase we want users
         // to submit new reports instead of updating existing ones when testing new Wines
@@ -1073,11 +1101,13 @@ class testData{
         $this->sUsedWorkaround = $aValues['sUsedWorkaround'];
         $this->sTestedRating = $aValues['sTestedRating'];
         $this->sComments = $aValues['sComments'];
+        $this->sGpuMfr = $aValues['sGpuMfr'];
+        $this->sGraphicsDriver = $aValues['sGraphicsDriver'];
     }
 
     function make_Installs_list($sVarname, $sSelectedValue)
     {
-        echo "<select name='$sVarname'>\n";
+        echo "<select name='$sVarname' class='form-control form-control-inline'>\n";
         echo "<option value=\"\">Choose ...</option>\n";
         $aRating = array('Yes', 'No', 'No, but has workaround', 'N/A');
         $iMax = count($aRating);
@@ -1094,7 +1124,7 @@ class testData{
 
     function make_Runs_list($sVarname, $sSelectedValue)
     {
-        echo "<select name='$sVarname'>\n";
+        echo "<select name='$sVarname' class='form-control form-control-inline'>\n";
         echo "<option value=\"\">Choose ...</option>\n";
         $aRating = array("Yes", "No", "Not installable");
         $iMax = count($aRating);
@@ -1105,6 +1135,41 @@ class testData{
                 echo "<option value='".$aRating[$i]."' selected>".$aRating[$i]."\n";
             else
                 echo "<option value='".$aRating[$i]."'>".$aRating[$i]."\n";
+        }
+        echo "</select>\n";
+    }
+    
+    function make_gpuMfr_list($sVarname, $sSelectedValue)
+    {
+        echo "<select name='$sVarname'class='form-control form-control-inline'>\n";
+        echo "<option value=\"\">GPU manufacturer?</option>\n";
+        $aGpuMfr = array('AMD', 'Intel', 'Nvidia', 'Other', 'Unknown');
+        $iMax = count($aGpuMfr);
+        
+        for($i=0; $i < $iMax; $i++)
+        {
+            if($aGpuMfr[$i] == $sSelectedValue)
+                echo "<option value='".$aGpuMfr[$i]."' selected>".$aGpuMfr[$i]."\n";
+            else
+                echo "<option value='".$aGpuMfr[$i]."'>".$aGpuMfr[$i]."\n";
+        }
+        echo "</select>\n";
+    }
+    
+    function make_graphicsDriver_list($sVarname, $sSelectedValue)
+    
+    {
+        echo "<select name='$sVarname' class='form-control form-control-inline'>\n";
+        echo "<option value=\"\">Open source or proprietary driver?</option>\n";
+        $aGraphicsDriver = array('open source', 'proprietary', 'unknown');
+        $iMax = count($aGraphicsDriver);
+        
+        for($i=0; $i < $iMax; $i++)
+        {
+            if($aGraphicsDriver[$i] == $sSelectedValue)
+                echo "<option value='".$aGraphicsDriver[$i]."' selected>".$aGraphicsDriver[$i]."\n";
+            else
+                echo "<option value='".$aGraphicsDriver[$i]."'>".$aGraphicsDriver[$i]."\n";
         }
         echo "</select>\n";
     }
