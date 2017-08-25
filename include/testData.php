@@ -84,11 +84,11 @@ class testData{
                                         "testedRelease, staging, installs, runs,".
                                         "usedWorkaround, workarounds,".
                                         "testedRating, comments,".
-                                        "submitTime, submitterId, state,".
+                                        "submitterId, state,".
                                         "gpuMfr, graphicsDriver)".
                                         "VALUES('?', '?', '?', '?', '?', '?', '?',".
                                         "'?', '?', '?', '?', '?',".
-                                        "'?', '?', '?', '?', '?', '?', '?')",
+                                        "'?', '?', '?', '?', '?', '?')",
                                     $this->iVersionId, 
                                     $this->shWhatWorks,
                                     $this->shWhatDoesnt,
@@ -102,8 +102,7 @@ class testData{
                                     $this->sUsedWorkaround,
                                     $this->shWorkarounds,
                                     $this->sTestedRating, 
-                                    $this->sComments,
-                                    "NOW()",
+                                    $this->sComments, 
                                     $_SESSION['current']->iUserId,
                                     $this->sState,
                                     $this->sGpuMfr,

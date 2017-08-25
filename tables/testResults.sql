@@ -21,7 +21,7 @@ create table testResults (
 	workarounds text default NULL,
 	testedRating  	enum('Platinum','Gold','Silver','Bronze','Garbage') NOT NULL,
         comments        text,
-	submitTime	datetime NOT NULL,
+	submitTime	datetime NOT NULL default CURRENT_TIMESTAMP,
 	submitterId	int(11) NOT NULL default '0',
 	state		enum('accepted','queued','rejected','pending','deleted') NOT NULL default 'accepted',
     gpuMfr  enum('AMD', 'Intel', 'Nvidia', 'Other', 'Unknown') default NULL,
