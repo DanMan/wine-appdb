@@ -221,6 +221,14 @@ function fixNoteLinks()
     
 }
 
+function fixInvalidTestSubmitTime()
+{
+    $sQuery = "UPDATE testResults SET submitTime = testedDate WHERE submitTime = '0000-00-00 00:00:00'";
+    $hResult = query_parameters($sQuery);
+    
+    echo "Updated ".query_affected_rows()." test reports with invalid submit times.<br>";
+}
+
 function deleteOrphanComments()
 {
     $sQuery = "DELETE FROM appComments WHERE NOT EXISTS( SELECT appVersion.versionId FROM appVersion"; 
@@ -312,6 +320,8 @@ function showChoices()
     echo '<div class="list-group">';
   
     echo '<a href="admin.php?sAction=fixNoteLinks" class="list-group-item"><h4>Fix/Show note links</h4></a>';
+    
+    echo '<a href="admin.php?sAction=fixInvalidTestSubmitTime" class="list-group-item"><h4>Fix Invalid Test Submission Times</h4></a>';
 
     echo '<a href="admin.php?sAction=updateAppMaintainerStates" class="list-group-item"><h4>Update application maintainer states</h4></a>';
  
@@ -353,6 +363,10 @@ switch(getInput('sAction', $aClean))
 
     case 'fixNoteLinks':
         fixNoteLinks();
+        break;
+
+    case 'fixInvalidTestSubmitTime';
+        fixInvalidTestSubmitTime();
         break;
         
     case 'deleteOrphanComments':
