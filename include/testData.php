@@ -103,7 +103,7 @@ class testData{
                                     $this->shWorkarounds,
                                     $this->sTestedRating, 
                                     $this->sComments,
-                                    "NOW()",
+                                    date("Y-m-d H:i:s"),
                                     $_SESSION['current']->iUserId,
                                     $this->sState,
                                     $this->sGpuMfr,
