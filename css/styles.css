@@ -68,6 +68,11 @@ a.btn, a.btn:visited {
     overflow: auto;
 }
 
+.carousel-control.left, 
+.carousel-control.right {
+    background-image: none
+}
+
 /*
   =====================================================================================================================
    PAGE LAYOUT

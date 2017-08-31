@@ -98,12 +98,10 @@ apidb_header("Wine Application Database");
 
 ?>
 
-<div class="row">
-    <div class="col-md-6 col-lg-8">
-
 <h1 class="whq-app-title">Welcome</h1>
-
-<p>This is the Wine Application Database (AppDB). Here you can get information on application
+    <div class="row">
+        <div class="col-md-6">
+            <p>This is the Wine Application Database (AppDB). Here you can get information on application
 compatibility with Wine.</p>
 
 <?php
@@ -173,10 +171,56 @@ else
 
     echo "</p>\n";
 ?>
+        </div>
 
-</div>
-    <div class="col-md-6 col-lg-4">
-        <img src="images/appdb_montage.jpg" class="fill-width" alt="Wine AppDB">
+        <div id="carouselScreenshots" class="carousel slide container col-md-6" data-ride="carousel">
+            <div class="carousel-inner" style="margin-bottom:10px">
+                <div class="item active">
+                    <img src="images/steam.jpg" alt="First slide">
+                </div>
+                <div class="item">
+                    <img src="images/outlook2010.jpg" alt="Second slide">
+                </div>
+                <div class="item">
+                    <img src="images/eveonline.jpg" alt="Third slide">
+                </div>
+                <div class="item">
+                    <img src="images/photoshopcc2015.jpg" alt="Fourth slide">
+                </div>
+                <div class="item">
+                    <img src="images/falloutnv.jpg" alt="Fifth slide">
+                </div>
+                <div class="item">
+                    <img src="images/reason.jpg" alt="Sixth slide">
+                </div>
+                <div class="item">
+                    <img src="images/skyrim_specialed.jpg" alt="Seventh slide">
+                </div>
+                <div class="item">
+                    <img src="images/goggalaxy.jpg" alt="Eighth slide">
+                </div>
+                <div class="item">
+                    <img src="images/wizard101.jpg" alt="Ninth slide">
+                </div>
+                <div class="item">
+                    <img src="images/matlab.jpg" alt="Tenth slide">
+                </div>
+                <div class="item">
+                    <img src="images/sims3.jpg" alt="Eleventh slide">
+                </div>
+                <div class="item">
+                    <img src="images/metatrader5.jpg" alt="Twelfth slide">
+                </div>
+            </div>   
+            <a class="left carousel-control" href="#carouselScreenshots" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#carouselScreenshots" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div> 
     </div>
 </div>
 
