@@ -262,6 +262,14 @@ function purgeRejectedVendors()
     echo "Removed " .query_affected_rows()." rejected vendors from database.<br>";
 }
 
+function deleteOldComments()
+{
+    $sQuery = "DELETE FROM appComments USING appComments, appVersion WHERE appComments.versionId = appVersion.versionId AND appVersion.hasMaintainer = 'false' AND appComments.time <= DATE_SUB(CURDATE(), INTERVAL '12' MONTH)";
+    $hResult = query_parameters($sQuery);
+    
+    echo "Deleted " .query_affected_rows()." comments older than 12 months from unmaintained entries.<br>";
+}
+
 function deleteOldErrorLogs()
 {
     $sQuery = "DELETE FROM error_log WHERE submitTime <= DATE_SUB(CURDATE(), INTERVAL '12' MONTH)";
@@ -337,6 +345,8 @@ function showChoices()
  
     echo '<a href="admin.php?sAction=purgeRejectedVendors" class="list-group-item"><h4>Purge rejected vendors</h4></a>';
     
+    echo '<a href="admin.php?sAction=deleteOldComments" class="list-group-item"><h4>Delete old comments</h4></a>';
+    
     echo '<a href="admin.php?sAction=deleteOldErrorLogs" class="list-group-item"><h4>Delete old error logs</h4></a>';
 
     echo '<a href ="'.BASE.'objectManager.php?sClass=error_log&sTitle=View+Error_log" class="list-group-item"><h4>View Error log entries</h4></a>';
@@ -384,6 +394,10 @@ switch(getInput('sAction', $aClean))
     case 'purgeRejectedVendors':
         purgeRejectedVendors();
         break; 
+        
+    case 'deleteOldComments':
+        deleteOldComments();
+        break;
         
     case 'deleteOldErrorLogs':
         deleteOldErrorLogs();
