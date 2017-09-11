@@ -746,20 +746,20 @@ table tr.rowtitle td:last-child {
 .color4 { background-color: #999999 }
 
 /* table row colors for ratings (alternating colors for rows) */
-tr:nth-child(odd) td.Platinum   { background-color: #333333 !important; color: #ffffff !important; }
-tr:nth-child(even) td.Platinum  { background-color: #666666 !important; color: #ffffff !important; }
+tr:nth-child(odd) td.Platinum   { background-color: #E5E4E2 !important; }
+tr:nth-child(even) td.Platinum  { background-color: #F5F5F5 !important; }
 
 tr:nth-child(odd) td.Gold       { background-color: #FFF600 !important; }
 tr:nth-child(even) td.Gold      { background-color: #fffcb3 !important; }
 
-tr:nth-child(odd) td.Silver     { background-color: #C0C0C0 !important; }
-tr:nth-child(even) td.Silver    { background-color: #e6e6e6 !important; }
+tr:nth-child(odd) td.Silver     { background-color: #A9A9A9 !important; }
+tr:nth-child(even) td.Silver    { background-color: #D3D3D3 !important; }
 
-tr:nth-child(odd) td.Bronze     { background-color: #FCBA0A !important; }
+tr:nth-child(odd) td.Bronze     { background-color: #DAA520 !important; }
 tr:nth-child(even) td.Bronze    { background-color: #FCBA0A !important; }
 
 tr:nth-child(odd) td.Garbage    { background-color: #999966 !important; }
-tr:nth-child(even) td.Garbage   { background-color: #ebebe0 !important; }
+tr:nth-child(even) td.Garbage   { background-color: #BDB76B !important; }
 
 /* labels */
 TD.label  { font-weight: bold }
