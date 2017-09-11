@@ -584,7 +584,7 @@ class testData{
                "<p><b>Workarounds</b></p>\n<p>{$this->shWorkarounds}</p>\n".               
                "<p><b>What was not tested</b></p>\n<p>{$this->shWhatNotTested}</p>\n".
                "<p><b>Hardware tested</b></p>\n<p><i>Graphics: </i></ul><li>GPU: {$this->sGpuMfr}</li><li>Driver: {$this->sGraphicsDriver}</li></ul></p>".
-               "<p><b>Additional Comments</b></p>\n<pre style='white-space: pre-wrap;'>{$this->sComments}</pre>\n";
+               "<p><b>Additional Comments</b></p>\n<p>{$this->sComments}</p>\n";
     }
 
     function CreateTestTable()
@@ -907,7 +907,7 @@ class testData{
         echo '<a href="https://wiki.winehq.org/AppDB_Maintainer_Rating_Definitions" target="_blank">Rating definitions</a></td></tr>',"\n";
         // extra comments
         echo '<tr valign=top><td><b>Extra comments</b></td>',"\n";
-        echo '<td><textarea name="sComments" id="extra_comments" rows=10 cols=65>';
+        echo '<td><textarea name="sComments" id="extra_comments" rows=20 cols=80 class="wysiwyg">';
         echo $this->sComments.'</textarea></td></tr>',"\n";
 
         /* Graphics hardware/driver
