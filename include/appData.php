@@ -517,7 +517,7 @@ class appData
                       AND
                       appData.state = '?'
                       AND
-                      appData.type = '?' $sVersionWhereFilter$sWhereFilter ORDER BY appFamily.appName $sLimit
+                      appData.type = '?' $sVersionWhereFilter$sWhereFilter ORDER BY appData.submitTime, appFamily.appName $sLimit
                     )";
             if(!$iRows && !$iStart)
             {
