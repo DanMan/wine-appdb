@@ -21,7 +21,7 @@ class testData{
     var $sUsedWorkaround;
     var $shWorkarounds;
     var $sTestedRating;
-    var $sComments;
+    var $shComments;
     var $sSubmitTime;
     var $iSubmitterId;
     var $sGpuMfr;
@@ -61,7 +61,7 @@ class testData{
             $this->sUsedWorkaround = $oRow->usedWorkaround;
             $this->shWorkarounds = $oRow->workarounds;
             $this->sTestedRating = $oRow->testedRating;
-            $this->sComments = $oRow->comments;
+            $this->shComments = $oRow->comments;
             $this->sSubmitTime = $oRow->submitTime;
             $this->iSubmitterId = $oRow->submitterId;
             $this->sState = $oRow->state;
@@ -102,7 +102,7 @@ class testData{
                                     $this->sUsedWorkaround,
                                     $this->shWorkarounds,
                                     $this->sTestedRating, 
-                                    $this->sComments,
+                                    $this->shComments,
                                     date("Y-m-d H:i:s"),
                                     $_SESSION['current']->iUserId,
                                     $this->sState,
@@ -176,10 +176,10 @@ class testData{
                     $oOldTest->shWhatNotTested."'\nto\n'$this->shWhatNotTested'.\n";
         }
 
-        if($this->sComments != $oOldTest->sComments)
+        if($this->shComments != $oOldTest->shComments)
         {
             $sWhatChanged .= "Extra comments was changed from\n'".
-                    $oOldTest->sComments."'\nto\n'$this->sComments'.\n";
+                    $oOldTest->shComments."'\nto\n'$this->shComments'.\n";
         }
 
         if($this->iDistributionId != $oOldTest->iDistributionId)
@@ -271,7 +271,7 @@ class testData{
                             $this->sUsedWorkaround,
                             $this->shWorkarounds,
                             $this->sTestedRating,
-                            $this->sComments,
+                            $this->shComments,
                             $this->sState,
                             $this->sGpuMfr,
                             $this->sGraphicsDriver,
@@ -583,8 +583,8 @@ class testData{
                "<p><b>What does not</b></p>\n<p>{$this->shWhatDoesnt}</p>\n".
                "<p><b>Workarounds</b></p>\n<p>{$this->shWorkarounds}</p>\n".               
                "<p><b>What was not tested</b></p>\n<p>{$this->shWhatNotTested}</p>\n".
-               "<p><b>Hardware tested</b></p>\n<p><i>Graphics: </i></ul><li>GPU: {$this->sGpuMfr}</li><li>Driver: {$this->sGraphicsDriver}</li></ul></p>".
-               "<p><b>Additional Comments</b></p>\n<p>{$this->sComments}</p>\n";
+               "<p><b>Hardware tested</b></p>\n<p><i>Graphics: </i><ul><li>GPU: {$this->sGpuMfr}</li><li>Driver: {$this->sGraphicsDriver}</li></ul></p>".
+               "<p><b>Additional Comments</b></p>\n<p>{$this->shComments}</p>\n";
     }
 
     function CreateTestTable()
@@ -907,8 +907,8 @@ class testData{
         echo '<a href="https://wiki.winehq.org/AppDB_Maintainer_Rating_Definitions" target="_blank">Rating definitions</a></td></tr>',"\n";
         // extra comments
         echo '<tr valign=top><td><b>Extra comments</b></td>',"\n";
-        echo '<td><textarea name="sComments" id="extra_comments" rows=20 cols=80 class="wysiwyg">';
-        echo $this->sComments.'</textarea></td></tr>',"\n";
+        echo '<td><textarea name="shComments" id="extra_comments" rows=20 cols=80 class="wysiwyg">';
+        echo $this->shComments.'</textarea></td></tr>',"\n";
 
         /* Graphics hardware/driver
             this section could be expanded to include info on other hardware (e.g., CPU, audio) */
@@ -1100,7 +1100,7 @@ class testData{
         $this->sRuns = $aValues['sRuns'];
         $this->sUsedWorkaround = $aValues['sUsedWorkaround'];
         $this->sTestedRating = $aValues['sTestedRating'];
-        $this->sComments = $aValues['sComments'];
+        $this->shComments = $aValues['shComments'];
         $this->sGpuMfr = $aValues['sGpuMfr'];
         $this->sGraphicsDriver = $aValues['sGraphicsDriver'];
     }
