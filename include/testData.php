@@ -26,6 +26,7 @@ class testData{
     var $iSubmitterId;
     var $sGpuMfr;
     var $sGraphicsDriver;
+    var $sHasProblems;
     private $sState;
 
      // constructor, fetches the data.
@@ -67,6 +68,7 @@ class testData{
             $this->sState = $oRow->state;
             $this->sGpuMfr = $oRow->gpuMfr;
             $this->sGraphicsDriver = $oRow->graphicsDriver;
+            $this->sHasProblems = $oRow->hasProblems;
         }
     }
 
@@ -85,10 +87,10 @@ class testData{
                                         "usedWorkaround, workarounds,".
                                         "testedRating, comments,".
                                         "submitTime, submitterId, state,".
-                                        "gpuMfr, graphicsDriver)".
+                                        "gpuMfr, graphicsDriver, hasProblems)".
                                         "VALUES('?', '?', '?', '?', '?', '?', '?',".
                                         "'?', '?', '?', '?', '?',".
-                                        "'?', '?', '?', '?', '?', '?', '?')",
+                                        "'?', '?', '?', '?', '?', '?', '?', '?')",
                                     $this->iVersionId, 
                                     $this->shWhatWorks,
                                     $this->shWhatDoesnt,
@@ -107,7 +109,8 @@ class testData{
                                     $_SESSION['current']->iUserId,
                                     $this->sState,
                                     $this->sGpuMfr,
-                                    $this->sGraphicsDriver);
+                                    $this->sGraphicsDriver,
+                                    $this-sHasProblems);
 
         if($hResult)
         {
@@ -256,7 +259,8 @@ class testData{
                                         comments        = '?',
                                         state           = '?', 
                                         gpuMfr          = '?', 
-                                        graphicsDriver  = '?' 
+                                        graphicsDriver  = '?',
+                                        hasProblems     = '?' 
                                     WHERE testingId = '?'",
                             $this->iVersionId,
                             $this->shWhatWorks,
@@ -275,6 +279,7 @@ class testData{
                             $this->sState,
                             $this->sGpuMfr,
                             $this->sGraphicsDriver,
+                            $this->sHasProblems,
                             $this->iTestingId))
         {
             if($bUpdateRatingInfo && $this->sState == 'accepted')
@@ -852,7 +857,23 @@ class testData{
         
         // What Does not work
         echo '<tr valign=top><td><b>What does not work</b></td>',"\n";
-        echo '<td><p><textarea cols="80" rows="20" id="Test2" name="shWhatDoesnt" class="wysiwyg">';
+        echo '<td>';
+        echo 'Were there any problems that do not exist in Windows? <i>If yes, describe the problems in the box below.</i><br>';
+        if(isset($this->sHasProblems))        
+        {
+            if($this->sHasProblems == "Yes")
+            {
+                echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="Yes" checked>Yes</label>';
+                echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="No">No</label>';
+            }else{
+                echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="Yes">Yes</label>';
+                echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="No" checked>No</label>';
+            } 
+        } else {
+             echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="Yes">Yes</label>';
+             echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="No">No</label><br>';
+        };
+        echo '<p><textarea cols="80" rows="20" id="Test2" name="shWhatDoesnt" class="wysiwyg">';
         echo $this->shWhatDoesnt.'</textarea></p></td></tr>',"\n";
         
         // Workarounds
@@ -905,6 +926,7 @@ class testData{
         echo '<tr><td><b>Rating</b></td><td>',"\n";
         echo make_maintainer_rating_list("sTestedRating", $this->sTestedRating);
         echo '<a href="https://wiki.winehq.org/AppDB_Maintainer_Rating_Definitions" target="_blank">Rating definitions</a></td></tr>',"\n";
+
         // extra comments
         echo '<tr valign=top><td><b>Extra comments</b></td>',"\n";
         echo '<td><textarea name="shComments" id="extra_comments" rows=20 cols=80 class="wysiwyg">';
@@ -916,7 +938,6 @@ class testData{
         echo '<td>';
         echo 'Graphics: ';
         echo  testData::make_gpuMfr_list("sGpuMfr", $this->sGpuMfr);
-     //   echo '<br>';
         echo testData::make_graphicsDriver_list('sGraphicsDriver', $this->sGraphicsDriver); 
         echo '</td></tr>';
         
@@ -973,14 +994,11 @@ class testData{
     function CheckOutputEditorInput($aValues, $sDistribution="")
     {
         $errors = "";
-        if (empty($aValues['shWhatWorks']))
-            $errors .= "<li>Please enter what worked.</li>\n";
+        if (empty($aValues['shWhatWorks']) && ($aValues['sRuns'] == "Yes" || $aValues['sInstalls'] == "Yes" || $aValues['sInstalls'] == "No, but has workaround"))
+            $errors .= "<li>Please enter what worked.</li>\n";  
 
-        /* The 'what doesn't work' field can be empty if the rating is Platinum,
-           because then an app should run flawlessly */
-        if (!getInput('shWhatDoesnt', $aValues) &&
-            getInput('sTestedRating', $aValues) != PLATINUM_RATING)
-            $errors .= "<li>Please enter what did not work.</li>\n";
+        if (empty($aValues['sHasProblems']))
+            $errors .= "<li>Please enter whether the application had any problems not present in Windows.</li>\n";
 
         if (empty($aValues['shWhatNotTested']))
             $errors .= "<li>Please enter what was not tested.</li>\n";
@@ -1027,32 +1045,31 @@ class testData{
         if (empty($aValues['sRuns']))
             $errors .= "<li>Please enter whether this application runs or not.</li>\n";
             
+        if ($aValues['sHasProblems'] == "Yes" && empty($aValues['shWhatDoesnt']))
+            $errors .= "<li>Please describe the problem(s) encountered.</li>\n";
+            
         if ($aValues['sUsedWorkaround'] == "Yes" && empty($aValues['shWorkarounds']))
             $errors .= "<li>Please describe the workaround(s) used for this application.</li>\n";
-            
-        if (empty($aValues['shWorkarounds']) && $aValues['sInstalls'] == 'No, but has workaround')
-            $errors .= "<li>Please describe the workaround needed to install the application.</li>\n";
-            
+                       
         if (empty($aValues['sTestedRating']))
             $errors .= "<li>Please enter a rating based on how well this application runs.</li>\n";
 
         // Basic checking of rating logic to ensure that the users test results
         // are consistent
-        if (($aValues['sRuns'] != "Yes") && ($aValues['sTestedRating'] != GARBAGE_RATING))
+        if (($aValues['sInstalls'] == "No") && ($aValues['sTestedRating'] != GARBAGE_RATING))
+            $errors .= "<li>Applications that do not install should be rated &#8216;Garbage&#8217;.</li>\n";
+        
+        if (($aValues['sRuns'] == "No") && ($aValues['sTestedRating'] != GARBAGE_RATING))
             $errors .= "<li>Applications that do not run should be rated &#8216;Garbage&#8217;.</li>\n";
+            
+        if (($aValues['sHasProblems'] == "Yes" || $aValues['sUsedWorkaround'] == "Yes") && $aValues['sTestedRating'] == PLATINUM_RATING)
+            $errors .= "<li>An application can only get a Platinum rating if it installs, runs, and everything works &#8216;out of the box&#8217; (no problems and no workarounds used).</li>\n";
 
-        if (($aValues['sInstalls'] == "No" || $aValues['sInstalls'] == 'No, but has workaround') && ($aValues['sTestedRating'] == PLATINUM_RATING))
-            $errors .= "<li>An application can only get a Platinum rating if it installs and runs &#8216;out of the box&#8217;.</li>\n";
-            
-        if ($aValues['sUsedWorkaround'] == "Yes" &&  $aValues['sTestedRating'] == PLATINUM_RATING)
-            $errors .= "<li>An application cannot be rated Platinum if workarounds were used. Either adjust your rating or your answer to the Workarounds question.</li>\n";
-            
+        if (($aValues['sHasProblems'] == "Yes" && $aValues['sUsedWorkaround'] == 'No') &&  ($aValues['sTestedRating'] == PLATINUM_RATING || $aValues['sTestedRating'] == GOLD_RATING))
+            $errors .= "<li>An application cannot be rated higher than Silver if it had problems without workarounds. </li>\n";
+
         if ($aValues['sUsedWorkaround'] == "No" && $aValues['sTestedRating'] == GOLD_RATING)
-            $errors .= "<li>If the rating is Gold you must answer &#8217Yes&#8217 to the Workarounds question. Either adjust your rating or your answer to the Workarounds question.</li>\n";
-            
-        if (empty($aValues['shWorkarounds']) && $aValues['sTestedRating'] == GOLD_RATING)
-            $errors .= "<li>If the rating is Gold you must describe the workarounds used.</li>\n";
-            
+            $errors .= "<li>If the rating is Gold you must answer &#8217Yes&#8217 to the Workarounds question and describe the workarounds used.</li>\n";
 
         // Basic checking of logic.  Runs? can obviously only be 'Not Installable'
         // if the application does not install
@@ -1060,10 +1077,22 @@ class testData{
             $errors .= "<li>You can only set Runs? to &#8216;Not installable&#8217; if Installs? is set &#8216;No&#8217;</li>\n";
 	    
         if (($aValues['sInstalls'] == "No") && ($aValues['sRuns'] != "Not installable"))
-            $errors .= "<li>Runs? must be set to &#8216;Not installable&#8217; if there is no way to install the app</li>\n";
+            $errors .= "<li>Runs? must be set to &#8216;Not installable&#8217; if Installs? is set to &#8216;No&#8217;.</li>\n";
             
-        if ($aValues['sInstalls'] == "No, but has workaround" && $aValues['sUsedWorkaround'] == "No")
-            $errors .= "<li>If Installs? is set to &#8216;No, but has workaround&#8216;, Workarounds must be set to &#8216;Yes&#8216; and details provided in the text area.</li>\n"; 
+        if ($aValues['sInstalls'] == "No, but has workaround" && ($aValues['sUsedWorkaround'] == "No" || empty($aValues[shWorkarounds])))
+            $errors .= "<li>If Installs? is set to &#8216;No, but has workaround&#8216;, Workarounds must be set to &#8216;Yes&#8216; and details provided in the text area.</li>\n";           
+
+        if (($aValues['sInstalls'] == "No" || $aValues['sInstalls'] == "No, but has workaround") && $aValues['sHasProblems'] == "No")
+            $errors .= "<li>If Installs? is set to &#8216;No&#8216; or &#8216;No, but has workaround&#8216;, you must answer Yes to the question about problems and provide details in the What does not work text area.</li>\n";
+            
+        if ($aValues['sRuns'] == "No" && $aValues['sHasProblems'] == "No" )
+            $errors .="<li>If Runs? is set to &#8216;No&#8216; you must answer Yes to the question about problems and provide details in the What does not work text area.</li>\n";
+            
+        if ($aValues['sHasProblems'] == "No" && $aValues['sUsedWorkaround'] == 'Yes')
+            $errors .= "<li>Workarounds should not have been used if there were no problems that are not also present in Windows.</li>";
+                        
+        if ($aValues['sHasProblems'] == "No" && !empty($aValues[shWhatDoesnt]))
+            $errors .="<li>Leave the What does not work text field blank if there were no problems that are not also present in Windows.</li>";
             
         if ($aValues['sUsedWorkaround'] == "No" && !empty($aValues[shWorkarounds]))
             $errors .="<li>Leave the Workarounds text field blank if no workarounds were used.</li>";
@@ -1103,6 +1132,7 @@ class testData{
         $this->shComments = $aValues['shComments'];
         $this->sGpuMfr = $aValues['sGpuMfr'];
         $this->sGraphicsDriver = $aValues['sGraphicsDriver'];
+        $this->sHasProblems = $aValues['sHasProblems'];
     }
 
     function make_Installs_list($sVarname, $sSelectedValue)
