@@ -110,7 +110,7 @@ class testData{
                                     $this->sState,
                                     $this->sGpuMfr,
                                     $this->sGraphicsDriver,
-                                    $this-sHasProblems);
+                                    $this->sHasProblems);
 
         if($hResult)
         {
