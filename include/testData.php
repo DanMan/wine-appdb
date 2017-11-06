@@ -858,44 +858,51 @@ class testData{
         // What Does not work
         echo '<tr valign=top><td><b>What does not work</b></td>',"\n";
         echo '<td>';
-        echo 'Were there any problems that do not exist in Windows? <i>If yes, describe the problems in the box below.</i><br>';
+        echo 'Were there any problems that do not exist in Windows? <br>';
         if(isset($this->sHasProblems))        
         {
             if($this->sHasProblems == "Yes")
             {
-                echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="Yes" checked>Yes</label>';
-                echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="No">No</label>';
+                echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#whatdoesnt" data-showdiv=true name="sHasProblems" value="Yes" checked>Yes</label>';
+                echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#whatdoesnt" data-showdiv=false name="sHasProblems" value="No">No</label>';
             }else{
-                echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="Yes">Yes</label>';
-                echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="No" checked>No</label>';
+                echo '<label class="radio-inline"><input type="radio"data-toggle="radioshow" data-target="#whatdoesnt" data-showdiv=true name="sHasProblems" value="Yes">Yes</label>';
+                echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#whatdoesnt" data-showdiv=false name="sHasProblems" value="No" checked>No</label>';
             } 
         } else {
-             echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="Yes">Yes</label>';
-             echo '<label class="radio-inline"><input type="radio" name="sHasProblems" value="No">No</label><br>';
+             echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#whatdoesnt" data-showdiv=true name="sHasProblems" value="Yes">Yes</label>';
+             echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#whatdoesnt" data-showdiv=false name="sHasProblems" value="No">No</label>';
         };
+        echo '<div id="whatdoesnt" style="display:none">';
+        echo '<i>Describe the problem(s) in the box below.</i><br>';
         echo '<p><textarea cols="80" rows="20" id="Test2" name="shWhatDoesnt" class="wysiwyg">';
         echo $this->shWhatDoesnt.'</textarea></p></td></tr>',"\n";
+        echo '</div>';
         
         // Workarounds
         echo '<tr valign=top><td><b>Workarounds</b></td>',"\n";
         echo '<td>';
-        echo 'Were any workarounds used for problems that do not exist in Windows? <i>If yes, describe the workaround(s) in the box below.</i><br>';
+        echo 'Were any workarounds used for problems that do not exist in Windows? <br>';
         if(isset($this->sUsedWorkaround))        
         {
             if($this->sUsedWorkaround == "Yes")
             {
-                echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="Yes" checked>Yes</label>';
-                echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="No">No</label>';
+                echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#workarounds" data-showdiv=true  name="sUsedWorkaround" value="Yes" checked>Yes</label>';
+                echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#workarounds" data-showdiv=false name="sUsedWorkaround" value="No">No</label>';
             }else{
-                echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="Yes">Yes</label>';
-                echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="No" checked>No</label>';
+                echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#workarounds" data-showdiv=true  name="sUsedWorkaround" value="Yes">Yes</label>';
+                echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#workarounds" data-showdiv=false  name="sUsedWorkaround" value="No" checked>No</label>';
             } 
         } else {
-             echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="Yes">Yes</label>';
-             echo '<label class="radio-inline"><input type="radio" name="sUsedWorkaround" value="No">No</label><br>';
+             echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#workarounds" data-showdiv=true name="sUsedWorkaround" value="Yes">Yes</label>';
+             echo '<label class="radio-inline"><input type="radio" data-toggle="radioshow" data-target="#workarounds" data-showdiv=false name="sUsedWorkaround" value="No">No</label><br>';
         };
+        
+        echo '<div id="workarounds" style="display:none">';
+        echo '<i>Describe the workaround(s) in the box below.</i><br>';
         echo '<textarea cols="80" rows="20" id="Test4" name="shWorkarounds" class="wysiwyg">';
         echo $this->shWorkarounds.'</textarea></p></td></tr>',"\n";
+        echo '</div>';
         
         // What was not tested
         echo '<tr valign=top><td><b>What was not tested</b></td>',"\n";
