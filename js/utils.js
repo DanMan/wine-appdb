@@ -222,9 +222,19 @@ $(document).ready(function()
           $(this).collapse('show');
       }
     });
-        
-    // HTML editor (redactor loader)
+      
+    /* Show/hide div based on radio button clicks. */
+    $('input[type=radio][data-toggle=radioshow]').click(function(){
+        if($(this).data("showdiv") == true) {
+            $($(this).data("target")).show();
+        }
+        else if($(this).data("showdiv") == false) {
+            $($(this).data("target")).hide();
+        }
+    });
+    $('[data-toggle="radioshow"]:checked').trigger('click');
 
+    // HTML editor (redactor loader)
 
 });
 
