@@ -895,6 +895,11 @@ class Application {
         </div>
 EOT;
 
+        // URLs
+        if($sUrls = url::display(NULL, $this->iAppId))
+        {
+            echo $sUrls;
+        }
         echo "<p>For more details and user comments, view the versions of this application</p>\n";
 
         // display versions
