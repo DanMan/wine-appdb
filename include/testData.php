@@ -921,14 +921,11 @@ class testData{
         echo "<span>Version not listed?  Your Wine is too old, <a href=\"//winehq.org/download\">upgrade!</a></span><br>";
         // Checkbox for Wine-staging
         echo '<label class="btn btn-secondary">';
-        if($this->sState != 'accepted')
-            echo '<input type="checkbox" name="iStaging" value="1" disabled>';
+        if($this->iStaging != 0)
+            echo '<input type="checkbox" name="iStaging" value="1" checked>';  
         else
-            if($this->iStaging != 0)
-                echo '<input type="checkbox" name="iStaging" value="1" checked>';  
-            else
-                echo '<input type="checkbox" name="iStaging" value="1">';
-        echo '  Wine-staging <i>(discontinued; last official release was 2.21)</i>';
+            echo '<input type="checkbox" name="iStaging" value="1">';
+        echo '  Wine-staging';
         echo '</label>';
         echo '</td></tr>',"\n";
        
