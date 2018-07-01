@@ -1,5 +1,6 @@
 # default permissions
 allow from all
+require all granted
 
 # uncomment this to take the website offline
 # RedirectMatch   ^.*$    http://appdb.winehq.org/site_outage.html
@@ -16,8 +17,9 @@ ErrorDocument 404 https://www.winehq.org/site/404
 # Modify the PHP configuration (global vars, etc.)
 php_flag allow_call_time_pass_reference 1
 php_value memory_limit 64M
+php_value error_reporting "7"
 php_value html_errors "1"
-php_value display_errors "0"
+php_value display_errors "1"
 php_value register_globals 0
 php_value short_open_tag 0
 php_value register_long_arrays 0

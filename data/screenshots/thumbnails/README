@@ -1,3 +1,0 @@
-Thumbnails of the scaled, watermarked images are kept in here.  Using thumbnails 
-reduces our overall bandwidth because we only send the full image if the user 
-explicitly displays it.

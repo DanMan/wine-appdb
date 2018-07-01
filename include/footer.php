@@ -4,7 +4,8 @@
 </div>
 
 <div id="footer">
-    <a href="https://wiki.winehq.org/WineHQ_Wiki:Privacy_policy">Privacy Policy</a><br><br>
+    <a href="https://wiki.winehq.org/WineHQ_Wiki:Privacy_policy">Privacy Policy</a><br>
+    If you have a privacy inquiry regarding this site, please write to <a href="mailto:privacy@winehq.org">privacy@winehq.org</a><br><br>
     Hosted By
     <a href="http://www.codeweavers.com/"><img src="https://dl.winehq.org/share/images/cw_logo_sm.png" alt="CodeWeavers"
     title="CodeWeavers - Run Windows applications and games on Mac and Linux"></a>
