@@ -417,16 +417,16 @@ class User {
      /**
       * Creates a new random password.
       */
-     public static function generate_passwd($pass_len = 10)
+     public static function generate_passwd($pass_len = 20)
      {
-         $nps = "";
-         mt_srand ((double) microtime() * 1000000);
-         while (strlen($nps)<$pass_len)
-         {
-             $c = chr(mt_rand (0,255));
-             if (preg_match("/[a-zA-Z0-9]/", $c)) $nps = $nps.$c;
+         $alphanum = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+         $alphanum_length = strlen($alphanum);
+         $random = openssl_random_pseudo_bytes($pass_len);
+         $passwd = '';
+         for ($i = 0; $i < $pass_len; ++$i) {
+             $passwd .= $alphanum[ord($random[$i]) % $alphanum_length];
          }
-         return ($nps);
+         return $passwd;
      }
 
      /**
