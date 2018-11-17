@@ -10,7 +10,7 @@ class vote
     public $iSlotIndex;
     public $iVersionId;
 
-    public function vote($iVoteId = null, $oRow = null)
+    public function __construct($iVoteId = null, $oRow = null)
     {
         if(!$iVoteId && !$oRow) /* Nothing to do */
             return;
@@ -133,7 +133,7 @@ class voteManager
     private $iUserId;
     private $aVotes;
 
-    public function voteManager($iUserId = null, $oRow = null)
+    public function __construct($iUserId = null, $oRow = null)
     {
         $this->iUserId = $iUserId;
     }
@@ -291,7 +291,7 @@ class voteInspector
     private $iVersionId;
     private $aDeleteVoters;
 
-    function voteInspector($iVersionId = null)
+    function __construct($iVersionId = null)
     {
         if(is_numeric($iVersionId))
             $this->iVersionId = $iVersionId;

@@ -16,7 +16,7 @@ class Vendor {
     /**    
      * constructor, fetches the data.
      */
-    function Vendor($iVendorId = null, $oRow = null)
+    function __construct($iVendorId = null, $oRow = null)
     {
         // we are working on an existing vendor
         if(!$iVendorId && !$oRow)
@@ -74,7 +74,7 @@ class Vendor {
         {
             if(query_num_rows($hResult))
             {
-                $this->vendor($oRow->vendorId);
+                Vendor::__construct($oRow->vendorId);
 
                 if(!$this->mustBeQueued())
                     $this->unQueue();
@@ -92,7 +92,7 @@ class Vendor {
         if($hResult)
         {
             $this->iVendorId = query_appdb_insert_id();
-            $this->vendor($this->iVendorId);
+            Vendor::__construct($this->iVendorId);
             return true;
         }
         else

@@ -30,7 +30,7 @@ class testData{
     private $sState;
 
      // constructor, fetches the data.
-    function testData($iTestingId = null, $oRow = null)
+    function __construct($iTestingId = null, $oRow = null)
     {
         // we are working on an existing test
         if(!$iTestingId && !$oRow)
@@ -115,7 +115,7 @@ class testData{
         if($hResult)
         {
             $this->iTestingId = query_appdb_insert_id();
-            $this->testData($this->iTestingId);
+            testData::__construct($this->iTestingId);
             $this->SendNotificationMail();
 
             if($this->sState == 'accepted')

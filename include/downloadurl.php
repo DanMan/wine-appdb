@@ -17,7 +17,7 @@ class downloadurl
     var $bQueued;
 
     /* Fetch the data if id is given */
-    function downloadurl($iId = NULL, $oRow = NULL)
+    function __construct($iId = NULL, $oRow = NULL)
     {
         if(!$iId && !$oRow)
             return;

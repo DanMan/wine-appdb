@@ -47,7 +47,7 @@ class Application {
     /**    
      * constructor, fetches the data.
      */
-    public function Application($iAppId = null, $oRow = null)
+    public function __construct($iAppId = null, $oRow = null)
     {
         $this->aVersions = array(); // Should always be an array
 
@@ -150,7 +150,7 @@ class Application {
         if($hResult)
         {
             $this->iAppId = query_appdb_insert_id();
-            $this->application($this->iAppId);
+            Application::__construct($this->iAppId);
             $this->SendNotificationMail();  // Only administrators will be mailed as no supermaintainers exist for this app.
 
             /* Submit super maintainer request if asked to */

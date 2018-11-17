@@ -8,7 +8,7 @@ class notifyContainer
 
   var $iVersionId; // the version created by create_version_and_parent_app()
 
-  function notifyContainer($bTestAsMaintainer)
+  function __construct($bTestAsMaintainer)
   {
     $this->__internal_setupQueuedDataForUser($bTestAsMaintainer);
   }

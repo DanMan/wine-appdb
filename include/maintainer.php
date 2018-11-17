@@ -18,7 +18,7 @@ class queuedEntries
 
   var $oMaintainer; // the maintainer we are retrieving entries for
 
-  function queuedEntries($oMaintainer)
+  function __construct($oMaintainer)
   {
     $this->oMaintainer = $oMaintainer;
 
@@ -138,7 +138,7 @@ class notificationUpdate
   var $iTargetLevel; // the target notification level based upon the
                      // maintiners queued entries
 
-  function notificationUpdate($sEmail, $sSubject, $sMsg, $iTargetLevel)
+  function __construct($sEmail, $sSubject, $sMsg, $iTargetLevel)
   {
     $this->sEmail = $sEmail;
     $this->sSubject = $sSubject;
@@ -166,7 +166,7 @@ class maintainer
     var $iNotificationLevel; // the current warning level of this maintainer
     var $sNotificationTime; // the time when we last warned this maintainer
 
-    function maintainer($iMaintainerId = null, $oRow = null)
+    function __construct($iMaintainerId = null, $oRow = null)
     {
         // set a default notification level of 0
         $this->iNotificationLevel = 0;

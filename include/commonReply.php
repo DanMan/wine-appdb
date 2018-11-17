@@ -5,7 +5,7 @@ class CommonReply extends ObjectManagerBase
     private $shReply;
     private $aTags;
 
-    function CommonReply($iId = null, $oRow = null)
+    function __construct($iId = null, $oRow = null)
     {
         if(!is_numeric($iId) && !$oRow)
             return;

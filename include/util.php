@@ -659,7 +659,7 @@ class color
   var $iGreen;
   var $iBlue;
 
-  function color($iRed = 0, $iGreen = 0, $iBlue = 0)
+  function __construct($iRed = 0, $iGreen = 0, $iBlue = 0)
   {
     $this->iRed = $iRed;
     $this->iGreen = $iGreen;

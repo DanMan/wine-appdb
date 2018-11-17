@@ -24,7 +24,7 @@ class Url {
     /**    
      * Constructor, fetches the url $iUrlId is given.
      */
-    function Url($iUrlId = null, $oRow = null)
+    function __construct($iUrlId = null, $oRow = null)
     {
         if(!$iUrlId && !$oRow)
             return;
@@ -85,7 +85,7 @@ class Url {
         }
 
         $this->iUrlId = query_appdb_insert_id();
-        $this->Url($this->iUrlId);
+        Url::__construct($this->iUrlId);
 
         if(!$bSilent)
             $this->SendNotificationMail();

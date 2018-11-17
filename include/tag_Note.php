@@ -7,7 +7,7 @@ class TagNoteVersion extends Tag
 {
     private $iAppId;
 
-    function TagNoteVersion($iVersionId = null, $oRow = null, $sTextId = '')
+    function __construct($iVersionId = null, $oRow = null, $sTextId = '')
     {
         if(!is_numeric($iVersionId) && !$oRow)
             return;
@@ -83,7 +83,7 @@ class TagNoteVersion extends Tag
 
 class TagNoteVersionAssignMgr extends TagAssignmentMgr
 {
-    function TagNoteVersionAssignMgr($iId = null, $oRow = null)
+    function __construct($iId = null, $oRow = null)
     {
         $this->Constructor($iId, $oRow);
     }

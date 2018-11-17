@@ -6,7 +6,7 @@ class version_queue
     var $oVersion;
     var $oDownloadUrl;
 
-    function version_queue($iVersionId = null, $oRow = null)
+    function __construct($iVersionId = null, $oRow = null)
     {
         $this->oVersion = new version($iVersionId, $oRow);
         $iTestingId = null;

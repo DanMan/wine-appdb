@@ -28,7 +28,7 @@ class Bug
     /**    
      * Constructor, fetches the data and bug objects if $ilinkId is given.
      */
-    function bug($iLinkId = null, $oRow = null)
+    function __construct($iLinkId = null, $oRow = null)
     {
         if(!$iLinkId && !$oRow)
           return;

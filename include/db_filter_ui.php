@@ -28,7 +28,7 @@ class FilterInfo
     private $aValueTypeData; // List of enums
     private $aValueTypeDataDisplay; // Optional display names for enums
 
-    public function FilterInfo($sColumn, $sDisplayName, $aTypes, $iValueType = FILTER_VALUES_NORMAL, $aValueTypeData = array(), $aValueTypeDisplay = array())
+    public function __construct($sColumn, $sDisplayName, $aTypes, $iValueType = FILTER_VALUES_NORMAL, $aValueTypeData = array(), $aValueTypeDisplay = array())
     {
         $this->sColumn = $sColumn;
         $this->sDisplayName = $sDisplayName;
@@ -120,7 +120,7 @@ class FilterInterface
     private $aEscapeCharsWith;
     private $sErrors; // Used to inform the user about errors (and to give advice)
 
-    public function FilterInterface($sTableName = '')
+    public function __construct($sTableName = '')
     {
         $this->aFilterInfo = array();
         $this->oFilterSet = new FilterSet(query_escape_string($sTableName));

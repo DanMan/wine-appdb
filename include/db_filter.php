@@ -27,7 +27,7 @@ class Filter
     private $iType; // The type of filter, like EQUALS, LIKE
     private $sData; // What the column is to be compared to */
 
-    public function Filter($sColumn, $iType, $sData)
+    public function __construct($sColumn, $iType, $sData)
     {
         $this->sColumn = $sColumn;
         $this->iType = $iType;
@@ -126,7 +126,7 @@ class FilterSet
 {
     private $aFilters; // Array of filters for this table
 
-    public function FilterSet($sTableName = '')
+    public function __construct($sTableName = '')
     {
         $this->aFilters = array();
 

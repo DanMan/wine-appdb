@@ -19,7 +19,7 @@ class Monitor {
      * Constructor.
      * If $iMonitorId is provided, fetches Monitor.
      */
-    function Monitor($iMonitorId="", $oRow = null)
+    function __construct($iMonitorId="", $oRow = null)
     {
         if(!$iMonitorId && !$oRow)
             return;
@@ -106,7 +106,7 @@ class Monitor {
 
         if($hResult)
         {
-            $this->Monitor(query_appdb_insert_id());
+            Monitor::__construct(query_appdb_insert_id());
             $sWhatChanged = "New monitor\n\n";
             $this->SendNotificationMail("add", $sWhatChanged);
             return true;

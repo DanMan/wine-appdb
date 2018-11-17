@@ -10,7 +10,7 @@ class application_queue
     var $oApp;
     var $oVendor;
 
-    function application_queue($iAppId = null, $oRow = null)
+    function __construct($iAppId = null, $oRow = null)
     {
         $this->oApp = new application($iAppId, $oRow);
 

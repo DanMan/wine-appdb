@@ -127,7 +127,7 @@ class ObjectManager
       $this->oMultiPage->getDataFromInput($aClean);
     }
 
-    function ObjectManager($sClass, $sTitle = "list", $iId = false)
+    function __construct($sClass, $sTitle = "list", $iId = false)
     {
         $this->sClass = $sClass;
         $this->sTitle = $sTitle;
@@ -1656,7 +1656,7 @@ class ObjectManager
           $oObject->objectGetItemsPerPage($this->sState) === FALSE)
         {
             /* Do not enable the MultiPage controls */
-            $this->oMultiPage->MultiPage(FALSE);
+            $this->oMultiPage->__construct(FALSE);
             return;
         }
 
@@ -1722,7 +1722,7 @@ class ObjectManager
 
         /* Fill the MultiPage object with the LIMIT related values */
         $iLowerLimit = ($iPage - 1) * $iItemsPerPage;
-        $this->oMultiPage->MultiPage(TRUE, $iItemsPerPage, $iLowerLimit);
+        $this->oMultiPage->__construct(TRUE, $iItemsPerPage, $iLowerLimit);
         $this->oMultiPage->iPage = $iPage;
     }
 
@@ -1815,7 +1815,7 @@ class MultiPage
     var $iPage;
     var $bEnabled;
 
-    function MultiPage($bEnabled = FALSE, $iItemsPerPage = 0, $iLowerLimit = 0)
+    function __construct($bEnabled = FALSE, $iItemsPerPage = 0, $iLowerLimit = 0)
     {
         $this->bEnabled = $bEnabled;
         $this->iItemsPerPage = $iItemsPerPage;
@@ -1843,7 +1843,7 @@ class mailOptions
 {
     var $bMailOnce;
 
-    function mailOptions()
+    function __construct()
     {
         /* Set default options */
         $this->bMailOnce = FALSE;
@@ -1856,7 +1856,7 @@ class mail
     var $sMessage;
     var $sRecipients;
 
-    function mail($aInput, $iRecipientId = null)
+    function __construct($aInput, $iRecipientId = null)
     {
         if(!$aInput)
             return;

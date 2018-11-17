@@ -51,7 +51,7 @@ class version {
     /**
      * constructor, fetches the data.
      */
-    public function Version($iVersionId = null, $oRow = null)
+    public function __construct($iVersionId = null, $oRow = null)
     {
         $this->aTestResults = array(); // should always be an array
         // we are working on an existing version
@@ -115,7 +115,7 @@ class version {
         if($hResult)
         {
             $this->iVersionId = query_appdb_insert_id();
-            $this->Version($this->iVersionId);
+            version::__construct($this->iVersionId);
             $this->SendNotificationMail();
 
             /* Submit maintainer request if asked to */

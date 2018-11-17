@@ -17,7 +17,7 @@ class distribution {
     var $aTestingIds;
 
      // constructor, fetches the data.
-    function distribution($iDistributionId = null, $oRow = null)
+    function __construct($iDistributionId = null, $oRow = null)
     {
         $this->aTestingIds = array();
         // we are working on an existing distribution.
@@ -101,7 +101,7 @@ class distribution {
         {
             if(query_num_rows($hResult))
             {
-                $this->distribution($oRow->distributionId);
+                distribution::__construct($oRow->distributionId);
 
                 /* Even though we did not create a new distribution, the caller is provided
                 with a valid distribution object.  Thus no special handling is necessary,
@@ -120,7 +120,7 @@ class distribution {
         if($hResult)
         {
             $this->iDistributionId = query_appdb_insert_id();
-            $this->distribution($this->iDistributionId);
+            distribution::__construct($this->iDistributionId);
             return true;
         }
         else

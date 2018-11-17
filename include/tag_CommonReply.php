@@ -2,7 +2,7 @@
 
 class TagCommonReply extends Tag
 {
-    function TagCommonReply($iId = null, $oRow = null, $sTextId = '')
+    function __construct($iId = null, $oRow = null, $sTextId = '')
     {
         $this->Constructor($iId, $oRow, $sTextId);
     }

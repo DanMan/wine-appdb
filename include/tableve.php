@@ -9,7 +9,7 @@ class TableVE {
     /*
      * mode can be: view, edit, create
      */
-    function TableVE($mode)
+    function __construct($mode)
     {
         $this->mode = $mode;
         $this->titleField = "";

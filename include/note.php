@@ -31,7 +31,7 @@ class Note {
      * Constructor.
      * If $iNoteId is provided, fetches note.
      */
-    function Note($iNoteId = null, $oRow = null)
+    function __construct($iNoteId = null, $oRow = null)
     {
         $this->aVersions = array();
 

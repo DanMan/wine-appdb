@@ -86,7 +86,7 @@ class table_counts
     // the counts of the tables
     var $aTableCounts;
 
-    function table_counts()
+    function __construct()
     {
         $this->aTablesToCount = array('appBundle',
                                       'appCategory',

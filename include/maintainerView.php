@@ -9,7 +9,7 @@ class maintainerView
     var $iUserId;
     var $bViewingSelf;
 
-    function maintainerView($iUserId = null, $oRow = null)
+    function __construct($iUserId = null, $oRow = null)
     {
         if(!$oRow)
         {

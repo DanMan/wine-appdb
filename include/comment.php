@@ -26,7 +26,7 @@ class Comment {
      * Constructor.
      * If $iCommentId is provided, fetches comment.
      */
-    function Comment($iCommentId = null, $oRow = null)
+    function __construct($iCommentId = null, $oRow = null)
     {
         if(!$iCommentId && !$oRow)
             return;
@@ -76,7 +76,7 @@ class Comment {
 
         if($hResult)
         {
-            $this->comment(query_appdb_insert_id());
+            Comment::__construct(query_appdb_insert_id());
             $sEmail = User::get_notify_email_address_list($this->iAppId, $this->iVersionId);
             $sEmail .= $this->oOwner->sEmail." ";
 

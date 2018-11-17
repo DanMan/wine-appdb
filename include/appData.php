@@ -16,7 +16,7 @@ class appData
     var $sDescription;
     var $bQueued;
 
-    function appData($iId = null, $oRow = null, $oObject = null)
+    function __construct($iId = null, $oRow = null, $oObject = null)
     {
         if(!$iId && !$oRow)
             return;

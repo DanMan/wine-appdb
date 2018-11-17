@@ -31,7 +31,7 @@ class User {
      * Constructor.
      * If $iUserId is provided, logs in user.
      */
-    function User($iUserId="")
+    function __construct($iUserId="")
     {
         $this->sRealname = "an anonymous user";
         if(is_numeric($iUserId))

@@ -5,7 +5,7 @@ class testData_queue
     var $oTestData;
     var $oDistribution;
 
-    function testData_queue($iTestId = null, $oRow = null)
+    function __construct($iTestId = null, $oRow = null)
     {
         $this->oTestData = new testData($iTestId, $oRow);
         $this->oDistribution = new distribution($this->oTestData->iDistributionId);

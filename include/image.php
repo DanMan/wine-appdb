@@ -19,7 +19,7 @@ class Image {
      * $sFile is the full path to the image. $this->isLoaded()
      * should really be checked after making a new object.
      */
-    function Image($sPath, $bAbsolutePath=false)
+    function __construct($sPath, $bAbsolutePath=false)
     {
         /* if $bAbsolutePath is true we should use the $sPath without modification */
         /* otherwise use appdb_fullpath() to convert the relative $sPath into a absolute path */
@@ -423,7 +423,7 @@ class Image {
 
 class ImageResource extends Image {
     
-    function ImageResource($oImage,$iType)
+    function __construct($oImage, $iType)
     {
         
         $this->oImage = $oImage;
