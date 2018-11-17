@@ -396,4 +396,4 @@ if(!test_object_methods())
     echo "test_object_methods() passed\n";
 }
 
-?>
+

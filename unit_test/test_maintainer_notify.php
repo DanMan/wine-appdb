@@ -696,4 +696,4 @@ function test_maintainer_notifyMaintainersOfQueuedData()
 
   return $bSuccess;
 }
-?>
+

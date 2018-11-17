@@ -36,4 +36,4 @@ echo "</div>\n";
 
 apidb_footer();
 
-?>
+

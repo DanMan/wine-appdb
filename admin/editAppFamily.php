@@ -62,4 +62,4 @@ else
 }
 
 apidb_footer();
-?>
+

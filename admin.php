@@ -424,4 +424,4 @@ switch(getInput('sAction', $aClean))
 
 apidb_footer();
 
-?>
+

@@ -1486,5 +1486,3 @@ EOT;
         return TRUE;
     }
 }
-
-?>

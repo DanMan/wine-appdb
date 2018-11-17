@@ -82,4 +82,4 @@ if(!test_user_password_migration())
     echo "test_user_password_migration() passed\n";
 }
 
-?>
+

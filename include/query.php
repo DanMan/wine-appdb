@@ -232,4 +232,4 @@ function query_get_server_info()
     return $hAppdbLink->server_info;
 }
 
-?>
+

@@ -10,4 +10,4 @@ require_once(BASE."include/comment.php");
 
 Comment::view_comment_body($aClean['iCommentId']);
 
-?>
+

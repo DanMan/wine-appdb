@@ -56,4 +56,4 @@ if(!test_testData_getNewestTestidFromVersionId())
     $bTestSuccess = false;
 } else
     echo "test_testData_getNewestTestidFromVersionId() passed\n";
-?>
+

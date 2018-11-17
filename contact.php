@@ -162,4 +162,4 @@ if(!$aClean['sSubmit'])
     util_redirect_and_exit(BASE."index.php");
 }
 
-?> 
+

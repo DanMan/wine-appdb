@@ -43,4 +43,4 @@ if(!test_error_log_log_error())
     echo "test_error_log_log_error() passed\n";
 }
 
-?>
+

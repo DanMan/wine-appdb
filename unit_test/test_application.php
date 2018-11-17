@@ -244,5 +244,5 @@ if(!test_application_getWithRating())
     echo "test_application_getWithRating() passed\n"; 
 }
     
-?>
+
 

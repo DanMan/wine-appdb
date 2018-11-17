@@ -99,4 +99,4 @@ function global_sidebar_login() {
     $g->done();
 
 }
-?>
+

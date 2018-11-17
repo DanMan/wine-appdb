@@ -85,4 +85,4 @@ if(!$aClean['bThumbnail'])
 else
     $oScreenshot->output_screenshot(true);
 
-?>
+

@@ -436,4 +436,4 @@ class ImageResource extends Image {
                           ." {$this->iWidth}x{$this->iHeight}");
     }
 }
-?>
+

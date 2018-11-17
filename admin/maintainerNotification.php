@@ -58,4 +58,3 @@ while($oRow = query_fetch_object($hResult))
 
 apidb_footer();
 
-?>

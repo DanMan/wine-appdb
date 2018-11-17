@@ -337,4 +337,3 @@ public function objectGetEntriesCount()
     }
 }
 
-?>

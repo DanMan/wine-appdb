@@ -65,4 +65,4 @@ function global_admin_menu() {
     $g->done();
 }
 
-?>
+

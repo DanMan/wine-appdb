@@ -168,4 +168,4 @@ if(($oObject->getId() || $oObject->IsNullIdAllowed($sAction)) && $sAction != "ad
 
 apidb_footer();
 
-?>
+

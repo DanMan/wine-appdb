@@ -281,4 +281,3 @@ function addmsg($shText, $color = "black")
     $GLOBALS['session']->addmsg($shText, $color);
 }
 
-?>

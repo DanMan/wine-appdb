@@ -471,4 +471,4 @@ class application_queue
     }
 }
 
-?>
+

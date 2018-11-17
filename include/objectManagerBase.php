@@ -50,4 +50,3 @@ abstract class ObjectManagerBase
     }
 }
 
-?>

@@ -206,4 +206,4 @@ if($hResult)
 }
 
 apidb_footer();
-?>
+

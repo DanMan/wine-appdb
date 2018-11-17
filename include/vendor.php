@@ -530,4 +530,4 @@ class Vendor {
     }
 }
 
-?>
+

@@ -789,4 +789,4 @@ class screenshot
     }
 }
 
-?>
+

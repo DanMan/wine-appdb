@@ -23,4 +23,4 @@ apidb_header("Comments");
 Comment::view_app_comments($iVersionId, $iThreadId);
 
 apidb_footer();
-?>
+

@@ -289,4 +289,4 @@ if(!test_resize_image_border())
 {
     echo "test_resize_image_border() passed\n";
 }
-?>
+

@@ -82,4 +82,3 @@ function test_vote_update_delete()
 run_test("test_voteManager_getVotes");
 run_test("test_vote_update_delete");
 
-?>

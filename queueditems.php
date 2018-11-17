@@ -66,4 +66,4 @@ if($sResult = appData::listSubmittedBy($oUser->iUserId))
 
 apidb_footer();
 
-?> 
+

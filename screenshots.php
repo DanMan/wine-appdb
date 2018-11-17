@@ -181,4 +181,4 @@ if($aClean['iVersionId'] && $_SESSION['current']->isLoggedIn())
 echo html_back_link(1);
 
 apidb_footer();
-?>
+

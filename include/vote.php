@@ -502,4 +502,4 @@ function vote_count_version_total($iVersionId)
     return query_num_rows($hResult);
 }
 
-?>
+

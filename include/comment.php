@@ -879,4 +879,4 @@ function forum_lookup_user($iUserId)
     return $sMailto;
 }
 
-?>
+

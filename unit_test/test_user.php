@@ -340,4 +340,3 @@ if($oUser->login($test_email, $test_password) == SUCCESS)
     $oUser = new User();
 }
 
-?>

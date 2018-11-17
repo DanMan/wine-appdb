@@ -101,4 +101,3 @@ class TagNoteVersionAssignMgr extends TagAssignmentMgr
     }
 }
 
-?>

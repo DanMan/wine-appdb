@@ -27,4 +27,4 @@ function global_sidebar_menu()
 
 }
 
-?>
+

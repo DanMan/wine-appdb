@@ -69,4 +69,4 @@ else
 
 apidb_footer();
 
-?>
+

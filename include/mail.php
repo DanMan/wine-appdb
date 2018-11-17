@@ -45,4 +45,4 @@ function mail_appdb($sEmailList,$sSubject,$sMsg)
         addmsg("Error while sending e-mail", "red");
     return $bResult;
 }
-?>
+

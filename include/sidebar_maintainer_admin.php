@@ -19,4 +19,4 @@ function global_maintainer_admin_menu() {
     $g->done();
 }
 
-?>
+

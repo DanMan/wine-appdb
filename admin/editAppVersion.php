@@ -60,4 +60,4 @@ if(!empty($aClean['sSubmit']))
 
     apidb_footer();
 }
-?>
+

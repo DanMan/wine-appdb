@@ -66,4 +66,4 @@ if($_SESSION['current']->showDebuggingInfos())
  */
 appdb_debug("Starting Debug Log");
 
-?>
+

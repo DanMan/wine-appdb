@@ -562,4 +562,4 @@ class FilterInterface
     }
 }
 
-?>
+

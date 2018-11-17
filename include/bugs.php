@@ -800,4 +800,4 @@ function view_version_bugs($iVersionId = null, $aBuglinkIds)
     echo "<p>{$sLink}</p>\n";
 }
 
-?>
+

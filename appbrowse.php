@@ -14,4 +14,4 @@ $iId = getInput('iCatId', $aClean);
 
 util_redirect_and_exit(BASE."objectManager.php?sClass=category&iId=$iId&sAction=view&sTitle=Browse+Applications");
 
-?>
+
