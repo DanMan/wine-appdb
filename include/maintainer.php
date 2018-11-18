@@ -359,7 +359,7 @@ class maintainer
         return TRUE;
     }
 
-    public function findAppMaintainer($iUserId, $iAppId)
+    static public function findAppMaintainer($iUserId, $iAppId)
     {
         $hResult = query_parameters("SELECT * FROM appMaintainers WHERE userId = '?' AND appId = '?' AND superMaintainer = '1'", $iUserId, $iAppId);
 
@@ -370,7 +370,7 @@ class maintainer
         return new maintainer(null, $oRow);
     }
 
-    public function findVersionMaintainer($iUserId, $iVersionId)
+    public static function findVersionMaintainer($iUserId, $iVersionId)
     {
         $hResult = query_parameters("SELECT * FROM appMaintainers WHERE userId = '?' AND versionId = '?'", $iUserId, $iVersionId);
 
@@ -381,7 +381,7 @@ class maintainer
         return new maintainer(null, $oRow);
     }
 
-    function deleteMaintainer($oUser, $iAppId = null, $iVersionId = null)
+    static function deleteMaintainer($oUser, $iAppId = null, $iVersionId = null)
     {
         /* remove supermaintainer */
         if($iAppId && ($iVersionId == null))
@@ -452,7 +452,7 @@ class maintainer
         $oVersion->updateMaintainerState();
     }
 
-    function getSubmitterEmails()
+    static function getSubmitterEmails()
     {
         $sRecipients = '';
         $sQuery = "SELECT DISTINCT(user_list.email) FROM appMaintainers, user_list WHERE
@@ -648,7 +648,7 @@ class maintainer
     }
 
     /* Returns true if the given app has a maintainer, false otherwise */
-    public function appHasMaintainer($iAppId)
+    public static function appHasMaintainer($iAppId)
     {
         $hResult = query_parameters("SELECT COUNT(maintainerId) as count FROM appMaintainers WHERE appId = '?' AND superMaintainer = '1' AND state = 'accepted'", $iAppId);
 
@@ -660,7 +660,7 @@ class maintainer
     }
 
     /* Returns true if the given version has a maintainer, false otherwise */
-    public function versionHasMaintainer($iVersionId)
+    static public function versionHasMaintainer($iVersionId)
     {
         $oVersion = new version($iVersionId);
         $hResult = query_parameters("SELECT COUNT(maintainerId) as count FROM appMaintainers WHERE (appId = '?' AND superMaintainer = '1') OR (versionId = '?') AND state = 'accepted'", $oVersion->iAppId, $iVersionId);
@@ -1521,7 +1521,7 @@ class maintainer
     // static method called by the cron maintenance script to notify
     // maintainers of data pending for their applications and versions
     //TODO: php5 make this static when we have php5
-    function notifyMaintainersOfQueuedData()
+    static function notifyMaintainersOfQueuedData()
     {
       // retrieve all of the maintainers
       $hResult = maintainer::objectGetEntries('accepted');

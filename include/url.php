@@ -270,8 +270,8 @@ class Url {
             mail_appdb($sEmail, $sSubject ,$sMsg);
     }
 
-    /* Output an editor for URL fields */
-    function outputEditor($sFormAction, $oVersion, $oApp = NULL)
+    /** Output an editor for URL fields */
+    static function outputEditor($sFormAction, $oVersion, $oApp = NULL)
     {
         /* Check for correct permissions */
         if(($oVersion && !url::canEdit($oVersion->iVersionId)) ||
@@ -337,7 +337,7 @@ class Url {
     }
 
     /* Process data from a URL form */
-    function ProcessForm($aValues)
+    static function ProcessForm($aValues)
     {
 
         /* Check that we are processing a Download URL form */
@@ -464,7 +464,7 @@ class Url {
         return TRUE;
     }
 
-    function canEdit($iVersionId = NULL, $iAppId = NULL)
+    static function canEdit($iVersionId = NULL, $iAppId = NULL)
     {
         if($_SESSION['current']->hasPriv("admin"))
             return TRUE;

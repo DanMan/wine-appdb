@@ -318,7 +318,7 @@ class Bug
     }
 
     /* Get a list of bugs submitted by a given user */
-    function listSubmittedBy($iUserId, $bQueued = true)
+    static function listSubmittedBy($iUserId, $bQueued = true)
     {
         $hResult = query_parameters("SELECT appFamily.appName, buglinks.versionId, appVersion.versionName, buglinks.submitTime, buglinks.bug_id, buglinks.linkId FROM buglinks, appFamily, appVersion WHERE appFamily.appId = appVersion.appId AND buglinks.versionId = appVersion.versionId AND buglinks.state = '?' AND buglinks.submitterId = '?' ORDER BY buglinks.versionId", $bQueued ? 'queued' : 'accepted', $iUserId);
 

@@ -48,7 +48,6 @@ class Image {
         
             default;
                 $this->set_debuglog("Image type ({$oInfo[2]}) unknown");
-                return;
             return;
         }
         

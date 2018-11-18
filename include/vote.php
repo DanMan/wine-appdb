@@ -71,7 +71,7 @@ class vote
         return TRUE;
     }
 
-    public function getVotesForVersion($iVersionId)
+    static public function getVotesForVersion($iVersionId)
     {
         $aRet = array();
         $hResult = query_parameters("SELECT * FROM appVotes WHERE versionId = '?'", 

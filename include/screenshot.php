@@ -710,14 +710,13 @@ class screenshot
 
     function mustBeQueued()
     {
+        $oAppData = new appData();
         if($this)
         {
-            $oAppData = new appData();
             $oAppData->iVersionId = $this->iVersionId;
             $oAppData->iAppId = NULL;
-            return $oAppData->mustBeQueued();
-        } else
-            return appData::mustBeQueued();
+        }
+        return $oAppData->mustBeQueued();
     }
 
     function objectGetTableRow()

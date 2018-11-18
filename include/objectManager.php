@@ -2,9 +2,11 @@
 
 define("PREVIEW_ENTRY", 2);
 
-/* class for managing objects */
-/* - handles processing of queued objects */
-/* - handles the display and editing of unqueued objects */
+/**
+ * class for managing objects
+ * handles processing of queued objects
+ * handles the display and editing of un-queued objects
+ */
 class ObjectManager
 {
     private $sClass;

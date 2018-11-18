@@ -5,7 +5,7 @@ define("ERROR_GENERAL", "general_error");
 
 class error_log
 {
-    function log_error($sErrorType, $sLogText)
+    static function log_error($sErrorType, $sLogText)
     {
         global $aClean;
 
@@ -23,17 +23,11 @@ class error_log
         $sQuery = 'INSERT INTO error_log (submitTime, userid, type, log_text, request_text, deleted) '.
             "VALUES(?, '?', '?', '?', '?', '?')";
         $iUser = (isset($_SESSION['current']) ? $_SESSION['current']->iUserId : 0);
-        $hResult = query_parameters($sQuery,
-                                    "NOW()",
-                                    $iUser,
-                                    $sErrorType,
-                                    $sLogText,
-                                    $sRequestText,
-                                    '0');
+        query_parameters($sQuery, "NOW()", $iUser, $sErrorType, $sLogText, $sRequestText, '0');
     }
 
     /* get a backtrace and log it to the database */
-    function logBackTrace($sDescription)
+    static function logBackTrace($sDescription)
     {
         ob_start();
         print_r(debug_backtrace());

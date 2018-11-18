@@ -168,7 +168,7 @@ class downloadurl
     }
 
     /* Process data from a Download URL form */
-    function ProcessForm($aValues)
+    static function ProcessForm($aValues)
     {
         $sWhatChangedRemove ='';
         $sWhatChangedModify = '';
@@ -273,7 +273,7 @@ class downloadurl
         return ($this->bQueued) ? 'queued' : 'accepted';
     }
 
-    function canEdit($iVersionId = NULL)
+    static function canEdit($iVersionId)
     {
         if($_SESSION['current']->hasPriv("admin") ||
            ($iVersionId &&
@@ -282,7 +282,7 @@ class downloadurl
             return TRUE;
         } else
         {
-            $oVersion = new version($this->iVersionId);
+            $oVersion = new version($iVersionId);
 
             return $oVersion->canEdit();
         }
@@ -459,14 +459,13 @@ class downloadurl
 
     function mustBeQueued()
     {
+        $oAppData = new appData();
         if($this)
         {
-            $oAppData = new appData();
             $oAppData->iVersionId = $this->iVersionId;
             $oAppData->iAppId = NULL;
-            return $oAppData->mustBeQueued();
-        } else
-            return appData::mustBeQueued();
+        }
+        return $oAppData->mustBeQueued();
     }
 
     function allowAnonymousSubmissions()
