@@ -247,6 +247,7 @@ class maintainer
         /* if they are trying to become a maintainer and aren't already a maintainer of */
         /* the version, then continue processing the request */
 
+        $sStatusMessage = '';
         $oUser = new User($this->iUserId);
         
         if(!$oUser->isSuperMaintainer($this->iAppId) &&
@@ -307,7 +308,7 @@ class maintainer
         return $sStatusMessage;
     }
 
-    function reject()
+    function reject($oRow)
     {
         $oUser = new User($this->iUserId);
         $sEmail = $oUser->sEmail;
@@ -401,7 +402,7 @@ class maintainer
                                         $oUser->iUserId);
         }
 
-        if($hResult)
+        if(isset($hResult))
             return true;
         
         return false;
@@ -836,7 +837,7 @@ class maintainer
             echo "<tr valign=top><td class=color0>";
             echo '<b>Application</b></td><td>'.$oApp->sName;
             echo '</td></tr>',"\n";
-            if($aClean['iVersionId'])
+            if(isset($oVersion) && $aClean['iVersionId'])
             {
                 echo "<tr valign=top><td class=color0>";
                 echo '<b>Version</b></td><td>'.$oVersion->sName;
@@ -1255,6 +1256,7 @@ class maintainer
       $sMsg.= "Hello ".$oUser->sRealname."<".$oUser->sEmail.">".".\n\n";
       $sMsg.= "You are receiving this email to notify you that there is queued data";
       $sMsg.=" for the ";
+      $sFullname = '';
       if($this->bSuperMaintainer)
       {
         $oApp = new Application($this->iAppId);
@@ -1492,7 +1494,7 @@ class maintainer
       if($this->iNotificationLevel == 0)
       {
         if($bDebugOutputEnabled)
-          echo "At level 0, no warning issued to ".$oUser->sEmail."\n";
+          echo "At level 0, no warning issued to ".$oNotificationUpdate->sEmail."\n";
       } else
       {
         if($bDebugOutputEnabled)

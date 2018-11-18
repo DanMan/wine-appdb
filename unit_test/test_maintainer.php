@@ -590,7 +590,7 @@ function test_maintainer_getMaintainersForAppIdVersionId()
     $oFirstVersionMaintainer->sMaintainReason = "I need it";
     $oFirstVersionMaintainer->iVersionId = $oFirstVersion->iVersionId;
     $oFirstVersionMaintainer->iAppId = $oFirstVersion->iAppId;
-    $oFisrtVersionMaintainer->bSuperMaintainer = FALSE;
+    $oFirstVersionMaintainer->bSuperMaintainer = FALSE;
     $oFirstVersionMaintainer->iUserId = $oUser->iUserId;
     $oFirstVersionMaintainer->create();
 

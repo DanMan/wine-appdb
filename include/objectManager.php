@@ -782,7 +782,7 @@ class ObjectManager
         $iDeleted = 0;
         $iFailed = 0;
 
-        if($sSubmittedBefore)
+        if($iSubmittedBefore)
             $sMailWord = "old";
         else
             $sMailWord = "all";
@@ -886,7 +886,7 @@ class ObjectManager
         {
             $sPlural = ($iAffected == 1) ? "": "s";
             addmsg("Moved $iAffected child object$sPlural", "green");
-        } else if($iAfffected === FALSE)
+        } else if($iAffected === FALSE)
         {
             /* We don't want to delete this object if some children were not moved */
             addmsg("Failed to move child objects", "red");
@@ -1192,9 +1192,10 @@ class ObjectManager
             return;
 
         // Allow the user to continue filling out a form
-        if(getInput('sSubmit', $aClean))
+        $input = getInput('sSubmit', $aClean);
+        if($input)
         {
-            apidb_header($this->get_title(getInput($sAction, $aClean)));
+            apidb_header($this->get_title($input));
             $this->show_form_help_session_timeout();
         }
 
@@ -1312,6 +1313,7 @@ class ObjectManager
         /* Show a note if the entry is queued or rejected */
         if($oObject->objectGetState() != 'accepted')
         {
+            $sVerb = '';
             $sSentence = 'This entry ';
             switch($oObject->objectGetState())
             {
@@ -1404,7 +1406,7 @@ class ObjectManager
                 if(!$this->iId)
                     return FALSE;
 
-                if($sErrors)
+                if(!empty($sErrors))
                     return $sErrors;
 
                 if(!$oOriginalObject->canEdit())
@@ -1423,7 +1425,7 @@ class ObjectManager
 
             case "Submit":
                 // if we have errors, return them
-                if($sErrors)
+                if(!empty($sErrors))
                     return $sErrors;
 
                 // if we have a valid iId then we are displaying an existing entry

@@ -133,7 +133,6 @@ class Vendor {
             if (!query_parameters("UPDATE vendor SET vendorName = '?' WHERE vendorId = '?'",
                                   $this->sName, $this->iVendorId))
                 return false;
-            $this->sName = $sName;
         }
 
         if($this->sWebpage)
@@ -141,7 +140,6 @@ class Vendor {
             if (!query_parameters("UPDATE vendor SET vendorURL = '?' WHERE vendorId = '?'",
                                   $this->sWebpage, $this->iVendorId))
                 return false;
-            $this->sWebpage = $sWebpage;
         }
         return true;
     }

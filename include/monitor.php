@@ -163,6 +163,7 @@ class Monitor {
     {
         $sSubject = null;
         $sMsg = null;
+        $aMailTo = null;
 
         if($this->iVersionId)
         {
@@ -183,7 +184,7 @@ class Monitor {
             switch($sAction)
             {
                 case "delete":
-                    if($bParentActino)
+                    if($bParentAction)
                     {
                         $sSubject = "Monitored $sWhat deleted";
                         $sMsg = "The $sWhat $sName which you monitored has been ".
@@ -191,11 +192,10 @@ class Monitor {
                     }
                 break;
             }
-            $aMailTo = null;
         } else
         {
             $oUser = new user($this->iUserId);
-            $sUser = $oUser->sName;
+            $sUser = $oUser->sRealname;
             switch($sAction)
             {
                 case "delete":
@@ -233,12 +233,13 @@ class Monitor {
     function SendNotificationMail($sAction="add",$sMsg=null)
     {
         /* Set variables depending on whether it is an application or version monitor */
+        $sVersion = " version";
+        $sSubject = "";
         if(isset($this->iVersionId))
         {
             $oVersion = new version($this->iVersionId);
             $sAppName = version::fullName($this->iVersionId);
             $sUrl = $oVersion->objectMakeUrl();
-            $sVersion = " version";
         } else
         {
             $oApp = new application($this->iAppId);

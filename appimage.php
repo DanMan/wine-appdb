@@ -71,15 +71,13 @@ header("Expires: ");
 /* if the browser is asking if the file was modified since a particular date */
 /* and the date is the same that the file was modified, then we can report */
 /* that the file wasn't modified, the browser can used the cached image */
-if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && 
-    $iModTime == pHttpDate($_SERVER['HTTP_IF_MODIFIED_SINCE']))
-{
-   header("HTTP/1.0 304 Not Modified");
-   exit;
+if (isset($iModTime)) {
+    if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $iModTime == pHttpDate($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+        header("HTTP/1.0 304 Not Modified");
+        exit;
+    }
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s", $iModTime) . " GMT");
 }
-
-header("Last-Modified: ".gmdate("D, d M Y H:i:s",$iModTime)." GMT");
-
 if(!$aClean['bThumbnail'])
     $oScreenshot->output_screenshot(false);
 else

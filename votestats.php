@@ -181,7 +181,6 @@ if($hResult)
         $oTableRowClick = new TableRowClick($oVersion->objectMakeUrl());
         $oTableRow = new TableRow();
         $oTableRow->SetRowClick($oTableRowClick);
-        $oTableRow->SetClass($sColor);
         $oTableCell = new TableCell("$c.".$shLink);
         $oTableCell->SetWidth("90%");
         $oTableRow->AddCell($oTableCell);

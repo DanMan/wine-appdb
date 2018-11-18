@@ -213,6 +213,7 @@ class Note {
             $sMsg .= $oApp->objectMakeUrl()."\n";
         }
 
+        $sSubject = '';
         switch($sAction)
         {
             case "add":
@@ -238,7 +239,7 @@ class Note {
                 $sMsg .= $this->shDescription."\n";
                 $sMsg .= "\n";
                 $sMsg .= "Because:\n";
-                if(isset($aClean['sReplyText']) && $aClean['sReplyText'])
+                if(!empty($aClean['sReplyText']))
                     $sMsg .= $aClean['sReplyText']."\n";
                 else
                     $sMsg .= "No reason given.\n";
@@ -323,16 +324,14 @@ class Note {
             return;
 
         if($iVersionId)
-            $oVersion = new version($iVersionId);
+            $obj = new version($iVersionId);
         else
-            $oApp = new application($iAppId);
+            $obj = new application($iAppId);
 
         foreach($aNotes as $oNote)
         {
-            $shReturnTo = $iVersionId ? $oVersion->objectMakeUrl() : $oApp->objectMakeUrl();
-
+            $shReturnTo = $obj->objectMakeUrl();
             $aVars = array('shReturnTo' => $shReturnTo, 'bEditing' => 'false');
-
             $oNote->display($aVars);
         }
     }

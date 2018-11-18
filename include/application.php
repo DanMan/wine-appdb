@@ -400,6 +400,8 @@ class Application {
 
     public function objectGetMail($sAction, $bMailSubmitter, $bParentAction)
     {
+	    $sSubject='';
+	    $sMsg='';
         if($bMailSubmitter)
         {
             switch($sAction)
@@ -433,6 +435,8 @@ class Application {
 
         if($this->iSubmitterId)
         {
+            $sMsg = '';
+            $sSubject = '';
             $oSubmitter = new User($this->iSubmitterId);
             switch($sAction)
             {
@@ -471,8 +475,8 @@ class Application {
         if($hResult = query_parameters($sQuery, $sRating))
         {
             $oRow = query_fetch_object($hResult);
+	        return $oRow->total;
         }
-	     return $oRow->total;
     }
 
     public static function getWithRating($sRating, $iOffset, $iItemsPerPage)
@@ -503,6 +507,7 @@ class Application {
         if(!isset($aClean['sReplyText']))
             $aClean['sReplyText'] = "";
 
+        $sSubject = '';
         switch($sAction)
         {
             case "add":
@@ -1388,7 +1393,7 @@ EOT;
 
     public function objectGetChildren($bIncludeDeleted = false)
     {
-        return $this->objectGetChildrenClassSpecific('', $IncludeDeleted);
+        return $this->objectGetChildrenClassSpecific('', $bIncludeDeleted);
     }
 
     public function objectGetChildrenClassSpecific($sClass = '', $bIncludeDeleted = false)

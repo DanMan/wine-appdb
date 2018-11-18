@@ -422,7 +422,8 @@ function searchForApplication($search_words, $iExcludeAppId = null)
 
 function outputSearchTableForhResult($search_words, $hResult)
 {
-    if(($hResult == null) || (query_num_rows($hResult) == 0))
+    $num_rows = query_num_rows($hResult);
+    if(($hResult == null) || ($num_rows == 0))
     {
         // do something
         echo html_frame_start();
@@ -461,32 +462,31 @@ function outputSearchTableForhResult($search_words, $hResult)
         }
 
         echo "</tbody></table>\n";
-        echo "<p><b>$c</b> match(es) found</p>";
+        echo "<p><b>$num_rows</b> match(es) found</p>";
         echo html_frame_end();
     }
 }
 
-/* pass in $isVersion of true if we are processing changes for an app version */
-/* or false if processing changes for an application family */
+/**
+ * Pass in $isVersion of true if we are processing changes for an app version
+ * or false if processing changes for an application family
+ * @param bool $bIsVersion
+ */
 function process_app_version_changes($bIsVersion)
 {
     global $aClean;
 
     /* load up the version or application depending on which values are set */
     if($bIsVersion)
-        $oVersion = new Version($aClean['iVersionId']);
+        $obj = new Version($aClean['iVersionId']);
     else
-        $oApp = new Application($aClean['iAppId']);
+        $obj = new Application($aClean['iAppId']);
 
     // commit changes of form to database
-    if(($aClean['sSubmit'] == "Update Database") && $bIsVersion) /* is a version */
+    if(isset($aClean['sSubmit']) && $aClean['sSubmit'] == "Update Database")
     {
-        $oVersion->GetOutputEditorValues($aClean);
-        $oVersion->update();
-    } else if(($aClean['sSubmit'] == "Update Database") && !$bIsVersion) /* is an application */
-    {
-        $oApp->GetOutputEditorValues($aClean);
-        $oApp->update();
+        $obj->GetOutputEditorValues($aClean);
+        $obj->update();
     }
 }
 

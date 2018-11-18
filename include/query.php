@@ -209,7 +209,7 @@ function query_field_name($hResult, $iFieldOffset)
     return $finfo->name;
 }
 
-function query_field_len($hResult, $ifieldOffset)
+function query_field_len($hResult, $iFieldOffset)
 {
     $finfo = $hResult->fetch_field_direct($iFieldOffset);
     return $finfo->max_length;

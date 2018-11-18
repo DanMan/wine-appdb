@@ -16,7 +16,7 @@ function test_url_update()
     $sTestPassword = "password";
     if(!$oUser = create_and_login_user($sTestUser, $sTestPassword))
     {
-        error("Received '$retval' instead of SUCCESS('".SUCCESS."').");
+        error("Received error instead of SUCCESS('".SUCCESS."').");
         return FALSE;
     }
 

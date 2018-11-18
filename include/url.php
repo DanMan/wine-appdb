@@ -225,7 +225,9 @@ class Url {
  
     function SendNotificationMail($bDeleted=false)
     {
-        /* Set variables depending on whether the url is for an app or version */
+        $sSubject = '';
+        $sMsg = '';
+        // Set variables depending on whether the url is for an app or version
         if($this->iVersionId)
         {
             $oVersion = new version($this->iVersionId);
@@ -366,6 +368,10 @@ class Url {
 
         $num = $oRow->num;
 
+        $sWhatChanged = '';
+        $sWhatChangedRemove = '';
+        $sWhatChangedModify = '';
+
         /* Update URLs.  Nothing to do if none are present in the database */
         if($num)
         {
@@ -435,18 +441,19 @@ class Url {
         {
             $oApp = new Application($aValues["iAppId"]);
 
+            $sVersionName = '';
             if($aValues["iVersionId"])
             {
                 $oVersion = new Version($aValues["iVersionId"]);
                 $sVersionName = " $oVersion->sName";
+                $sMsg = $oVersion->objectMakeUrl();
             }
+            else
+                $sMsg =  $oApp->objectMakeUrl();
 
             $sSubject = "Links for $oApp->sName$sVersionName updated by ". 
                         $_SESSION['current']->sRealname;
 
-            $sMsg = $aValues["iVersionId"] ? 
-                $oVersion->objectMakeUrl() :
-                $oApp->objectMakeUrl();
             $sMsg .= "\n\n";
             $sMsg .= "The following changed were made\n\n";
             $sMsg .= "$sWhatChanged\n\n";

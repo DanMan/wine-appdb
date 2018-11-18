@@ -315,8 +315,8 @@ class distribution {
 
     function objectGetMail($sAction, $bMailSubmitter, $bParentAction)
     {
-        $oSubmitter = new user($this->iSubmitterId);
-
+        $sSubject = '';
+        $sMsg = '';
         if($bMailSubmitter)
         {
             switch($sAction)
@@ -347,6 +347,8 @@ class distribution {
     {
         global $aClean;
 
+        $sSubject = '';
+        $sMsg = '';
         if($this->iSubmitterId)
         {
             $oSubmitter = new User($this->iSubmitterId);
@@ -402,11 +404,13 @@ class distribution {
         }
     }
 
-    /* retrieves values from $_REQUEST that were output by outputEditor() */
-    /* $aValues can be $_REQUEST or any array with the values from outputEditor() */
+    /**
+     * Retrieves values from $_REQUEST that were output by outputEditor()
+     * @param array $aValues Can be $_REQUEST or any array with the values from outputEditor()
+     */
     function GetOutputEditorValues($aValues)
     {
-        if($aClean['iDistributionId'])
+        if($aValues['iDistributionId'])
             $this->iDistributionId = $aValues['iDistributionId'];
 
         $this->sName = $aValues['sDistribution'];
@@ -415,23 +419,23 @@ class distribution {
 
     function objectGetFilterInfo()
     {
-	$oFilter = new FilterInterface();
+        $oFilter = new FilterInterface();
 
-	$oFilter->AddFilterInfo('name', 'Name', array(FILTER_CONTAINS, FILTER_STARTS_WITH, FILTER_ENDS_WITH), FILTER_VALUES_NORMAL);
-	return $oFilter;
+        $oFilter->AddFilterInfo('name', 'Name', array(FILTER_CONTAINS, FILTER_STARTS_WITH, FILTER_ENDS_WITH), FILTER_VALUES_NORMAL);
+        return $oFilter;
     }
 
-    /* Get the total number of Distributions in the database */
+    /** Get the total number of Distributions in the database */
     public static function objectGetEntriesCount($sState, $oFilter = null)
     {
         /* Not implemented */
         if($sState == 'rejected')
             return FALSE;
 
-	$sWhereFilter = $oFilter ? $oFilter->getWhereClause() : '';
+        $sWhereFilter = $oFilter ? $oFilter->getWhereClause() : '';
 
-	if($sWhereFilter)
-	    $sWhereFilter = " AND $sWhereFilter";
+        if($sWhereFilter)
+            $sWhereFilter = " AND $sWhereFilter";
 
         $hResult = query_parameters("SELECT count(distributionId) as num_dists FROM
                                      distributions WHERE state='?' $sWhereFilter",

@@ -857,12 +857,14 @@ class Comment {
 }
 
 
-/*
+/**
  * Comment functions that are not part of the class
+ * @param int $iUserId
+ * @return string
  */
-
 function forum_lookup_user($iUserId)
 {
+    $sMailto = '';
     if ($iUserId > 0)
     {
         $oUser = new User($iUserId);
@@ -872,7 +874,7 @@ function forum_lookup_user($iUserId)
         else
             $sMailto = $oUser->sRealname;
     }
-    if (!$iUserId || !$oUser->isLoggedIn())
+    if ( !$iUserId || (isset($oUser) && !$oUser->isLoggedIn()) )
     {
         $sMailto = 'Anonymous';
     }

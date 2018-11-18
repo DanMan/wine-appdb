@@ -83,9 +83,10 @@ class downloadurl
         return array();
     }
 
-    /* Output an editor for Download URL fields */
+    /** Output an edit form for download URL fields */
     function outputEditor($oVersion = null, $sFormAction = null)
     {
+        $sReturn = '';
         /* If we do not get any parameters we try to behave like a proper objectManager
            object, by only showing an editor for one entry instead of several.  This
            code is sort of hacky, and should be fixed once the rest of the downloadurl
@@ -109,18 +110,18 @@ class downloadurl
         $sReturn .= "<form method=\"post\" action=\"$sFormAction\">\n";
         $sReturn .= html_table_begin("border=0 cellpadding=5 cellspacing=0 width=100%");
         $sReturn .= html_tr(array(
-            array("<b>Remove</b>", "width=\"90\""),
-            "<b>Description</b>",
-            "<b>URL</b>"
-            ),
+                array("<b>Remove</b>", "width=\"90\""),
+                "<b>Description</b>",
+                "<b>URL</b>"
+                ),
             "color0");
 
-            $sReturn .= html_tr(array(
+        $sReturn .= html_tr(array(
                 "&nbsp;",
                 "<input type=\"text\" size=\"45\" name=\"".
                 "sDescriptionNew\">",
                 "<input type=\"text\" size=\"45\" name=\"sUrlNew\">"),
-                "color4");
+            "color4");
 
         if($hResult)
         {
@@ -169,6 +170,10 @@ class downloadurl
     /* Process data from a Download URL form */
     function ProcessForm($aValues)
     {
+        $sWhatChangedRemove ='';
+        $sWhatChangedModify = '';
+        $sWhatChanged = '';
+
         /* Check that we are processing a Download URL form */
         if($aValues["sSubmit"] != "Update Download URLs")
             return FALSE;
@@ -286,6 +291,10 @@ class downloadurl
     /* Output an editor for a single new URL */
     function outputEditorSingle($iVersionId = NULL, $aValues = NULL)
     {
+        $sReturn = '';
+        $sDownloadUrlUrl = '';
+        $sDownloadUrlDescription = '';
+
         if($aValues["sDownloadUrlUrl"] &&
            $aValues["sDownloadUrlDescription"])
         {

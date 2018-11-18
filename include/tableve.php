@@ -171,10 +171,13 @@ class TableVE {
         echo html_frame_end();
     }
 
-    // returns a string that contains the option list
+    /**
+     * @return string HTML that contains the select element
+     */
     function make_option_list($sVarname, $sCvalue, $sTable, $sIdField, $sNameField, $aWhere = null)
     {
         $sStr = "";
+        $sWhere = "";
 
         /* We do not allow direct insertion into of SQL code, so the WHERE clause is
            is accepted in an array form, where the first element is the variable

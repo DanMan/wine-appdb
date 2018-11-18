@@ -410,8 +410,9 @@ class version {
 
     public function objectGetMail($sAction, $bMailSubmitter, $bParentAction)
     {
+        $sSubject = '';
+        $sMsg = '';
         $oApp = new application($this->iAppId);
-
         if($bMailSubmitter)
         {
             switch($sAction)
@@ -442,6 +443,8 @@ class version {
     {
         global $aClean; //FIXME: we should pass the sReplyText value in
 
+        $sSubject = '';
+        $sMsg = '';
         // use 'sReplyText' if it is defined, otherwise define the value as an empty string
         if(!isset($aClean['sReplyText']))
             $aClean['sReplyText'] = "";
@@ -477,7 +480,8 @@ class version {
     private function SendNotificationMail($sAction="add",$sMsg=null)
     {
         global $aClean;
-        
+
+        $sSubject = '';
         // use 'sReplyText' if it is defined, otherwise define the value as an empty string
         if(!isset($aClean['sReplyText']))
             $aClean['sReplyText'] = "";
@@ -1297,7 +1301,7 @@ EOT;
 
                     $oTableCell = new TableCell($oVersion->sTestedRating);
                     $oTableCell->SetAlign("center");
-                    $oTableCell->SetClass($sClass);
+                    if(isset($sClass)) $oTableCell->SetClass($sClass);
                     $oTableRow->AddCell($oTableCell);
 
                     $oTableCell = new TableCell($oVersion->sTestedRelease);

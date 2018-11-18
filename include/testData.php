@@ -499,6 +499,8 @@ class testData{
 
             $oVersion = new version($this->iVersionId);
 
+            $sMsg = '';
+            $sSubject = '';
             switch($sAction)
             {
             case "add":
@@ -532,7 +534,7 @@ class testData{
         $oVersion = new Version($this->iVersionId);
         $oApp = new Application($oVersion->iAppId);
         $sBacklink = $oVersion->objectMakeUrl()."&amp;iTestingId=".$this->iTestingId."\n";
-
+        $sSubject = '';
         switch($sAction)
         {
             case "add":

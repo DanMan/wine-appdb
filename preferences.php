@@ -67,7 +67,7 @@ if(isset($aClean['sSubmit']) && $aClean['sSubmit'] == "Update")
     $oUser->sWineRelease = $aClean['sWineRelease'];
 
     /* if the password was empty in both cases then skip updating the users password */
-    if($str_passwd != "")
+    if(!empty($str_passwd))
     {
         if(!$oUser->update_password($str_passwd))
             addmsg("Failed to update password", "red");
